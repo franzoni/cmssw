@@ -24,7 +24,7 @@ parser.add_option("-e", "--fileEnabled",
 
 
 
-#handle different units of disk space
+# handle different units of disk space
 def convert_TB(num,unit):
     if unit=='B':
         num/=(1024.*1024.*1024.*1024.)
