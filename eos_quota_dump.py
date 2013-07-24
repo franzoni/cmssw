@@ -6,19 +6,10 @@ import commands
 import datetime
 import gzip
 import python.eos_tool_config as config
+import python.eos_tool_parser as parser
 
 
 
-def parse_groupsummay_quota_dump(dump):
-    """
-    parse the quota dump for a given node and returns:
-    used bytes logi bytes used files aval bytes aval logib aval files filled[%]  vol-status ino-status
-    for the group summary
-    """
-    #print dump.split('\n')
-    summary_fileds = dump.split('\n')[-1].split()
-    return (float(summary_fileds[1]), float(summary_fileds[3]), float(summary_fileds[5]), float(summary_fileds[7]), float(summary_fileds[9]), float(summary_fileds[11]), float(summary_fileds[13]), summary_fileds[14], summary_fileds[15])
-    
 
 
 if __name__     ==  "__main__":
@@ -32,14 +23,15 @@ if __name__     ==  "__main__":
 
 
     # tgz the old dump and unlink it
-    olddump = os.readlink(os.path.join(config.afsTargetDir,config.dumpFileName))
-    olddumpfile = open(olddump, 'rb')
-    olddumpfile_zip = gzip.open(olddump + '.gzip', 'wb')
-    olddumpfile_zip.writelines(olddumpfile)
-    olddumpfile.close()
-    olddumpfile_zip.close()
-    os.unlink(os.path.join(config.afsTargetDir,config.dumpFileName))
-    os.remove(olddump)
+    if os.path.isfile(os.path.join(config.afsTargetDir,config.dumpFileName)):
+        olddump = os.readlink(os.path.join(config.afsTargetDir,config.dumpFileName))
+        olddumpfile = open(olddump, 'rb')
+        olddumpfile_zip = gzip.open(olddump + '.gzip', 'wb')
+        olddumpfile_zip.writelines(olddumpfile)
+        olddumpfile.close()
+        olddumpfile_zip.close()
+        os.unlink(os.path.join(config.afsTargetDir,config.dumpFileName))
+        os.remove(olddump)
     
     dumpFileNameWithDate = config.dumpFileName.split('.')[0]+'_' + todaydate_string +'.wiki'
     dumpFile = open(os.path.join(config.afsTargetDir,dumpFileNameWithDate), 'w')
@@ -54,16 +46,21 @@ if __name__     ==  "__main__":
         eos_quota_ls_out = commands.getstatusoutput(eos_quota_ls)
         print  eos_quota_ls
         if eos_quota_ls_out[0] == 0:
-            values = parse_groupsummay_quota_dump(eos_quota_ls_out[1])
-            #print values
+            values = parser.parse_groupsummay_quota_dump(eos_quota_ls_out[1])
+            print values
 
-            line = '| =%s= | %0.2f | %0.2f | %0.2f | %s |' % (node.eosPath, values[4], values[1], values[6], values[7])
+            line = '| =%s= | %0.2f | %0.2f | %0.2f | %s |' % (node.eosPath, values.aval_logib, values.logi_bytes, values.filled, values.vol_status)
             #print line
             digest_lines.append(line)
             dumpFile.write('\nQuota dump for node =%s= run on %s\n' % (node.eosPath, todaydate))
             dumpFile.write('<verbatim>\n')
             dumpFile.write(eos_quota_ls_out[1]+'\n')
             dumpFile.write('</verbatim>\n\n')
+
+
+            if values.vol_status != 'ok' or values.ino_status != 'ok':
+                print "WARNING"
+
 
         else:
             print eos_quota_ls_out[1]
