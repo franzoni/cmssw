@@ -1,0 +1,20 @@
+Dear EOS user,
+
+this is an automated message. 
+The quota for @NODE@ is getting full:
+
+@DUMP@
+ 
+Please take action asap to free up some space.
+In case you consider that some of the files should be archived on tape
+for long-term availability please have a look at the instructions on
+the twiki:
+
+https://twiki.cern.ch/twiki/bin/viewauth/CMS/CERNCMST3
+
+Best regards,
+		the EOS managers for the CMS CERN T3
+
+
+
+
