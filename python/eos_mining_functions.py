@@ -16,6 +16,7 @@ def filePathFromLine( oneLine ):
 # set eos executable
 eos = '/afs/cern.ch/project/eos/installation/cms/bin/eos.select'
 
+
 def userIdFromFilePath( path ):
    p = subprocess.Popen( '%s ls %s -l '%(eos,path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
    stdout, stderr = p.communicate()
@@ -63,6 +64,5 @@ def emailFromLogin( login ):
         print  'problem in values returned by phonebook'
         return '** phonebook result not valid'
     else :
-        # chop off the last 7 elements of phonebook output to give you all the names + surnames of a person
+        # return email address, removing "e-mail:"
         return stdout.split()[-1]
-        #return stdout
