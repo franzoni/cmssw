@@ -12,12 +12,15 @@ parser.add_option("-f", "--fileWithPath",
 parser.add_option("-v", "--verbose",
                   action="store_true", dest="verbose", default=False,
                   help="verbose output for debug mode")
-parser.add_option("-e", "--showEmail",
+parser.add_option("-s", "--showEmail",
                   action="store_true", dest="showEmail", default=False,
                   help="show email address of person owner of directory present in popularity file")
 parser.add_option("-n", "--nonexisting",
                   action="store_true", dest="nonexisting", default=False,
                   help="show non existing directories among those signalled by popularity")
+parser.add_option("-e", "--emailSend",
+                  action="store_true", dest="emailSend", default=False,
+                  help="send templated email to people who have directories in popularity report")
 (options, args) = parser.parse_args()
 
 
@@ -95,3 +98,33 @@ print '    total eos space in this popularity report:  %s GB'%(integralSpace)
 print '    %s user(s) involved'%( len( dict.keys() )  )
 print ''
 print ''
+
+from sys import exit
+if not options.emailSend :
+    exit()
+
+# Make sure that the user is CERTAIN about sending out all those emials.. 
+print 'you\'re about to send %s emails - are you sure ? '%( len( dict.keys() )  )
+print '    ******************************* '
+confirm = raw_input('     Do you confirm? (y/N) ')
+confirm = confirm.lower() #convert to lowercase
+if confirm != 'y':
+    exit()
+
+print ' '
+
+#start setting up the ingredients needed to send the email
+templatefile = 'data/ask-feedback-popularity.txt'
+
+
+import python.eos_tool_mail      as mail
+for userId in dict.keys():
+    listOfDirectories =   '\n     '.join( dict[userId][1]  )
+    replaces = [("@NAME@", phonebook.nameAndSurnameFromLogin( userId ) ), ("@DUMP@",listOfDirectories) ]
+    subject = 'CMS T3: feedback about data popularity'
+
+    from_address = "giovanni.franzoni@cern.chh"
+    to_address = "gianluca.cerminara@cern.ch"
+    cc_address = "franzoni@gmail.com"
+    replyto_address = "cms-cernt3-manager@cern.ch"
+    mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces)
