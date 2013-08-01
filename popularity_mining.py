@@ -1,6 +1,6 @@
 #!/usr/bin/python2.4
 import os, socket, sys, string
-from subprocess import Popen, PIPE
+import python.eos_tool_phonebook as phonebook
 
 import python.eos_mining_functions as funct
 
@@ -77,9 +77,9 @@ for oneLine in fileLines:
 ##########################################################################
 
 for userId in dict.keys():
-    print '\n   ++ %s (%s) holds %s GB of data in %s directories: '%( funct.nameAndSurnameFromLogin( userId ),  userId, dict[userId][0], len( dict[userId][1] )  )
+    print '\n   ++ %s (%s) holds %s GB of data in %s directories: '%( phonebook.nameAndSurnameFromLogin( userId ),  userId, dict[userId][0], len( dict[userId][1] )  )
     if options.showEmail:
-        print '      %s '%( funct.emailFromLogin( userId )  )
+        print '      %s '%( phonebook.emailFromLogin( userId )  )
     print '\n     '.join( dict[userId][1]  )
     print ''
     

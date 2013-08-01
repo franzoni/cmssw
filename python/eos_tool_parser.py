@@ -35,8 +35,22 @@ def tokFilesConversion(unit):
 
 
 
+#(year, month, day[, hour[, minute[, second[, microsecond[, tzinfo]]]]])
+class EOSLsReport:
+    """ Stores the report for the ls output for a given file/path (single line of the report) """
+    def __init__(self, lsline_list):
+        self.permissions  = lsline_list[0]
+        # FIXME: what is the field after the permissions?
+        self.user         = lsline_list[2]
+        self.group        = lsline_list[3]
+        self.size         = int(lsline_list[4])
+        self.date         = 'FIXME'
+        self.path         = lsline_list[8]
 
-
+    def __str__(self):
+        ret = self.permissions +' '+self.user+' '+self.group+' '+str(self.size)+' '+self.date+' '+self.path
+        return ret
+    
 class EOSQuotaReport:
     """ Stores the report for a given user/group of eos dump quota
     It is created starting from a given line in the output of 'eos ls quota' command

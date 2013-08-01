@@ -60,7 +60,11 @@ if __name__     ==  "__main__":
 
             if values.vol_status != 'ok' or values.ino_status != 'ok':
                 print "WARNING"
-
+                # read status and data to cache file
+                # if old was ok -> send mail
+                # elif date > 1 week send mail and write date and satatus in cache file
+                
+                
 
         else:
             print eos_quota_ls_out[1]
