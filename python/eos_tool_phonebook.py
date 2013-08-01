@@ -40,6 +40,13 @@ def nameAndSurnameFromLogin( login ):
     ret = lookupByLogin(login)
     return ret.surname + ' ' + ret.firstname 
     
+def firstNameFromLogin( login ):
+    ret = lookupByLogin(login)
+    return ret.firstname 
+
+def lastNameFromLogin( login ):
+    ret = lookupByLogin(login)
+    return ret.surname
 
 def emailFromLogin( login ):
     ret = lookupByLogin(login)
