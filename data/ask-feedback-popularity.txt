@@ -1,0 +1,46 @@
+Dear @NAME@,
+
+as discussed at the CMG group meeting in June [1] we want to use data
+popularity to manage the eos space of the CMS T3.
+There's some directories (full list below) in the CMS T3 eos space which belong to you
+and have gone 'stale' , hence you receive this automated email.
+
+The current definition of 'stale' is [2]:
+   data created > 120 days ago, never accessed in the past 90 days
+
+In the process, together with Domenico Giordano, of commissioning the
+usage of data popularity, we may we ask your help on three points:
+
++ can you take a look at the list below and send us feedback if you
+notice inconsistencies between the directories and the 'stale' definition;
+
++ we're not at this point enforcing the removal / archival (see
+[4] for the recipe supported by CMS computing) of 'stale' data. 
+Yet, it would be great if you could free space now (there's 143 - 157
+TB of 'stale' data in group - user, respectively);
+Approx 2/3 of the 'stale' data 'belong' to the cmgtools user - we're
+already in contact with Colin and Zezen who have redirected this call
+to the relevant people.
+
++ we have already received some feedback on the current definition of
+'stale' data and we welcome your comments about it;
+
+Having your feedback in the coming days will be very helpful, and
+we'll need it to go back to IT with further questions and proposals to update the definition of 'stale'.
+
+Best regards,
+Andreas, Gianluca and Giovanni - CMS T3 List
+
+
+++ list of your 'stale' directories :
+@DUMP@
+
+
+
+
+[1] https://indico.cern.ch/materialDisplay.py?contribId=0&materialId=slides&confId=258619
+
+[2] Domenico Giordano's talk at PPD
+https://indico.cern.ch/conferenceDisplay.py?confId=251052
+
+[3] https://twiki.cern.ch/twiki/bin/view/CMSPublic/CompOpsCERNArchive
