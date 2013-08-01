@@ -4,12 +4,11 @@ import subprocess
 def filePathFromLine( oneLine ):
     oneLineSplit = oneLine.split('\t')
     if len(oneLineSplit) < 6:
-        print  'line is: %s '%(oneLine)
+        print  'line is: %s and does not fit expected format (filePathFromLine) '%(oneLine)
         return '** path-not-found'
     else :
         #print 'DEBUG %s '%(    ((oneLineSplit)[3].split())[0] )  # remove this        
         return  (  ((oneLineSplit)[3].split())[0],   oneLineSplit[5]  )
-
 
 
 # get from eos userId, starting from a directory path in eos 
@@ -33,5 +32,3 @@ def userIdFromFilePath( path ):
    else :
        #print 'DEBUG %s '%( ( stdout.split('\n')[0] ).split() )  # remove this
        return ( ( stdout.split('\n')[0] ).split() )[2]
-
-
