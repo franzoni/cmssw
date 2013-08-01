@@ -39,6 +39,7 @@ fileLines = fileLines.split('\n')
 
 linesCounter          =0
 missingFoldersCounter =0
+integralSpace         =0.
 # dictionary with 0) userID as key, holding a list whose two members are
 # 1) total size of his/her data and 2) a list of directories
 dict = {}
@@ -71,7 +72,8 @@ for oneLine in fileLines:
         dict[userId][1].append(oneFilePath)
         dict[userId][0]+=float(size)
 
-        
+    integralSpace+=float(size)
+
     if options.verbose:
         print dict
 ##########################################################################
@@ -89,6 +91,7 @@ print ''
 print ''        
 print '    popularity file analyzed: %s'%options.fileWithPath
 print '    found % s folders in input file, of which %s don\'t exist'%(linesCounter,missingFoldersCounter)
+print '    total eos space in this popularity report:  %s GB'%(integralSpace)
 print '    %s user(s) involved'%( len( dict.keys() )  )
 print ''
 print ''

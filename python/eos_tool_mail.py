@@ -40,8 +40,6 @@ if __name__     ==  "__main__":
     status = 30
     replaces = [("@NODE@", quotanode), ("@DUMP@", "pluto")]
     subject = 'WARNING: EOS quota for node %s is now %0.2f %% full' % (quotanode, status)
-    
-
 
     from_address = raw_input("from: ")
     to_address = raw_input("to: ")

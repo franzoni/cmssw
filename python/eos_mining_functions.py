@@ -16,6 +16,7 @@ def filePathFromLine( oneLine ):
 # set eos executable
 eos = '/afs/cern.ch/project/eos/installation/cms/bin/eos.select'
 
+
 def userIdFromFilePath( path ):
    p = subprocess.Popen( '%s ls %s -l '%(eos,path), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
    stdout, stderr = p.communicate()
