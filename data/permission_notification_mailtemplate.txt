@@ -1,0 +1,23 @@
+Dear @NAME@
+
+this is an automated message. 
+
+It looks like some of your directories on EOS (complete list at the end of the
+message) have permissions set to 777.
+Since this represents a security problem, you are kindly invited to fix them
+asap.
+
+Please have a look at:
+
+eoscms chmod --help
+
+for more details.
+
+Best regards,
+
+     the EOS manager team.
+
+
+@DUMP@
+
+

@@ -5,7 +5,7 @@ import smtplib
 from email.MIMEText import MIMEText
 
 
-def sendMonitoringMail(subject, from_address, to_address, templatefile, replaces):
+def sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces):
     # Open a plain text file for reading.  For this example, assume that
     # the text file contains only ASCII characters.
     fp = open(templatefile, 'rb')
@@ -23,6 +23,10 @@ def sendMonitoringMail(subject, from_address, to_address, templatefile, replaces
     msg['Subject'] = subject
     msg['From'] = from_address
     msg['To'] = to_address
+    if cc_address != None:
+        msg['CC'] = cc_address
+    if replyto_address != None:
+        msg['Reply-to'] = replyto_address
 
     #print msg
 
@@ -43,7 +47,7 @@ if __name__     ==  "__main__":
 
     from_address = raw_input("from: ")
     to_address = raw_input("to: ")
-    sendMonitoringMail(subject, from_address, to_address, templatefile, replaces)
+    sendMonitoringMail(subject, from_address, to_address, None, None, templatefile, replaces)
 
 
 
