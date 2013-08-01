@@ -1,0 +1,9 @@
+Hi,
+
+	this is just a test of the new toy for e-mail notification.
+Please ignore!
+
+Ciao
+	G
+
+PS: example of templated field: @NODE@
