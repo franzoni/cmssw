@@ -12,11 +12,7 @@ parser.add_option("-f", "--fileWithPath",
 parser.add_option("-v", "--verbose",
                   action="store_true", dest="verbose", default=False,
                   help="verbose output for debug mode")
-<<<<<<< HEAD
-parser.add_option("-s", "--showEmail",
-=======
 parser.add_option("--showEmail",
->>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
                   action="store_true", dest="showEmail", default=False,
                   help="show email address of person owner of directory present in popularity file")
 parser.add_option("-n", "--nonexisting",
@@ -25,8 +21,6 @@ parser.add_option("-n", "--nonexisting",
 parser.add_option("-e", "--emailSend",
                   action="store_true", dest="emailSend", default=False,
                   help="send templated email to people who have directories in popularity report")
-<<<<<<< HEAD
-=======
 parser.add_option("--subj",
                   action="store", dest="emailSubject", default="",
                   help="subject of the emails which will be sent out (if --emailSend) ")
@@ -43,7 +37,6 @@ parser.add_option("--tem",
                   action="store", dest="emailTemplate", default="",
                   help="emailTemplate for the emails which will be sent out (if --emailSend) ")
 
->>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
 (options, args) = parser.parse_args()
 
 
@@ -110,11 +103,7 @@ for oneLine in fileLines:
 for userId in dict.keys():
     print '\n   ++ %s (%s) holds %s GB of data in %s directories: '%( phonebook.nameAndSurnameFromLogin( userId ),  userId, dict[userId][0], len( dict[userId][1] )  )
     if options.showEmail:
-<<<<<<< HEAD
-        print '      %s '%( phonebook.emailFromLogin( userId )  )
-=======
         print '      email: %s '%( phonebook.emailFromLogin( userId )  )
->>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
     print '\n     '.join( dict[userId][1]  )
     print ''
     
@@ -133,12 +122,6 @@ from sys import exit
 if not options.emailSend :
     exit()
 
-<<<<<<< HEAD
-# Make sure that the user is CERTAIN about sending out all those emials.. 
-print 'you\'re about to send %s emails - are you sure ? '%( len( dict.keys() )  )
-print '    ******************************* '
-confirm = raw_input('     Do you confirm? (y/N) ')
-=======
 if options.emailSend and (options.emailSubject=="" or options.emailFrom=="" or options.emailReplyTo=="" or options.emailTemplate=="") :
     print ''
     print "    emailSubject, emailFrom, emailReplyTo and emailTemplate all need to be set when emailSend. Bailing out. "
@@ -152,30 +135,12 @@ print '    ***************************************** \n'
 print '    You\'re about to send %s emails - are you sure ? '%( len( dict.keys() )  )
 confirm = raw_input('    Do you confirm? (y/N) ')
 print '\n    ***************************************** \n'
->>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
 confirm = confirm.lower() #convert to lowercase
 if confirm != 'y':
     exit()
 
 print ' '
 
-<<<<<<< HEAD
-#start setting up the ingredients needed to send the email
-templatefile = 'data/ask-feedback-popularity.txt'
-
-
-import python.eos_tool_mail      as mail
-for userId in dict.keys():
-    listOfDirectories =   '\n     '.join( dict[userId][1]  )
-    replaces = [("@NAME@", phonebook.nameAndSurnameFromLogin( userId ) ), ("@DUMP@",listOfDirectories) ]
-    subject = 'CMS T3: feedback about data popularity'
-
-    from_address = "giovanni.franzoni@cern.chh"
-    to_address = "gianluca.cerminara@cern.ch"
-    cc_address = "franzoni@gmail.com"
-    replyto_address = "cms-cernt3-manager@cern.ch"
-    mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces)
-=======
 
 
 import python.eos_tool_mail      as mail
@@ -207,4 +172,3 @@ for userId in dict.keys():
 
 print ''
 print ''
->>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
