@@ -24,30 +24,39 @@ def sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_ad
     msg['From'] = from_address
     msg['To'] = to_address
     if cc_address != None:
-        msg['CC'] = cc_address
+        msg['Cc'] = cc_address
     if replyto_address != None:
         msg['Reply-to'] = replyto_address
 
     #print msg
 
+
+    to_address_list = to_address.split(',')
+    if cc_address != None:
+        to_address_list = to_address_list + cc_address.split(',')
+    
+    
+    #print to_address_list
+    #return        
+    
+
     # Send the message via our own SMTP server, but don't include the
     # envelope header.
     s = smtplib.SMTP('localhost')
-    s.sendmail(from_address, [to_address], msg.as_string())
+    s.sendmail(from_address, to_address_list, msg.as_string())
     s.quit()
 
 
 if __name__     ==  "__main__":
 
-    templatefile = "data/quota_warning_mailtemplate.txt"
+    templatefile = "data/test_mailtemplate.txt"
     quotanode = "/mynode/eos/pippo/"
-    status = 30
-    replaces = [("@NODE@", quotanode), ("@DUMP@", "pluto")]
-    subject = 'WARNING: EOS quota for node %s is now %0.2f %% full' % (quotanode, status)
+    replaces = [("@NODE@", quotanode)]
 
+    subject = 'Mail test'
     from_address = raw_input("from: ")
     to_address = raw_input("to: ")
-    sendMonitoringMail(subject, from_address, to_address, None, None, templatefile, replaces)
+    sendMonitoringMail(subject, from_address, to_address, "cms-cernt3-manager@cern.ch", None, templatefile, replaces)
 
 
 
