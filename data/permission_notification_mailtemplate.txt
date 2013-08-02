@@ -2,7 +2,8 @@ Dear @NAME@
 
 this is an automated message. 
 
-some of your directories on EOS (complete list at the end of the
+
+Some of your directories on EOS (complete list at the end of the
 message) have permissions set to 777 and you are kindly invited to fix them
 asap.
 
@@ -15,7 +16,6 @@ for more details.
 Best regards,
 
      the EOS managers for Physics and PPD space.
-
 
 @DUMP@
 

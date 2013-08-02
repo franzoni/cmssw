@@ -12,7 +12,11 @@ parser.add_option("-f", "--fileWithPath",
 parser.add_option("-v", "--verbose",
                   action="store_true", dest="verbose", default=False,
                   help="verbose output for debug mode")
+<<<<<<< HEAD
 parser.add_option("-s", "--showEmail",
+=======
+parser.add_option("--showEmail",
+>>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
                   action="store_true", dest="showEmail", default=False,
                   help="show email address of person owner of directory present in popularity file")
 parser.add_option("-n", "--nonexisting",
@@ -21,6 +25,25 @@ parser.add_option("-n", "--nonexisting",
 parser.add_option("-e", "--emailSend",
                   action="store_true", dest="emailSend", default=False,
                   help="send templated email to people who have directories in popularity report")
+<<<<<<< HEAD
+=======
+parser.add_option("--subj",
+                  action="store", dest="emailSubject", default="",
+                  help="subject of the emails which will be sent out (if --emailSend) ")
+parser.add_option("--from",
+                  action="store", dest="emailFrom", default="",
+                  help="emailFrom for the emails which will be sent out (if --emailSend) ")
+parser.add_option("--cc",
+                  action="store", dest="emailCc", default="",
+                  help="emailCc for the emails which will be sent out (if --emailSend) ")
+parser.add_option("--rep",
+                  action="store", dest="emailReplyTo", default="",
+                  help="emailReplyTo for the emails which will be sent out (if --emailSend) ")
+parser.add_option("--tem",
+                  action="store", dest="emailTemplate", default="",
+                  help="emailTemplate for the emails which will be sent out (if --emailSend) ")
+
+>>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
 (options, args) = parser.parse_args()
 
 
@@ -56,6 +79,9 @@ for oneLine in fileLines:
     linesCounter        +=1
     size=0.
     oneFilePath=''
+    #debug
+    #print oneLine
+    #debug
     size, oneFilePath   = funct.filePathFromLine(oneLine)
     userId              = funct.userIdFromFilePath( oneFilePath )
     if options.verbose:
@@ -84,7 +110,11 @@ for oneLine in fileLines:
 for userId in dict.keys():
     print '\n   ++ %s (%s) holds %s GB of data in %s directories: '%( phonebook.nameAndSurnameFromLogin( userId ),  userId, dict[userId][0], len( dict[userId][1] )  )
     if options.showEmail:
+<<<<<<< HEAD
         print '      %s '%( phonebook.emailFromLogin( userId )  )
+=======
+        print '      email: %s '%( phonebook.emailFromLogin( userId )  )
+>>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
     print '\n     '.join( dict[userId][1]  )
     print ''
     
@@ -103,16 +133,33 @@ from sys import exit
 if not options.emailSend :
     exit()
 
+<<<<<<< HEAD
 # Make sure that the user is CERTAIN about sending out all those emials.. 
 print 'you\'re about to send %s emails - are you sure ? '%( len( dict.keys() )  )
 print '    ******************************* '
 confirm = raw_input('     Do you confirm? (y/N) ')
+=======
+if options.emailSend and (options.emailSubject=="" or options.emailFrom=="" or options.emailReplyTo=="" or options.emailTemplate=="") :
+    print ''
+    print "    emailSubject, emailFrom, emailReplyTo and emailTemplate all need to be set when emailSend. Bailing out. "
+    print ''
+    print ''
+    exit()
+
+
+# Make sure that the user is CERTAIN about sending out all those emials.. 
+print '    ***************************************** \n'
+print '    You\'re about to send %s emails - are you sure ? '%( len( dict.keys() )  )
+confirm = raw_input('    Do you confirm? (y/N) ')
+print '\n    ***************************************** \n'
+>>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78
 confirm = confirm.lower() #convert to lowercase
 if confirm != 'y':
     exit()
 
 print ' '
 
+<<<<<<< HEAD
 #start setting up the ingredients needed to send the email
 templatefile = 'data/ask-feedback-popularity.txt'
 
@@ -128,3 +175,36 @@ for userId in dict.keys():
     cc_address = "franzoni@gmail.com"
     replyto_address = "cms-cernt3-manager@cern.ch"
     mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces)
+=======
+
+
+import python.eos_tool_mail      as mail
+
+# loop over users whose files are in popularity and send an email each 
+print ''
+for userId in dict.keys():
+
+    # set up the ingredients needed to send the email
+
+    subject         = options.emailSubject
+    from_address    = options.emailFrom
+    replyto_address = options.emailReplyTo
+    cc_address      = options.emailCc 
+    templatefile    = options.emailTemplate
+
+    # this is the recipient 
+    to_address = phonebook.emailFromLogin( userId )
+    # to perform local tests
+    #to_address = 'giovanni.franzoni@cern.ch'
+    # and his / her directories
+    listOfDirectories =   '\n     '.join( dict[userId][1]  )
+    replaces = [("@NAME@", phonebook.firstNameFromLogin( userId ) ), ("@DUMP@",listOfDirectories) ]
+
+    
+    # this is where the email is actually sent out!
+    print '   ++sending email to : %s'%(to_address)
+    mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces)
+
+print ''
+print ''
+>>>>>>> 2e464d99cde67bbc930c1d3103778c780f0a6c78

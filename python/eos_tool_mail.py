@@ -60,3 +60,6 @@ if __name__     ==  "__main__":
 
 
 
+    from_address = raw_input("from: ")
+    to_address = raw_input("to: ")
+    sendMonitoringMail(subject, from_address, to_address, None, None, templatefile, replaces)

@@ -17,6 +17,7 @@ if __name__     ==  "__main__":
         cachefile = open(cachefilename, 'a+b')
         alreadysent = cachefile.readlines()
         print alreadysent
+
     thefile = open(filename, 'rb')
 
 
@@ -26,6 +27,7 @@ if __name__     ==  "__main__":
     for line in thefile.readlines():
         #print line
         report = parser.EOSLsReport(line.split())
+
         if '/cms/store/user/' in report.path or \
            '/cms/store/cmst3/user/' in report.path or \
            '/cms/store/group/' in report.path or \
@@ -46,6 +48,8 @@ if __name__     ==  "__main__":
 
     #alreadysent=cachefile.readlines()
 
+
+    
     print "# of users: " + str(len(users))
     print users
 
@@ -65,6 +69,7 @@ if __name__     ==  "__main__":
         #print dump
 
         phnbookentry = phonebook.lookupByLogin(user)
+
         print phnbookentry
 
         

@@ -3,11 +3,19 @@ import commands
 class PhonebookEntry:
     """ This class represet an entry in the phonebook DB"""
     def __init__(self, attrlist):
-        self.firstname = attrlist[0]
-        self.surname   = attrlist[1]
-        self.login     = attrlist[2]
-        self.email     = attrlist[3]
-        
+        # protect against mal-formed attrlist - make sure it has at least 4 elements 
+        if (len(attrlist) > 3) :
+            self.firstname = attrlist[0]
+            self.surname   = attrlist[1]
+            self.login     = attrlist[2]
+            self.email     = attrlist[3]
+        else :
+            print '\n\n ==> PhonebookEntry: invalid data in input ( %s ) \n\n'%(attrlist)
+            self.firstname = 'invalid-data-from-phonebook'
+            self.surname   = 'invalid-data-from-phonebook'
+            self.login     = 'invalid-data-from-phonebook'
+            self.email     = 'invalid-data-from-phonebook'
+            
     def __str__(self):
 
         ret = "Name: " + self.surname +' '+ self.firstname+'\n' + \
@@ -40,6 +48,14 @@ def nameAndSurnameFromLogin( login ):
     ret = lookupByLogin(login)
     return ret.surname + ' ' + ret.firstname 
     
+def firstNameFromLogin( login ):
+    ret = lookupByLogin(login)
+    return ret.firstname 
+
+def lastNameFromLogin( login ):
+    ret = lookupByLogin(login)
+    return ret.surname
+
 
 def emailFromLogin( login ):
     ret = lookupByLogin(login)
