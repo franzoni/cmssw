@@ -2,9 +2,28 @@ import python.eos_tool_parser    as parser
 import python.eos_tool_phonebook as phonebook
 import python.eos_tool_mail      as mail
 import os
-
-
+import sys
+from optparse import OptionParser
+    
 if __name__     ==  "__main__":
+
+
+
+    parser = OptionParser()
+    parser.add_option("-s", "--send-mails",
+                      action="store_true", dest="send", default=False,
+                      help="actually send the mails")
+
+    (options, args) = parser.parse_args()
+
+    if options.send:
+        print "WARNING, the script might trigger zilions of mails to the users, do you want to run it?"
+        confirm = raw_input('Run? (y/N)')
+        confirm = confirm.lower() #convert to lowercase
+        if confirm != 'y':
+            sys.exit(2)
+
+
 
     filename = 'data/20130726-eoscms-mode-777.log'
 
@@ -24,6 +43,10 @@ if __name__     ==  "__main__":
     users = []
     userFileMap = {}
 
+
+
+
+
     for line in thefile.readlines():
         #print line
         report = parser.EOSLsReport(line.split())
@@ -34,7 +57,7 @@ if __name__     ==  "__main__":
            '/cms/store/caf/user/' in report.path or \
            '/cms/store/cmst3/group/' in report.path:
 
-            print report
+            #print report
             
             if not report.user in userFileMap:
                 userFileMap[report.user] = []
@@ -47,7 +70,6 @@ if __name__     ==  "__main__":
             print "ignoring path: " + report.path
 
     #alreadysent=cachefile.readlines()
-
 
     
     print "# of users: " + str(len(users))
@@ -82,7 +104,7 @@ if __name__     ==  "__main__":
         to_address = phnbookentry.email
         cc_address = "toreplace@cern.ch"
         replyto_address = "cms-cernt3-manager@cern.ch"
-        mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces)
+        mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces, not options.send)
         cachefile.write(user+'\n')
 
         

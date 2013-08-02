@@ -5,7 +5,7 @@ import smtplib
 from email.MIMEText import MIMEText
 
 
-def sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces):
+def sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces, dryrun=True):
     # Open a plain text file for reading.  For this example, assume that
     # the text file contains only ASCII characters.
     fp = open(templatefile, 'rb')
@@ -43,7 +43,14 @@ def sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_ad
     # Send the message via our own SMTP server, but don't include the
     # envelope header.
     s = smtplib.SMTP('localhost')
-    s.sendmail(from_address, to_address_list, msg.as_string())
+    if dryrun:
+        print "-----------------------------------------------------------------"
+        print "WARNING You are in dry run mode: no message will be actually sent"
+        print " Message content follows:"
+        print msg
+        print "\n\nList of recipients (To or Cc):" + " ".join(to_address_list)
+    else:
+        s.sendmail(from_address, to_address_list, msg.as_string())        
     s.quit()
 
 
@@ -56,10 +63,19 @@ if __name__     ==  "__main__":
     subject = 'Mail test'
     from_address = raw_input("from: ")
     to_address = raw_input("to: ")
-    sendMonitoringMail(subject, from_address, to_address, "cms-cernt3-manager@cern.ch", None, templatefile, replaces)
+
+    send = False
+    print "WARNING, the script will actually send an e-mail, do you want to run it?"
+    confirm = raw_input('Run? (y/N)')
+    confirm = confirm.lower() #convert to lowercase
+    if confirm == 'y':
+        send = True
+
+
+    sendMonitoringMail(subject, from_address, to_address, "cms-cernt3-manager@cern.ch", None, templatefile, replaces, not send)
 
 
 
-    from_address = raw_input("from: ")
-    to_address = raw_input("to: ")
-    sendMonitoringMail(subject, from_address, to_address, None, None, templatefile, replaces)
+    #from_address = raw_input("from: ")
+    #to_address = raw_input("to: ")
+    #sendMonitoringMail(subject, from_address, to_address, None, None, templatefile, replaces)
