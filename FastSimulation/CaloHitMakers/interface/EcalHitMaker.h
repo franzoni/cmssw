@@ -20,6 +20,7 @@ class CrystalWindowMap;
 class Histos;
 class RandomEngine;
 class FSimTrack;
+class FSimVertex;
 
 class EcalHitMaker: public CaloHitMaker
 {
@@ -43,7 +44,8 @@ class EcalHitMaker: public CaloHitMaker
   // This is not part of the constructor but it has to be called very early
   void setTrackParameters(const XYZNormal& normal,
 			  double X0depthoffset,
-			  const FSimTrack& theTrack);
+			  const FSimTrack& theTrack,
+			  const FSimVertex& theVertex);
   
   // The following methods are related to the path of the particle
   // through the detector. 
@@ -282,6 +284,7 @@ class EcalHitMaker: public CaloHitMaker
 
  //  int fsimtrack_;
   const FSimTrack* myTrack_;
+  const FSimVertex* myVertex_;
   
   // vector of the intersection of the track with the dectectors (PS,ECAL,HCAL)
   std::vector<CaloPoint> intersections_;
