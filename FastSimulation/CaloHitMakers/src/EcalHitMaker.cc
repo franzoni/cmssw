@@ -1216,12 +1216,46 @@ void EcalHitMaker::convertIntegerCoordinates(double x, double y,unsigned &ix,uns
 
 const std::map<CaloHitID,float>& EcalHitMaker::getHits() 
 {
+  using namespace std;
+  std::cout << "[EcalHitMaker::getHits]" << std::endl;
   if (hitmaphasbeencalculated_) return hitMap_;
+  cout << "A" << endl;
   for(unsigned ic=0;ic<ncrystals_;++ic)
     {
+      cout << "B " << ic << endl;
+
 	  //calculate time of flight
 	  float tof = 0.0;
-	  if(onEcal_==1 || onEcal_==2) tof = (myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition().mag())/29.98; //speed of light
+	  // FIXME: here one could plug all needed computation accessing the track as const FSimTrack *myTrack_
+	  if(onEcal_==1 || onEcal_==2) {
+	    cout << "C" << endl;;
+
+	    GlobalPoint detPosition = myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition();
+	    cout << "D" << endl;
+	    math::XYZTLorentzVector vertexVectPos = myTrack_->vertex().position();
+	    cout << "E" << endl;
+
+	    GlobalPoint vertexPosition(vertexVectPos.x(), vertexVectPos.y(), vertexVectPos.z());
+	    cout << "F" << endl;
+
+	    float tofNoV = detPosition.mag()/29.98;
+	    cout << "G" << tofNoV << endl;
+
+	    tof = (detPosition-vertexPosition).mag()/29.98; //speed of light
+	    cout << "H" << endl;
+	    
+	    std::cout << "[EcalHitMaker::getHits] vertex: ("
+		      << myTrack_->vertex().position().x() << " "
+		      << myTrack_->vertex().position().y() << " " 
+		      << myTrack_->vertex().position().z() << ") " 
+		 << " TOF not corrected: " << tofNoV
+		      << " TOF: " << tof << std::endl;
+	      
+
+
+
+	  }
+
 	
 	  if(onEcal_==1){
 	    CaloHitID current_id(EBDetId(regionOfInterest_[ic].getDetId().rawId()).hashedIndex(),tof,0); //no track yet
