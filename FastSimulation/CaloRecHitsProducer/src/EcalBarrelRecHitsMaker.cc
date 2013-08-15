@@ -80,11 +80,11 @@ EcalBarrelRecHitsMaker::EcalBarrelRecHitsMaker(edm::ParameterSet const & p,
   calibfactor_=1./c1;
     
   // initializing theCalorimeterNominalTimes, which needs be done only once, and not at all events
-  std::cout << "EcalBarrelRecHitsMaker size is: " << theCalorimeterNominalTimes_.size() << std::endl;
+  // std::cout << "EcalBarrelRecHitsMaker size is: " << theCalorimeterNominalTimes_.size() << std::endl;
   for(unsigned hashindex=0;hashindex<theCalorimeterNominalTimes_.size();++hashindex)
     {
       theCalorimeterNominalTimes_[hashindex] = 0.;
-      std::cout << "EcalBarrelRecHitsMaker setting theCalorimeterNominalTimes_ to 0 for hash: " << hashindex << std::endl;
+      // std::cout << "EcalBarrelRecHitsMaker setting theCalorimeterNominalTimes_ to 0 for hash: " << hashindex << std::endl;
     }
   
 
@@ -472,8 +472,8 @@ void EcalBarrelRecHitsMaker::init(const edm::EventSetup &es,bool doDigis,bool do
       // => to be suctracted from the calohit time, to emulate the ECAL latency adjustments in the hw (aimed at <t_reco>=0 at any eta)
       float netralAndNominalTof= (myEcalBarrelGeometry->getGeometry(myDetId)->getPosition().mag()) /29.98 ;
       theCalorimeterNominalTimes_[crystalHashedIndex] = netralAndNominalTof;  // GF : shorten this
-      std::cout << "EcalBarrelRecHitsMaker theCalorimeterNominalTimes set to: " << theCalorimeterNominalTimes_[crystalHashedIndex]
-		<< " hash: " << crystalHashedIndex  << std::endl;
+      // std::cout << "EcalBarrelRecHitsMaker theCalorimeterNominalTimes set to: " << theCalorimeterNominalTimes_[crystalHashedIndex]
+      //<< " hash: " << crystalHashedIndex  << std::endl;
     }
 
 

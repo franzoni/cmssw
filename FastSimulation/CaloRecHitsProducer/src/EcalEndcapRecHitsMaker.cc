@@ -62,11 +62,11 @@ EcalEndcapRecHitsMaker::EcalEndcapRecHitsMaker(edm::ParameterSet const & p,
   calibfactor_= 1./c1;
 
   // initializing theCalorimeterNominalTimes, which needs be done only once, and not at all events  
-  std::cout << "EcalEndcapRecHitsMaker size is: " << theCalorimeterNominalTimes_.size() << std::endl;
+  // std::cout << "EcalEndcapRecHitsMaker size is: " << theCalorimeterNominalTimes_.size() << std::endl;
   for(unsigned hashindex=0;hashindex<theCalorimeterNominalTimes_.size();++hashindex)
     {
       theCalorimeterNominalTimes_[hashindex] = 0.;
-      std::cout << "EcalEndcapRecHitsMaker setting theCalorimeterNominalTimes_ to 0 for hash: " << hashindex << std::endl;
+      // std::cout << "EcalEndcapRecHitsMaker setting theCalorimeterNominalTimes_ to 0 for hash: " << hashindex << std::endl;
     }
 
 }
@@ -422,8 +422,8 @@ void EcalEndcapRecHitsMaker::init(const edm::EventSetup &es,bool doDigis,bool do
       // => to be suctracted from the calohit time, to emulate the ECAL latency adjustments in the hw (aimed at <t_reco>=0 at any eta) 
       float netralAndNominalTof= (myEcalEndcapGeometry->getGeometry(myDetId)->getPosition().mag()) /29.98 ;
       theCalorimeterNominalTimes_[cellhashedindex] = netralAndNominalTof;
-      std::cout << "EcalEndcapRecHitsMaker theCalorimeterNominalTimes set to: " << theCalorimeterNominalTimes_[cellhashedindex] 
-		<< " hash: " << cellhashedindex  << std::endl;
+      //std::cout << "EcalEndcapRecHitsMaker theCalorimeterNominalTimes set to: " << theCalorimeterNominalTimes_[cellhashedindex] 
+      //		<< " hash: " << cellhashedindex  << std::endl;
 
       // a bit of trigger tower and SuperCrystals algebra
       // first get the trigger tower 

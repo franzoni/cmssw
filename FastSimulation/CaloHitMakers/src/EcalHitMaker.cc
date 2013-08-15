@@ -34,11 +34,13 @@ EcalHitMaker::EcalHitMaker(CaloGeometryHelper * theCalo,
 			   const XYZPoint& ecalentrance, 
 			   const DetId& cell, int onEcal,
 			   unsigned size, unsigned showertype,
+			   bool accurateEcalTime,
 			   const RandomEngine* engine):
   CaloHitMaker(theCalo,DetId::Ecal,((onEcal==1)?EcalBarrel:EcalEndcap),onEcal,showertype),
   EcalEntrance_(ecalentrance),
   onEcal_(onEcal),
   myTrack_(NULL),
+  accurateEcalTime_(accurateEcalTime),
   random(engine)
 {
 #ifdef FAMOSDEBUG
@@ -67,6 +69,8 @@ EcalHitMaker::EcalHitMaker(CaloGeometryHelper * theCalo,
   rearleakage_ = 0.;
   bfactor_ = 1.; 
   ncrystals_ = 0;
+
+  std::cout << "In accurateEcalTime_ is: " << accurateEcalTime_ << std::endl;
 
   doreorg_ = !showertype;
 
@@ -1226,7 +1230,7 @@ const std::map<CaloHitID,float>& EcalHitMaker::getHits()
 	  //calculate time of flight
 	  float tof = 0.0;
 	  // FIXME: here one could plug all needed computation accessing the track as const FSimTrack *myTrack_
-	  if(onEcal_==1 || onEcal_==2) {
+	  if( (onEcal_==1 || onEcal_==2) && accurateEcalTime_) {
 	    GlobalPoint detPosition = myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition();
 	    // 	    math::XYZTLorentzVector vertexVectPos1 = myTrack_->vertex().position();
 	    // 	    vertexVectPos1.x();
@@ -1249,7 +1253,19 @@ const std::map<CaloHitID,float>& EcalHitMaker::getHits()
 		      << " TOF: " << tof << std::endl;
 	    
 	  }
+	  else if( (onEcal_==1 || onEcal_==2) && (!accurateEcalTime_)) {
 
+	    tof = (myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition().mag())/29.98; //speed of light
+	    std::cout << "[EcalHitMaker::getHits] rudimentary TOF - TOF not corrected for vertex : " << tof << std::endl;
+
+	  }
+	  else 
+	    {
+
+	      tof=0;
+	      std::cout << "EcalHitMaker no condition met, problem" << std::endl;
+
+	    }
 	
 	  if(onEcal_==1){
 	    CaloHitID current_id(EBDetId(regionOfInterest_[ic].getDetId().rawId()).hashedIndex(),tof,0); //no track yet

@@ -37,7 +37,8 @@ class EcalHitMaker: public CaloHitMaker
 	       int onEcal,
 	       unsigned size,
 	       unsigned showertype,
-	       const RandomEngine* engine);
+	       bool accurateEcalTime,
+	       const RandomEngine* engine );
 
   ~EcalHitMaker();
 
@@ -229,6 +230,7 @@ class EcalHitMaker: public CaloHitMaker
   int central_;
   int onEcal_;
 
+
   bool configuredGeometry_ ;
   unsigned ncrystals_ ;
   // size of the grid in the(x,y) plane
@@ -303,7 +305,7 @@ class EcalHitMaker: public CaloHitMaker
   std::vector<CLHEP::Hep2Vector> mycorners;
   std::vector<XYZPoint> corners;
 
-
+  bool accurateEcalTime_;
   const RandomEngine* random;
 
 

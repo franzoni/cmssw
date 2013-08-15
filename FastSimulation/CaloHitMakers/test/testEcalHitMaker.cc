@@ -217,7 +217,8 @@ testEcalHitMaker::analyze( const edm::Event& iEvent, const edm::EventSetup& iSet
    DetId pivot(myGeometry->getClosestCell(ecalentrance, true, mySimTrack.onEcal()==1));
    
    // define the 7x7 grid
-   EcalHitMaker myGrid(myGeometry,ecalentrance,pivot,mySimTrack.onEcal(),7,0,random);
+   bool doAccurateTimeECAL=true;
+   EcalHitMaker myGrid(myGeometry,ecalentrance,pivot,mySimTrack.onEcal(),7,0,doAccurateTimeECAL,random);
    myGrid.setCrackPadSurvivalProbability(0.9); // current parameters  in the Fast Sim
    myGrid.setRadiusFactor(1.096); // current parameters 
 

@@ -7,6 +7,8 @@ import FWCore.ParameterSet.Config as cms
 
 process = cms.Process('RECO')
 
+#print "CaloMode is: %s"%(CaloMode)
+
 # import of standard configurations
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('SimGeneral.HepPDTESSource.pythiapdt_cfi')
@@ -103,6 +105,10 @@ process.generator = cms.EDFilter("Pythia6GeneratorFilter",
     )
 )
 
+
+# The simulation of ECAL time is done accurately, true or false?
+process.FamosCalorimetryBlock.Calorimetry.ECAL.accuraEcalTime = True
+print "The simulation of ECAL time is done accurately, true or false? %s is the answer  "%(process.FamosCalorimetryBlock.Calorimetry.ECAL.accuraEcalTime)
 
 # load analysis module
 # import the settings of your analyzer from its own configuration file

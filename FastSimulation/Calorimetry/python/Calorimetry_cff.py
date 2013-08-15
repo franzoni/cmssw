@@ -24,6 +24,8 @@ FamosCalorimetryBlock = cms.PSet(
             RCFactor = cms.double(1.0),
             # For the tail 10% of r<1RM. 100% otherwise
             TailIntervals = cms.vdouble(1.0, 0.1, 100.0, 1.0),
+            # If false, ECAL time is set for all particles as if they were neutral and coming from nominal IP
+            accuraEcalTime = cms.bool(True),
             FrontLeakageProbability = cms.double(1.0),
             GridSize = cms.int32(7),
             # change globally the Moliere radius 
@@ -172,7 +174,6 @@ FamosCalorimetryBlock = cms.PSet(
                  # formula : Es/criticalEnergy*X0 with Es=sqrt(4*Pi/alphaEM)*me*c^2=0.0212 GeV
                  # This value is known to be 2.190 cm for ECAL Endcap, but the formula gives 2.159 cm
                  moliereRadius = cms.double(2.190),
-
 
                  #====== Parameters for sampling ECAL ========
 
