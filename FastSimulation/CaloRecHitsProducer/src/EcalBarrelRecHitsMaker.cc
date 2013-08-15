@@ -191,10 +191,8 @@ void EcalBarrelRecHitsMaker::loadEcalBarrelRecHits(edm::Event &iEvent,EBRecHitCo
 //      std::cout << " Raw Id " << barrelRawId_[icell] << std::endl;
 //      std::cout << " Adding " << icell << " " << barrelRawId_[icell] << " " << energy << std::endl;
       if(energy!=0.) {
-	ecalHits.push_back(EcalRecHit(myDetId,energy, theCalorimeterTimes_[icell] )); 
-	std::cout << " EB rechitHit stored ene time: " <<  energy << "\t" << theCalorimeterTimes_[icell]   << std::endl;
+	ecalHits.push_back(EcalRecHit(myDetId,energy, theCalorimeterTimes_[icell] )); }
       }
-    }
   //  std::cout << " Done " << std::endl;
 
 }
@@ -235,9 +233,9 @@ void EcalBarrelRecHitsMaker::loadPCaloHits(const edm::Event & iEvent)
       theCalorimeterTimes_[hashedindex] =cficalo->time();
       theCalorimeterTimes_[hashedindex]= cficalo->time() - theCalorimeterNominalTimes_[hashedindex];
       // GF: you need to account for combination of multiple sim hits on the same cell TODO *** 
-      std::cout << "EB cficalo ene : " << cficalo->energy() << " cficalo time: " << cficalo->time()
-		<< " being changed to theCalorimeterTimes_: " << theCalorimeterTimes_[hashedindex]
-		<< " via subtracting: " << theCalorimeterNominalTimes_[hashedindex] << " hash: " << hashedindex << std::endl;
+      //std::cout << "EB cficalo ene : " << cficalo->energy() << " cficalo time: " << cficalo->time()
+      //<< " being changed to theCalorimeterTimes_: " << theCalorimeterTimes_[hashedindex]
+      //<< " via subtracting: " << theCalorimeterNominalTimes_[hashedindex] << " hash: " << hashedindex << std::endl;
 
       // Now deal with the TTs. 
       EBDetId myDetId(EBDetId(cficalo->id()));

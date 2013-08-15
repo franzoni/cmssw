@@ -70,10 +70,9 @@ EcalHitMaker::EcalHitMaker(CaloGeometryHelper * theCalo,
   bfactor_ = 1.; 
   ncrystals_ = 0;
 
-  std::cout << "In accurateEcalTime_ is: " << accurateEcalTime_ << std::endl;
+  //std::cout << "In accurateEcalTime_ is: " << accurateEcalTime_ << std::endl;
 
   doreorg_ = !showertype;
-
   hitmaphasbeencalculated_ = false;
 
   if(onEcal) 
@@ -1241,30 +1240,28 @@ const std::map<CaloHitID,float>& EcalHitMaker::getHits()
 
 	    tof = (detPosition-vertexPosition).mag()/29.98; //speed of light
 
-	    float tofNoV = detPosition.mag()/29.98;
-	    std::cout << "[EcalHitMaker::getHits] vertex: ("
-	      // 		      << myTrack_->vertex().position().x() << " "
-	      // 		      << myTrack_->vertex().position().y() << " " 
-	      // 		      << myTrack_->vertex().position().z() << ") (" 
-		      << vertexVectPos.x() << " "
-		      << vertexVectPos.y() << " " 
-		      << vertexVectPos.z() << ") " 
-		      << " TOF not corrected for vertex: " << tofNoV
-		      << " TOF: " << tof << std::endl;
+	    // float tofNoV = detPosition.mag()/29.98;
+	    //	    std::cout << "[EcalHitMaker::getHits] vertex: ("
+	    // 		      << myTrack_->vertex().position().x() << " "
+	    // 		      << myTrack_->vertex().position().y() << " " 
+	    // 		      << myTrack_->vertex().position().z() << ") (" 
+	    //        << vertexVectPos.x() << " "
+	    //	      << vertexVectPos.y() << " " 
+	    //        << vertexVectPos.z() << ") " 
+	    //	      << " TOF not corrected for vertex: " << tofNoV
+	    //	      << " TOF: " << tof << std::endl;
 	    
 	  }
 	  else if( (onEcal_==1 || onEcal_==2) && (!accurateEcalTime_)) {
 
 	    tof = (myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition().mag())/29.98; //speed of light
-	    std::cout << "[EcalHitMaker::getHits] rudimentary TOF - TOF not corrected for vertex : " << tof << std::endl;
+	    // std::cout << "[EcalHitMaker::getHits] rudimentary TOF - TOF not corrected for vertex : " << tof << std::endl;
 
 	  }
 	  else 
 	    {
-
 	      tof=0;
-	      std::cout << "EcalHitMaker no condition met, problem" << std::endl;
-
+	      std::cout << "EcalHitMaker no condition met => there's a problem" << std::endl;
 	    }
 	
 	  if(onEcal_==1){

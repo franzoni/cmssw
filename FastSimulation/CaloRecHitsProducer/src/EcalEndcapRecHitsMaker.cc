@@ -167,7 +167,6 @@ void EcalEndcapRecHitsMaker::loadEcalEndcapRecHits(edm::Event &iEvent,EERecHitCo
       if(energy!=0.)
 	{
 	  ecalHits.push_back(EcalRecHit(myDetId,energy,theCalorimeterTimes_[icell]));
-	  std::cout << " EE rechitHit stored ene time: " <<  energy << "\t" << theCalorimeterTimes_[icell]   << " hash: " << icell << std::endl;
 	  // std::cout << " EE rechitHit position: " << myEcalEndcapGeometry->getPosition(myDetId) << std::endl;
 	}
     }
@@ -210,9 +209,9 @@ void EcalEndcapRecHitsMaker::loadPCaloHits(const edm::Event & iEvent)
       // ECAL reco time definition: subtract nominal neutral particle travel time from caloSim time
       theCalorimeterTimes_[hashedindex]= cficalo->time() - theCalorimeterNominalTimes_[hashedindex];
       // GF: you need to account for combination of multiple sim hits on the same cell TODO *** 
-      std::cout << "EE cficalo ene : " << cficalo->energy() << " cficalo time: " << cficalo->time() 
-		<< " being changed to theCalorimeterTimes_: " << theCalorimeterTimes_[hashedindex] 
-		<< " via subtracting: " << theCalorimeterNominalTimes_[hashedindex] << " hash: " << hashedindex << std::endl;
+      //std::cout << "EE cficalo ene : " << cficalo->energy() << " cficalo time: " << cficalo->time() 
+      //<< " being changed to theCalorimeterTimes_: " << theCalorimeterTimes_[hashedindex] 
+      //<< " via subtracting: " << theCalorimeterNominalTimes_[hashedindex] << " hash: " << hashedindex << std::endl;
 
       // Now deal with the TTs
       int TThashedindex=towerOf_[hashedindex];
