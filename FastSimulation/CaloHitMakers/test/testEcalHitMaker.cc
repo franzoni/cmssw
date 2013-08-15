@@ -223,7 +223,7 @@ testEcalHitMaker::analyze( const edm::Event& iEvent, const edm::EventSetup& iSet
 
 
    // define the track parameters 
-   myGrid.setTrackParameters(myPart.Vect().Unit(),0.,mySimTrack);
+   myGrid.setTrackParameters(myPart.Vect().Unit(),0.,mySimTrack,mySimEvent->vertex(0));
    
    HcalHitMaker myHcalHitMaker(myGrid,(unsigned)0); 
    
