@@ -196,7 +196,6 @@ unsigned int motherid=0;
    math::XYZPoint recoVtx(0.,0.,0.);
    if (vertexCollection->size()>0) { recoVtx = vertexCollection->begin()->position();  }
 
-
    // get hold of the MC product and loop over truth-level particles 
    // standard numeric ParticleId:
    // http://www.physics.ox.ac.uk/CDF/Mphys/old/notes/pythia_codeListing.html
@@ -253,7 +252,7 @@ unsigned int motherid=0;
 
 
    // superclusters are groups of neighboring Electromagnetic Calorimeter (ECAL) recHits
-   // collecting the energy relesed by (at least) one particle in the ECAL
+   // collecting the energy relesed by (at least) one particle impinging into the ECAL
    Handle<std::vector<reco::SuperCluster> > barrelSCHandle;
    iEvent.getByLabel("correctedHybridSuperClusters","",barrelSCHandle);
    const reco::SuperClusterCollection * barrelSCCollection = barrelSCHandle.product();
@@ -337,8 +336,6 @@ unsigned int motherid=0;
 
    // for an example of matching between truth MC particles and ECAL superclusters see: 
    // http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/Minnesota/Hgg/ClusteringWithPU/plugins/SCwithTruthPUAnalysis.cc?revision=1.3&view=markup 
-
-
 
 }
 
