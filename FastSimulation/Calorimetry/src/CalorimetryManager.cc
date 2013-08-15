@@ -459,7 +459,7 @@ void CalorimetryManager::EMShowerSimulation(const FSimTrack& myTrack) {
   myGrid.setPreshowerPresent(simulatePreshower_);
   
   // The shower simulation
-  myGrid.setTrackParameters(myPart.Vect().Unit(),X0depth,myTrack);
+  myGrid.setTrackParameters(myPart.Vect().Unit(),X0depth,myTrack,mySimEvent->vertex(0));
 
 //  std::cout << " PS ECAL GAP HCAL X0 " << myGrid.ps1TotalX0()+myGrid.ps2TotalX0() << " " << myGrid.ecalTotalX0();
 //  std::cout << " " << myGrid.ecalHcalGapTotalX0() << " " << myGrid.hcalTotalX0() << std::endl;
@@ -667,7 +667,7 @@ void CalorimetryManager::HDShowerSimulation(const FSimTrack& myTrack){//,
 			random);
     // 1=HAD shower
 
-    myGrid.setTrackParameters(direction,0,myTrack);
+    myGrid.setTrackParameters(direction,0,myTrack,mySimEvent->vertex(0));
     // Build the FAMOS HCAL 
     HcalHitMaker myHcalHitMaker(myGrid,(unsigned)1); 
     
@@ -937,7 +937,7 @@ void CalorimetryManager::MuonMipSimulation(const FSimTrack& myTrack)
 		      random);
   // 0 =EM shower -> Unit = X0
   
-  myGrid.setTrackParameters(direction,0,myTrack);
+  myGrid.setTrackParameters(direction,0,myTrack,mySimEvent->vertex(0));
   
   // Now get the path in the Preshower, ECAL and HCAL along a straight line extrapolation 
   // but only those in the ECAL are used 

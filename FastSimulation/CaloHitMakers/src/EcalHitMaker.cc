@@ -327,7 +327,8 @@ EcalHitMaker::fastInsideCell(const CLHEP::Hep2Vector & point,double & sp,bool de
 void 
 EcalHitMaker::setTrackParameters(const XYZNormal& normal,
 				 double X0depthoffset,
-				 const FSimTrack& theTrack)
+				 const FSimTrack& theTrack,
+				 const FSimVertex& theVertex)
 {
   //  myHistos->debug("setTrackParameters");
   //  std::cout << " Track " << theTrack << std::endl;
@@ -335,6 +336,7 @@ EcalHitMaker::setTrackParameters(const XYZNormal& normal,
   // This is certainly enough
   intersections_.reserve(50);
   myTrack_=&theTrack;
+  myVertex_=&theVertex;
   normal_=normal.Unit();
   X0depthoffset_=X0depthoffset;
   cellLine(intersections_);
@@ -1216,12 +1218,38 @@ void EcalHitMaker::convertIntegerCoordinates(double x, double y,unsigned &ix,uns
 
 const std::map<CaloHitID,float>& EcalHitMaker::getHits() 
 {
+
   if (hitmaphasbeencalculated_) return hitMap_;
   for(unsigned ic=0;ic<ncrystals_;++ic)
     {
+
 	  //calculate time of flight
 	  float tof = 0.0;
-	  if(onEcal_==1 || onEcal_==2) tof = (myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition().mag())/29.98; //speed of light
+	  // FIXME: here one could plug all needed computation accessing the track as const FSimTrack *myTrack_
+	  if(onEcal_==1 || onEcal_==2) {
+	    GlobalPoint detPosition = myCalorimeter->getEcalGeometry(onEcal_)->getGeometry(regionOfInterest_[ic].getDetId())->getPosition();
+	    // 	    math::XYZTLorentzVector vertexVectPos1 = myTrack_->vertex().position();
+	    // 	    vertexVectPos1.x();
+	    math::XYZTLorentzVector vertexVectPos = myVertex_->position();
+
+	    GlobalPoint vertexPosition(vertexVectPos.x(), vertexVectPos.y(), vertexVectPos.z());
+
+
+	    tof = (detPosition-vertexPosition).mag()/29.98; //speed of light
+
+	    float tofNoV = detPosition.mag()/29.98;
+	    std::cout << "[EcalHitMaker::getHits] vertex: ("
+	      // 		      << myTrack_->vertex().position().x() << " "
+	      // 		      << myTrack_->vertex().position().y() << " " 
+	      // 		      << myTrack_->vertex().position().z() << ") (" 
+		      << vertexVectPos.x() << " "
+		      << vertexVectPos.y() << " " 
+		      << vertexVectPos.z() << ") " 
+		      << " TOF not corrected for vertex: " << tofNoV
+		      << " TOF: " << tof << std::endl;
+	    
+	  }
+
 	
 	  if(onEcal_==1){
 	    CaloHitID current_id(EBDetId(regionOfInterest_[ic].getDetId().rawId()).hashedIndex(),tof,0); //no track yet
