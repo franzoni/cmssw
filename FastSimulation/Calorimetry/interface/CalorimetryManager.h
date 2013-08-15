@@ -143,7 +143,9 @@ class CalorimetryManager{
   std::vector<double> mipValues_;
   int gridSize_;
   std::vector<double> theCoreIntervals_,theTailIntervals_;
+  bool accurateEcalTime_;
   double RCFactor_,RTFactor_;
+
   //FR
   int optionHDSim_, hdGridSize_, hdSimMethod_;
   bool simulatePreshower_;
