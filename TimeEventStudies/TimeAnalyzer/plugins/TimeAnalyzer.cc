@@ -90,7 +90,7 @@ class TimeAnalyzer : public edm::EDAnalyzer {
 //  TH1F* h_pTypeSel_;
 //  TH1F* h_nSCEB_;
 //  TH1F* h_nSCEE_;
-//  TH1F* h_masses_;
+  TH1F* h_masses_;
 //  TH1F* h_pr_;
   TH1F* h_pperp_;
   TH1F* h_eta_;
@@ -112,6 +112,7 @@ class TimeAnalyzer : public edm::EDAnalyzer {
   THStack* h_ecstack_;
   TH1F* h_massofmother_;
   TH1F* h_mothertype_;
+  TH1F* h_ptotal_;
 
 
   // list of particle tipe(s) which are used for the study and matched to clusters/recHits
@@ -239,7 +240,7 @@ unsigned int motherid=0;
 
 //       h_pTypeSel_ ->  Fill((*p)->pdg_id()); 
 
-//       h_masses_ -> Fill((*p)->momentum().m());
+       h_masses_ -> Fill((*p)->momentum().m());
 //       h_pr_ -> Fill((*p)->momentum().pseudoRapidity());
        h_pperp_ -> Fill((*p)->momentum().perp());
        h_eta_ -> Fill((*p)->momentum().eta());
@@ -248,6 +249,7 @@ unsigned int motherid=0;
        h_energies_ -> Fill((*p)->momentum().e());
        float p_eta=(*p)->momentum().eta();
        float p_phi=(*p)->momentum().phi();
+       h_ptotal_ -> Fill(pow((*p)->momentum().px(),2)+pow((*p)->momentum().py(),2)+pow((*p)->momentum().pz(),2));
 
 
    // superclusters are groups of neighboring Electromagnetic Calorimeter (ECAL) recHits
@@ -356,7 +358,7 @@ TimeAnalyzer::beginJob()
 //  pTypeSel_ = fs->make<TH1F>("h_pTypeSel","truth particle type (selected); truth particle type",80,-40.,40.);
 //  h_nSCEE_    = fs->make<TH1F>("h_nSCEE","number superclusters in EE; num EE SC  ",100,0.,10.);
 //  h_nSCEB_    = fs->make<TH1F>("h_nSCEB","number superclusters in EB; num EB SC",100,0.,10.);
-//  h_masses_     = fs->make<TH1F>("h_mase","mass",100,0.50995e-3,0.51005e-3);
+  h_masses_     = fs->make<TH1F>("h_mase","mass",100,0.50995e-3,0.51005e-3);
 //  h_pr_       = fs->make<TH1F>("h_pr","pseudorapidity",100,-10.,10.);
   h_pperp_ = fs->make<TH1F>("h_pperp","transverse momentum",100,0.,90.);
   h_eta_      = fs->make<TH1F>("h_eta","eta",100,-3.,3.);
@@ -378,6 +380,7 @@ TimeAnalyzer::beginJob()
   h_ecstack_  = fs->make<THStack>("h_ecstack","E&B energy stack");
   h_massofmother_ = fs->make<TH1F>("h_massofmother","e+e- particle energy",100,0.,160.);
   h_mothertype_ = fs->make<TH1F>("h_mothertype_","type of mother",80,-40.,40.);
+  h_ptotal_   = fs->make<TH1F>("h_ptotal","safdsafgf",100,0.0,2000000.0);
 
 }
 

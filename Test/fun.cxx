@@ -139,3 +139,16 @@ Double_t tofc_ddata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, Dou
 Double_t dtofcn_ddata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, Double_t zi_){
   return tofc_ddata_(pt_,charge_natunits_,eta_,zi_)-tofn_ddata_(eta_,zi_);
 }
+
+Double_t thetan_pdata_(Double_t eta_,Double_t zi_){
+  return theta_eta_(etan_pdata_(eta_,zi_));
+}
+
+Double_t thetac_pdata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, Double_t zi_){
+  return theta_eta_(etac_pdata_(pt_,charge_natunits_,eta_,zi_));
+}
+
+Double_t dtheta_pdata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, Double_t zi_){
+  return thetac_pdata_(pt_,charge_natunits_,eta_,zi_)-thetan_pdata_(eta_,zi_);
+}
+
