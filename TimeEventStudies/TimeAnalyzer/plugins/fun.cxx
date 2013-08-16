@@ -1,9 +1,4 @@
-#define B 3.8
-#define BarrelR 1.290
-#define Zhalflength 3.170
-
-#include "TMath.h"
-using namespace TMath;
+#include "fun.h"
 
 Double_t rc_(Double_t pt_, Double_t charge_natunits_){
   Double_t radius=0.0;
