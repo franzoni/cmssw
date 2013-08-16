@@ -118,6 +118,7 @@ class TimeAnalyzer : public edm::EDAnalyzer {
   TH1F* h_massofmother_;
   TH1F* h_mothertype_;
   TH1F* h_ptotal_;
+  TH1F* h_tdiffdet_;
 
 
   // list of particle tipe(s) which are used for the study and matched to clusters/recHits
@@ -187,7 +188,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
 unsigned int brojrazl=0;
-std::vector< std::vector<float>> particlemomenta(5, std::vector<float> (acceptedParticleTypes_.size()+1,0.));
+std::vector< std::vector<float>> particledata(6, std::vector<float> (acceptedParticleTypes_.size()+1,0.));
 float squaremomenta=0.;
 unsigned int motherid=0;
 
@@ -231,15 +232,15 @@ unsigned int motherid=0;
        motherid=mother->pdg_id();
        if(std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), motherid)==acceptedParentTypes_.end() ) continue;
 
-	for(unsigned int broj=0;broj<acceptedParticleTypes_.size();broj++) if((*p)->pdg_id()==acceptedParticleTypes_[broj]) {
-		if(particlemomenta[3][broj]<(*p)->momentum().e() ) {
-			particlemomenta[3][broj]=(*p)->momentum().e();
-			particlemomenta[0][broj]=(*p)->momentum().px();
-			particlemomenta[1][broj]=(*p)->momentum().py();
-			particlemomenta[2][broj]=(*p)->momentum().pz();
-			particlemomenta[4][broj]=motherid;
+/*	for(unsigned int broj=0;broj<acceptedParticleTypes_.size();broj++) if((*p)->pdg_id()==acceptedParticleTypes_[broj]) {
+		if(particledata[3][broj]<(*p)->momentum().e() ) {
+			particledata[3][broj]=(*p)->momentum().e();
+			particledata[0][broj]=(*p)->momentum().px();
+			particledata[1][broj]=(*p)->momentum().py();
+			particledata[2][broj]=(*p)->momentum().pz();
+			particledata[4][broj]=motherid;
 		}
-	}
+	}*/
 
 
 //       h_pTypeSel_ ->  Fill((*p)->pdg_id()); 
@@ -342,30 +343,42 @@ unsigned int motherid=0;
 		EcalRecHitCollection::const_iterator seedRH = theEndcapEcalRecHits->find(seedCrystalId);
 		float seedTime = (float)seedRH->time();
 		std::cout << "++ EE TimeAnalyzer seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
-
-                }
+		for(unsigned int broj=0;broj<acceptedParticleTypes_.size();broj++) if((*p)->pdg_id()==acceptedParticleTypes_[broj]) {
+	                if(particledata[3][broj]<(*p)->momentum().e() ) {
+        	                particledata[3][broj]=(*p)->momentum().e();
+                	        particledata[0][broj]=(*p)->momentum().px();
+                        	particledata[1][broj]=(*p)->momentum().py();
+	                        particledata[2][broj]=(*p)->momentum().pz();
+        	                particledata[4][broj]=motherid;
+				particledata[5][broj]=seedTime;
+			}
+	        }
+        }
 
 
    }
 
 
 	int goodparent=1;
-	int likelyid=particlemomenta[4][0];
+	int likelyid=particledata[4][0];
 	for(unsigned int brojac=0;brojac<acceptedParticleTypes_.size();brojac++) {
-		if(particlemomenta[3][brojac]!=0.0) brojrazl++;
+		if(particledata[3][brojac]!=0.0) brojrazl++;
 		//Here I assume that if a parent produces one relevant particle, it will also parent the rest.
 		//Could be done in other ways, this one seems simplest for now.
-	        if(likelyid!=particlemomenta[4][brojac]) goodparent=-1;
+	        if(likelyid!=particledata[4][brojac]) goodparent=-1;
 		}
 	if(goodparent==1 && likelyid!=0 && brojrazl==acceptedParticleTypes_.size()) {
-		h_mothertype_ -> Fill(likelyid);
 		for(unsigned int bro=0;bro<acceptedParticleTypes_.size();bro++) {
-			for(unsigned int tt=0;tt<3;tt++) particlemomenta[tt][brojrazl]+=particlemomenta[tt][bro];
-			particlemomenta[3][brojrazl]+=particlemomenta[3][bro];
+			for(unsigned int tt=0;tt<3;tt++) particledata[tt][brojrazl]+=particledata[tt][bro];
+			particledata[3][brojrazl]+=particledata[3][bro];
 		}
-		for(unsigned int ff=0;ff<3;ff++) squaremomenta+=particlemomenta[ff][brojrazl]*particlemomenta[ff][brojrazl];
-		float ugh=sqrt(particlemomenta[3][brojrazl]*particlemomenta[3][brojrazl]-squaremomenta);
-		if(particlemomenta[3][brojrazl]>lowestenergy_ && ugh>lowestenergyparent_) h_massofmother_ -> Fill( ugh );
+		for(unsigned int ff=0;ff<3;ff++) squaremomenta+=particledata[ff][brojrazl]*particledata[ff][brojrazl];
+		float ugh=sqrt(particledata[3][brojrazl]*particledata[3][brojrazl]-squaremomenta);
+//		h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
+		if(particledata[3][brojrazl]>lowestenergy_ && ugh>lowestenergyparent_) {
+			h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
+			h_tdiffdet_->Fill(particledata[5][0]-particledata[5][1]);
+		}
 	}
 
 
@@ -438,7 +451,8 @@ TimeAnalyzer::beginJob()
   h_ecstack_  = fs->make<THStack>("h_ecstack","E&B energy stack");
   h_massofmother_ = fs->make<TH1F>("h_massofmother","e+e- particle energy",100,0.,160.);
   h_mothertype_ = fs->make<TH1F>("h_mothertype_","type of mother",80,-40.,40.);
-  h_ptotal_   = fs->make<TH1F>("h_ptotal","safdsafgf",100,0.0,2000000.0);
+  h_ptotal_   = fs->make<TH1F>("h_ptotal","total momentum",100,0.0,2000000.0);
+  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","asdf",100,-1.0,1.0);
 
 }
 
