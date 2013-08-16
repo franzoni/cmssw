@@ -1,4 +1,4 @@
-	// -*- C++ -*-
+// -*- C++ -*-
 //
 // Package:    TimeAnalyzer
 // Class:      TimeAnalyzer
