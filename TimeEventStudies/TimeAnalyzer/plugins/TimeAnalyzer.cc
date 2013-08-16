@@ -20,6 +20,7 @@
 
 // system include files
 #include <memory>
+#include <utility>
 
 // ==> user include files
 // =-> defaults
@@ -44,8 +45,12 @@
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 
+#include "DataFormats/DetId/interface/DetId.h"
+
 #include "DataFormats/EgammaReco/interface/SuperCluster.h"
 #include "DataFormats/EgammaReco/interface/SuperClusterFwd.h"
+
+#include "RecoEcal/EgammaCoreTools/interface/EcalClusterTools.h"
 
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
 
@@ -251,6 +256,42 @@ unsigned int motherid=0;
        h_ptotal_ -> Fill(pow((*p)->momentum().px(),2)+pow((*p)->momentum().py(),2)+pow((*p)->momentum().pz(),2));
 
 
+       
+       // hard-coded names of recHit collections as in standard CMS data (AOD)
+       // GF: send to configuration file
+       std::string reducedEcalRecHitsEB = "reducedEcalRecHitsEB";
+       std::string reducedEcalRecHitsEE = "reducedEcalRecHitsEE";
+
+       // Ecal barrel RecHits : reach rechit holds energy and time information
+       // reconstructed from the scintillation signal of one crystal
+       edm::Handle<EcalRecHitCollection> pBarrelEcalRecHits ;
+       const EcalRecHitCollection* theBarrelEcalRecHits = 0;
+       if( iEvent.getByLabel (reducedEcalRecHitsEB,"", pBarrelEcalRecHits) && pBarrelEcalRecHits.isValid ())
+	 {
+	   theBarrelEcalRecHits = pBarrelEcalRecHits.product () ;   
+	 }
+       if (! (pBarrelEcalRecHits.isValid ()) )
+	 {
+	   LogWarning ("TimeAnalyzer") << "reducedEcalRecHitsEB "
+					       << " not available" ;
+	   return ;
+	 }
+       // Ecal endcap RecHits : reach rechit holds energy and time information
+       // reconstructed from the scintillation signal of one crystal
+       edm::Handle<EcalRecHitCollection> pEndcapEcalRecHits ;
+       const EcalRecHitCollection* theEndcapEcalRecHits = 0;
+       if( iEvent.getByLabel (reducedEcalRecHitsEE,"", pEndcapEcalRecHits) && pEndcapEcalRecHits.isValid ())
+	 {
+	   theEndcapEcalRecHits = pEndcapEcalRecHits.product () ;   
+	 }
+       if (! (pEndcapEcalRecHits.isValid ()) )
+	 {
+	   LogWarning ("TimeAnalyzer") << "reducedEcalRecHitsEE "
+					       << " not available" ;
+	   return ;
+	 }
+      
+
    // superclusters are groups of neighboring Electromagnetic Calorimeter (ECAL) recHits
    // collecting the energy relesed by (at least) one particle impinging into the ECAL
    Handle<std::vector<reco::SuperCluster> > barrelSCHandle;
@@ -266,13 +307,22 @@ unsigned int motherid=0;
                 h_etaclusterB_ -> Fill( blah->eta() );
                 h_phiclusterB_ -> Fill( blah->phi() );
                 h_ceta_phi_ -> Fill( blah->phi(), blah->eta() );
-			}
+		}
+		
+		// the seed basic cluster as a component of the supercluster (SC)
+		reco::CaloClusterPtr SCseed = blah->seed() ;
+		// time of the seed recHit inside the seed BC (aka "time of the SC seed")
+		std::pair<DetId, float> maxRH = EcalClusterTools::getMaximum( *SCseed, theBarrelEcalRecHits );
+		DetId seedCrystalId = maxRH.first;
+		EcalRecHitCollection::const_iterator seedRH = theBarrelEcalRecHits->find(seedCrystalId);
+		float seedTime = (float)seedRH->time();
+		std::cout << "++ EB TimeAnalyzer rechit seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
                 }
 
    Handle<std::vector<reco::SuperCluster> > endcapSCHandle;
    iEvent.getByLabel("correctedMulti5x5SuperClustersWithPreshower","",endcapSCHandle);
    const reco::SuperClusterCollection * endcapSCCollection = endcapSCHandle.product();
-//   h_nSCEE_ -> Fill( endcapSCCollection->size() );
+   //   h_nSCEE_ -> Fill( endcapSCCollection->size() );
    for(reco::SuperClusterCollection::const_iterator blah = endcapSCCollection->begin(); blah != endcapSCCollection->end(); blah++) {
 		float deltaphie=blah->phi()-p_phi; if(deltaphie<-pi) deltaphie+=2*pi; if(deltaphie>pi) deltaphie-=2*pi;
                 float deltaetae=blah->eta()-p_eta;
@@ -283,6 +333,16 @@ unsigned int motherid=0;
                 h_phiclusterE_ -> Fill( blah->phi() );
                 h_ceta_phi_ -> Fill( blah->phi(), blah->eta() );
 			}
+
+		// the seed basic cluster as a component of the supercluster (SC)
+		reco::CaloClusterPtr SCseed = blah->seed() ;
+		// time of the seed recHit inside the seed BC (aka "time of the SC seed")
+		std::pair<DetId, float> maxRH = EcalClusterTools::getMaximum( *SCseed, theEndcapEcalRecHits );
+		DetId seedCrystalId = maxRH.first;
+		EcalRecHitCollection::const_iterator seedRH = theEndcapEcalRecHits->find(seedCrystalId);
+		float seedTime = (float)seedRH->time();
+		std::cout << "++ EE TimeAnalyzer seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
+
                 }
 
 
@@ -336,6 +396,7 @@ unsigned int motherid=0;
 
    // for an example of matching between truth MC particles and ECAL superclusters see: 
    // http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/Minnesota/Hgg/ClusteringWithPU/plugins/SCwithTruthPUAnalysis.cc?revision=1.3&view=markup 
+
 
 }
 
