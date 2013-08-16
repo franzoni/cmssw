@@ -410,7 +410,7 @@ void CalorimetryManager::EMShowerSimulation(const FSimTrack& myTrack) {
     return;
   }
   
-  EcalHitMaker myGrid(myCalorimeter_,ecalentrance,pivot,onEcal,size,0,random);
+  EcalHitMaker myGrid(myCalorimeter_,ecalentrance,pivot,onEcal,size,0,accurateEcalTime_,random);
   //                                             ^^^^
   //                                         for EM showers
   myGrid.setPulledPadSurvivalProbability(pulledPadSurvivalProbability_);
@@ -459,7 +459,7 @@ void CalorimetryManager::EMShowerSimulation(const FSimTrack& myTrack) {
   myGrid.setPreshowerPresent(simulatePreshower_);
   
   // The shower simulation
-  myGrid.setTrackParameters(myPart.Vect().Unit(),X0depth,myTrack);
+  myGrid.setTrackParameters(myPart.Vect().Unit(),X0depth,myTrack,mySimEvent->vertex(0));
 
 //  std::cout << " PS ECAL GAP HCAL X0 " << myGrid.ps1TotalX0()+myGrid.ps2TotalX0() << " " << myGrid.ecalTotalX0();
 //  std::cout << " " << myGrid.ecalHcalGapTotalX0() << " " << myGrid.hcalTotalX0() << std::endl;
@@ -663,11 +663,11 @@ void CalorimetryManager::HDShowerSimulation(const FSimTrack& myTrack){//,
       }
 
     EcalHitMaker myGrid(myCalorimeter_,caloentrance,pivot,
-			pivot.null()? 0 : myTrack.onEcal(),hdGridSize_,1,
+			pivot.null()? 0 : myTrack.onEcal(),hdGridSize_,1,accurateEcalTime_,
 			random);
     // 1=HAD shower
 
-    myGrid.setTrackParameters(direction,0,myTrack);
+    myGrid.setTrackParameters(direction,0,myTrack,mySimEvent->vertex(0));
     // Build the FAMOS HCAL 
     HcalHitMaker myHcalHitMaker(myGrid,(unsigned)1); 
     
@@ -933,11 +933,11 @@ void CalorimetryManager::MuonMipSimulation(const FSimTrack& myTrack)
     }
   
   EcalHitMaker myGrid(myCalorimeter_,caloentrance,pivot,
-		      pivot.null()? 0 : myTrack.onEcal(),hdGridSize_,0,
+		      pivot.null()? 0 : myTrack.onEcal(),hdGridSize_,0,accurateEcalTime_,
 		      random);
   // 0 =EM shower -> Unit = X0
   
-  myGrid.setTrackParameters(direction,0,myTrack);
+  myGrid.setTrackParameters(direction,0,myTrack,mySimEvent->vertex(0));
   
   // Now get the path in the Preshower, ECAL and HCAL along a straight line extrapolation 
   // but only those in the ECAL are used 
@@ -1089,7 +1089,11 @@ void CalorimetryManager::readParameters(const edm::ParameterSet& fastCalo) {
   crackPadSurvivalProbability_ = ECALparameters.getParameter<double>("GapLossProbability");
   theCoreIntervals_ = ECALparameters.getParameter<std::vector<double> >("CoreIntervals");
   theTailIntervals_ = ECALparameters.getParameter<std::vector<double> >("TailIntervals");
-  
+  //  If false, ECAL time is set for all particles as if they were neutral and coming from nominal IP
+  accurateEcalTime_ = ECALparameters.getParameter<bool>("accuraEcalTime");
+  //std::cout << "In CalorimetryManager  ccurateEcalTime_ is: " << accurateEcalTime_ << std::endl;
+
+
   RCFactor_ = ECALparameters.getParameter<double>("RCFactor");
   RTFactor_ = ECALparameters.getParameter<double>("RTFactor");
   //changed after tuning - Feb-July - Shilpi Jain
