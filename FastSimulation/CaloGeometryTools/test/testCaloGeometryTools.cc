@@ -199,8 +199,9 @@ void testCaloGeometryTools::checkSC()
 
 void testCaloGeometryTools::testpoint(const XYZPoint& point, std::string name, bool barrel)
 {
-   DetId myCell = myGeometry.getClosestCell(point,true,barrel);
-   EcalHitMaker myGrid(&myGeometry,point,myCell,1,7,0,random);
+  bool doAccurateEcalTime = true;
+  DetId myCell = myGeometry.getClosestCell(point,true,barrel);
+  EcalHitMaker myGrid(&myGeometry,point,myCell,1,7,0,doAccurateEcalTime,random);
    
    std::vector<Crystal> myCrystals=myGrid.getCrystals();
    
