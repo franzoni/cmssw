@@ -188,8 +188,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   unsigned int brojrazl=0;
   std::vector< std::vector<double>> particledata(8, std::vector<double> (acceptedParticleTypes_.size()+1,0.));
   float squaremomenta=0.;
-  unsigned int motherid=0;
-
+  int motherid=0;
+  double particlecharge=0.0;
 
   // reconstructed vertex in the event
   Handle<reco::VertexCollection> vertexHandle;
@@ -218,6 +218,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        
       // match only to truth of desired particle types
       if (std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*p)->pdg_id())==acceptedParticleTypes_.end() )  continue;
+      if((*p)->pdg_id()>0) particlecharge=1.0;
+	else particlecharge=-1.0;
       if(lowestpt_>(*p)->momentum().perp()) continue;
 
       std::cout << "after lowestpt_ cut " << std::endl;
@@ -343,7 +345,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
               particledata[4][bb]=motherid;
               particledata[5][bb]=seedTime;
 	      particledata[6][bb]=(*p)->momentum().perp();
-	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],1.0,blah->eta(),recoVtx.Z());
+	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],particlecharge,blah->eta(),recoVtx.Z());
             }
 	}// close loop  over acceptedParticleTypes_
       }
@@ -388,7 +390,7 @@ std::cout<<recoVtx.Z()<<std::endl;
 	      particledata[4][broj]=motherid;
 	      particledata[5][broj]=seedTime;
 	      particledata[6][broj]=(*p)->momentum().perp();
-              particledata[7][broj]=tofc_ddata_(particledata[6][broj],1.0,blah->eta(),recoVtx.Z());
+              particledata[7][broj]=tofc_ddata_(particledata[6][broj],particlecharge,blah->eta(),recoVtx.Z());
 	    }
 	}// close loop  over acceptedParticleTypes_
       }// close loop on SC's
