@@ -65,8 +65,6 @@ Implementation:
 
 #include "fun.h"
 
-#define pi 3.141592653589793
-
 //
 // class declaration
 //
@@ -77,7 +75,6 @@ public:
   ~TimeAnalyzer();
 
   static void fillDescriptions(edm::ConfigurationDescriptions& descriptions);
-
 
 private:
   virtual void beginJob() override;
@@ -125,10 +122,10 @@ private:
 
   // list of particle tipe(s) which are used for the study and matched to clusters/recHits
   std::vector<int> acceptedParticleTypes_;
-  double lowestenergy_;
+  double lowestpt_;
   std::vector<int> acceptedParentTypes_;
   float inv_nofproducts_;
-  double lowestenergyparent_;
+//  double lowestenergyparent_;
 };
 
 //
@@ -149,10 +146,10 @@ TimeAnalyzer::TimeAnalyzer(const edm::ParameterSet& iConfig)
   
   // list of particle tipe(s) which are used for the study and matched to clusters/recHits
   acceptedParticleTypes_ = iConfig.getParameter< std::vector<int> >("acceptedParticleTypes");
-  lowestenergy_ = iConfig.getParameter<double>("lowestenergy");
+  lowestpt_ = iConfig.getParameter<double>("lowestpt");
   acceptedParentTypes_= iConfig.getParameter<std::vector<int>>("acceptedParentTypes");
   inv_nofproducts_=1.0/acceptedParticleTypes_.size();
-  lowestenergyparent_ = iConfig.getParameter<double>("lowestenergyparent");
+//  lowestenergyparent_ = iConfig.getParameter<double>("lowestenergyparent");
 }
 
 
@@ -187,8 +184,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   iSetup.get<SetupRecord>().get(pSetup);
 #endif
 
-
-
   unsigned int brojrazl=0;
   std::vector< std::vector<float>> particledata(6, std::vector<float> (acceptedParticleTypes_.size()+1,0.));
   float squaremomenta=0.;
@@ -222,9 +217,9 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        
       // match only to truth of desired particle types
       if (std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*p)->pdg_id())==acceptedParticleTypes_.end() )  continue;
-      if(lowestenergy_>(*p)->momentum().e()) continue;
+      if(lowestpt_>(*p)->momentum().perp()) continue;
 
-      std::cout << "after lowestenergy_ cut " << std::endl;
+      std::cout << "after lowestpt_ cut " << std::endl;
 
       // from: http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/Minnesota/Hgg/ClusteringWithPU/plugins/SCwithTruthPUAnalysis.cc?revision=1.3&view=markup
       //      HepMC::GenParticle* mother = 0;
@@ -326,7 +321,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       const reco::SuperClusterCollection * barrelSCCollection = barrelSCHandle.product();
       //   h_nSCEB_ -> Fill( barrelSCCollection->size() );
       for(reco::SuperClusterCollection::const_iterator blah = barrelSCCollection->begin(); blah != barrelSCCollection->end(); blah++) {
-	float deltaphib=blah->phi()-p_phi; if(deltaphib<-pi) deltaphib+=2*pi; if(deltaphib>pi) deltaphib-=2*pi;
+	float deltaphib=blah->phi()-p_phi; if(deltaphib<-Pi()) deltaphib+=2*Pi(); if(deltaphib>Pi()) deltaphib-=2*Pi();
 	float deltaetab=blah->eta()-p_eta;
 	float deltab = sqrt(deltaphib*deltaphib+deltaetab*deltaetab);
 	// in the above, phi_SC is  phi_detector, while phi_particle is phi_physics
@@ -356,7 +351,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       const reco::SuperClusterCollection * endcapSCCollection = endcapSCHandle.product();
       //   h_nSCEE_ -> Fill( endcapSCCollection->size() );
       for(reco::SuperClusterCollection::const_iterator blah = endcapSCCollection->begin(); blah != endcapSCCollection->end(); blah++) {
-	float deltaphie=blah->phi()-p_phi; if(deltaphie<-pi) deltaphie+=2*pi; if(deltaphie>pi) deltaphie-=2*pi;
+	float deltaphie=blah->phi()-p_phi; if(deltaphie<-Pi()) deltaphie+=2*Pi(); if(deltaphie>Pi()) deltaphie-=2*Pi();
 	float deltaetae=blah->eta()-p_eta;
 	float deltae = sqrt(deltaphie*deltaphie+deltaetae*deltaetae);
 	// in the above, phi_SC is  phi_detector, while phi_particle is phi_physics
@@ -434,7 +429,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     float ugh=sqrt(particledata[3][brojrazl]*particledata[3][brojrazl]-squaremomenta);
     //		h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
 
-    if(particledata[3][brojrazl]>lowestenergy_ && ugh>lowestenergyparent_) {
       h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
       h_tdiffdet_->Fill(particledata[5][0]-particledata[5][1]);
       // NOTE: we're abusing Energy as if it was PT -- FIX ME
@@ -442,7 +436,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       std::cout << "Transverse momentum [GeV/c] of " <<  particledata[3][brojrazl] 
 		<< " gives rel radius of " <<  rc_(particledata[3][brojrazl],charge) << " [m]" 
 		<< std::endl; 
-    }
+    
 
   } // close of 'if goodparent and .. '
 
