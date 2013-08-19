@@ -118,7 +118,8 @@ private:
   TH1F* h_mothertype_;
   TH1F* h_ptotal_;
   TH1F* h_tdiffdet_;
-
+  TH1F* h_tdiffsim_;
+  TH1F* h_tdiffdetsim_;
 
   // list of particle tipe(s) which are used for the study and matched to clusters/recHits
   std::vector<int> acceptedParticleTypes_;
@@ -185,7 +186,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 #endif
 
   unsigned int brojrazl=0;
-  std::vector< std::vector<float>> particledata(7, std::vector<float> (acceptedParticleTypes_.size()+1,0.));
+  std::vector< std::vector<double>> particledata(8, std::vector<double> (acceptedParticleTypes_.size()+1,0.));
   float squaremomenta=0.;
   unsigned int motherid=0;
 
@@ -342,10 +343,11 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
               particledata[4][bb]=motherid;
               particledata[5][bb]=seedTime;
 	      particledata[6][bb]=(*p)->momentum().perp();
+	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],1.0,blah->eta(),recoVtx.Z());
             }
 	}// close loop  over acceptedParticleTypes_
       }
-
+std::cout<<recoVtx.Z()<<std::endl;
       Handle<std::vector<reco::SuperCluster> > endcapSCHandle;
       iEvent.getByLabel("correctedMulti5x5SuperClustersWithPreshower","",endcapSCHandle);
       const reco::SuperClusterCollection * endcapSCCollection = endcapSCHandle.product();
@@ -386,6 +388,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      particledata[4][broj]=motherid;
 	      particledata[5][broj]=seedTime;
 	      particledata[6][broj]=(*p)->momentum().perp();
+              particledata[7][broj]=tofc_ddata_(particledata[6][broj],1.0,blah->eta(),recoVtx.Z());
 	    }
 	}// close loop  over acceptedParticleTypes_
       }// close loop on SC's
@@ -418,6 +421,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     float ugh=sqrt(particledata[3][brojrazl]*particledata[3][brojrazl]-squaremomenta);
       h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
       h_tdiffdet_->Fill(particledata[5][0]-particledata[5][1]);
+      h_tdiffsim_ ->Fill(particledata[7][0]-particledata[7][1]);
+      h_tdiffdetsim_->Fill(particledata[5][0]-particledata[5][1]-particledata[7][0]+particledata[7][1]);
   } // close of 'if goodparent and .. '
 } // close the analyze() method 
 
@@ -459,7 +464,9 @@ TimeAnalyzer::beginJob()
   h_massofmother_ = fs->make<TH1F>("h_massofmother","e+e- particle energy",100,0.,160.);
   h_mothertype_ = fs->make<TH1F>("h_mothertype_","type of mother",80,-40.,40.);
   h_ptotal_   = fs->make<TH1F>("h_ptotal","total momentum",100,0.0,2000000.0);
-  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","asdf",100,-1.0,1.0);
+  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector",200,-0.7,0.7);
+  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation",100,-0.7,0.7);
+  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation",100,-0.7,0.7);
 
 }
 
