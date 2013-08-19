@@ -185,7 +185,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 #endif
 
   unsigned int brojrazl=0;
-  std::vector< std::vector<float>> particledata(6, std::vector<float> (acceptedParticleTypes_.size()+1,0.));
+  std::vector< std::vector<float>> particledata(7, std::vector<float> (acceptedParticleTypes_.size()+1,0.));
   float squaremomenta=0.;
   unsigned int motherid=0;
 
@@ -231,9 +231,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       //      }
       //      if (mother!=0) mother2 = *(mother->production_vertex()->particles_begin(HepMC::parents));
       //      if (mother == 0 || (mother2!=0 && mother2->pdg_id()==25) || (mother2!=0 && mother2->pdg_id()==23)) 
-      //	{
-      //	  //.. do stuff
-      //	}
 
       motherid=0;
       HepMC::GenParticle* mother=0;
@@ -245,30 +242,23 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	{
 	motheraux=*((*p)->production_vertex()->particles_begin(HepMC::parents));
 	mother=*(motheraux->production_vertex()->particles_begin(HepMC::parents));
+	if(mother==NULL) std::cout<<"error1"<<std::endl;
+	if(motheraux==NULL) std::cout<<"error2"<<std::endl;
+	std::cout << "mother: "<<mother<<" motherid: " << mother->pdg_id() << std::endl;
+
       }
       // setting of mothers in the procedure above needs cros-checking
-
+	std::cout<<"motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
       motherid=mother->pdg_id();
-      std::cout << "motherid is: " << motherid << std::endl;
+      std::cout << "mother: "<<mother<<" motherid: " << motherid << std::endl;
       if(std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), motherid)==acceptedParentTypes_.end() ) continue;
 
       std::cout << "after mother type cut " << std::endl;
        
-      /*	for(unsigned int broj=0;broj<acceptedParticleTypes_.size();broj++) if((*p)->pdg_id()==acceptedParticleTypes_[broj]) {
-	if(particledata[3][broj]<(*p)->momentum().e() ) {
-	particledata[3][broj]=(*p)->momentum().e();
-	particledata[0][broj]=(*p)->momentum().px();
-	particledata[1][broj]=(*p)->momentum().py();
-	particledata[2][broj]=(*p)->momentum().pz();
-	particledata[4][broj]=motherid;
-	}
-	}*/
-
-
       //       h_pTypeSel_ ->  Fill((*p)->pdg_id()); 
 
       h_masses_ -> Fill((*p)->momentum().m());
-      //       h_pr_ -> Fill((*p)->momentum().pseudoRapidity());
+//      h_pr_ -> Fill((*p)->momentum().pseudoRapidity());
       h_pperp_ -> Fill((*p)->momentum().perp());
       h_eta_ -> Fill((*p)->momentum().eta());
       h_phi_ -> Fill((*p)->momentum().phi());
@@ -278,7 +268,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       float p_phi=(*p)->momentum().phi();
       h_ptotal_ -> Fill(pow((*p)->momentum().px(),2)+pow((*p)->momentum().py(),2)+pow((*p)->momentum().pz(),2));
 
-       
       // hard-coded names of recHit collections as in standard CMS data (AOD)
       // GF: send to configuration file
       std::string reducedEcalRecHitsEB = "reducedEcalRecHitsEB";
@@ -313,7 +302,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  return ;
 	}
       
-
       // superclusters are groups of neighboring Electromagnetic Calorimeter (ECAL) recHits
       // collecting the energy relesed by (at least) one particle impinging into the ECAL
       Handle<std::vector<reco::SuperCluster> > barrelSCHandle;
@@ -327,14 +315,13 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	// in the above, phi_SC is  phi_detector, while phi_particle is phi_physics
 	// tolerate this confusion by extendeding cut on deltab to 0.3
 
-	// THIS NEEDS BE FIXED AS DONE FOR EE, below
-	if(deltab<0.3) { h_delta_b -> Fill(deltab);
+	if(deltab>0.3) continue;
+	  h_delta_b -> Fill(deltab);
 	  h_eclusterB_ -> Fill( blah->rawEnergy() );
 	  h_etaclusterB_ -> Fill( blah->eta() );
 	  h_phiclusterB_ -> Fill( blah->phi() );
 	  h_ceta_phi_ -> Fill( blah->phi(), blah->eta() );
-	}
-		
+	
 	// the seed basic cluster as a component of the supercluster (SC)
 	reco::CaloClusterPtr SCseed = blah->seed() ;
 	// time of the seed recHit inside the seed BC (aka "time of the SC seed")
@@ -343,8 +330,21 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	EcalRecHitCollection::const_iterator seedRH = theBarrelEcalRecHits->find(seedCrystalId);
 	float seedTime = (float)seedRH->time();
 	std::cout << "++ EB TimeAnalyzer rechit seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
-      }
 
+        for(unsigned int bb=0;bb<acceptedParticleTypes_.size();bb++) {
+          if( (*p)->pdg_id()==acceptedParticleTypes_[bb] &&
+              particledata[6][bb]<(*p)->momentum().perp() )
+            {
+              particledata[3][bb]=(*p)->momentum().e();
+              particledata[0][bb]=(*p)->momentum().px();
+              particledata[1][bb]=(*p)->momentum().py();
+              particledata[2][bb]=(*p)->momentum().pz();
+              particledata[4][bb]=motherid;
+              particledata[5][bb]=seedTime;
+	      particledata[6][bb]=(*p)->momentum().perp();
+            }
+	}// close loop  over acceptedParticleTypes_
+      }
 
       Handle<std::vector<reco::SuperCluster> > endcapSCHandle;
       iEvent.getByLabel("correctedMulti5x5SuperClustersWithPreshower","",endcapSCHandle);
@@ -357,9 +357,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	// in the above, phi_SC is  phi_detector, while phi_particle is phi_physics
 	// tolerate this confusion by extendeding cut on deltab to 0.3
 
-	
 	// if no matching between current SC and current truth particle => return 
-	// FIXME: to be propagated to the EB case, as well
 	if(deltae>0.3) continue; 
 
 	h_delta_e -> Fill(deltae);
@@ -367,7 +365,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	h_etaclusterE_ -> Fill( blah->eta() );
 	h_phiclusterE_ -> Fill( blah->phi() );
 	h_ceta_phi_ -> Fill( blah->phi(), blah->eta() );
-	
 
 	// the seed basic cluster as a component of the supercluster (SC)
 	reco::CaloClusterPtr SCseed = blah->seed() ;
@@ -380,7 +377,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	for(unsigned int broj=0;broj<acceptedParticleTypes_.size();broj++) {
 	  if( (*p)->pdg_id()==acceptedParticleTypes_[broj] && 
-	      particledata[3][broj]<(*p)->momentum().e() ) 
+	      particledata[6][broj]<(*p)->momentum().perp() ) 
 	    {
 	      particledata[3][broj]=(*p)->momentum().e();
 	      particledata[0][broj]=(*p)->momentum().px();
@@ -388,16 +385,11 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      particledata[2][broj]=(*p)->momentum().pz();
 	      particledata[4][broj]=motherid;
 	      particledata[5][broj]=seedTime;
+	      particledata[6][broj]=(*p)->momentum().perp();
 	    }
 	}// close loop  over acceptedParticleTypes_
       }// close loop on SC's
-      
-      
     }// closure of loop over truth particles
-  
-  
-  
-  
 
   int goodparent=1;
   int likelyid=particledata[4][0];
@@ -407,8 +399,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //Could be done in other ways, this one seems simplest for now.
     if(likelyid!=particledata[4][brojac]) goodparent=-1;
   }
-
-
   
   if(goodparent==1 && likelyid!=0 && brojrazl==acceptedParticleTypes_.size()) { 
     // if goodparent and ..
@@ -421,29 +411,16 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       particledata[3][brojrazl]+=particledata[3][bro];
     }
 
-
     for(unsigned int ff=0;ff<3;ff++) {
       squaremomenta+=particledata[ff][brojrazl]*particledata[ff][brojrazl];
     }
 
     float ugh=sqrt(particledata[3][brojrazl]*particledata[3][brojrazl]-squaremomenta);
-    //		h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
-
       h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
       h_tdiffdet_->Fill(particledata[5][0]-particledata[5][1]);
-      // NOTE: we're abusing Energy as if it was PT -- FIX ME
-      double charge=1;
-      std::cout << "Transverse momentum [GeV/c] of " <<  particledata[3][brojrazl] 
-		<< " gives rel radius of " <<  rc_(particledata[3][brojrazl],charge) << " [m]" 
-		<< std::endl; 
-    
-
   } // close of 'if goodparent and .. '
-
 } // close the analyze() method 
 
-
-  
 // ------------ method called once each job just before starting event loop  ------------
 void 
 TimeAnalyzer::beginJob()
