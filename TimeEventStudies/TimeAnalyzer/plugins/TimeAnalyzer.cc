@@ -188,7 +188,6 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   unsigned int brojrazl=0;
   std::vector< std::vector<double>> particledata(8, std::vector<double> (acceptedParticleTypes_.size()+1,0.));
   float squaremomenta=0.;
-  int motherid=0;
   double particlecharge=0.0;
   int vertexmarker=0;
 
@@ -262,18 +261,14 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   vertexmarker=0;
   for(HepMC::GenVertex::particle_iterator anc=(*p)->production_vertex()->particles_begin(HepMC::ancestors);
 	anc!=(*p)->production_vertex()->particles_end(HepMC::ancestors); ++anc){
-	for(unsigned int dd=0;dd<acceptedParticleTypes_.size();dd++){
-		if((*anc)->pdg_id()==acceptedParticleTypes_[dd]){
-			if(vertexmarker==0 || std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), vertexmarker)!=acceptedParentTypes_.end()){
-				vertexmarker=(*anc)->pdg_id();
-			}
-//			if(vertexmarker!=0 || std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*anc)->pdg_id())!=acceptedParticleTypes_.end())
+		if(std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), (*anc)->pdg_id())!=acceptedParentTypes_.end()){
+			vertexmarker=(*anc)->pdg_id();
 		}
-	}	
+//		if(vertexmarker!=0 || std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*anc)->pdg_id())!=acceptedParticleTypes_.end())
   }
 
   if(vertexmarker==0) continue;
-
+//  std::cout<<vertexmarker<<std::endl;
 
 
 
@@ -361,10 +356,11 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
               particledata[0][bb]=(*p)->momentum().px();
               particledata[1][bb]=(*p)->momentum().py();
               particledata[2][bb]=(*p)->momentum().pz();
-              particledata[4][bb]=motherid;
+              particledata[4][bb]=vertexmarker;
               particledata[5][bb]=seedTime;
 	      particledata[6][bb]=(*p)->momentum().perp();
 	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],particlecharge,blah->eta(),recoVtx.Z());
+//		std::cout<<particledata[4][0]<<" asdfasf"<<std::endl;
             }
 	}// close loop  over acceptedParticleTypes_
       }
@@ -406,7 +402,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      particledata[0][broj]=(*p)->momentum().px();
 	      particledata[1][broj]=(*p)->momentum().py();
 	      particledata[2][broj]=(*p)->momentum().pz();
-	      particledata[4][broj]=motherid;
+	      particledata[4][broj]=vertexmarker;
 	      particledata[5][broj]=seedTime;
 	      particledata[6][broj]=(*p)->momentum().perp();
               particledata[7][broj]=tofc_ddata_(particledata[6][broj],particlecharge,blah->eta(),recoVtx.Z());
@@ -419,14 +415,11 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   int likelyid=particledata[4][0];
   for(unsigned int brojac=0;brojac<acceptedParticleTypes_.size();brojac++) {
     if(particledata[3][brojac]!=0.0) brojrazl++;
-    //Here I assume that if a parent produces one relevant particle, it will also parent the rest.
-    //Could be done in other ways, this one seems simplest for now.
     if(likelyid!=particledata[4][brojac]) goodparent=-1;
   }
   
   if(goodparent==1 && likelyid!=0 && brojrazl==acceptedParticleTypes_.size()) { 
     // if goodparent and ..
-
     for(unsigned int bro=0;bro<acceptedParticleTypes_.size();bro++) {
       for(unsigned int tt=0;tt<3;tt++) 
 	{
@@ -485,9 +478,9 @@ TimeAnalyzer::beginJob()
   h_massofmother_ = fs->make<TH1F>("h_massofmother","e+e- particle energy",100,0.,160.);
   h_mothertype_ = fs->make<TH1F>("h_mothertype_","type of mother",80,-40.,40.);
   h_ptotal_   = fs->make<TH1F>("h_ptotal","total momentum",100,0.0,2000000.0);
-  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector",100,-1.0E-7,1.0E-7);
-  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation",100,-1.0E-7,1.0E-7);
-  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation",100,-1.0E-7,1.0E-7);
+  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector",100,-1.8E-9,1.8E-9);
+  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation",100,-1.8E-9,1.8E-9);
+  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation",100,-1.8E-9,1.8E-9);
 
 }
 
