@@ -147,3 +147,21 @@ Double_t dtheta_pdata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, D
   return thetac_pdata_(pt_,charge_natunits_,eta_,zi_)-thetan_pdata_(eta_,zi_);
 }
 
+/*GenVertex::particle_iterator&
+GenVertex::particle_iterator::operator--(void) {
+    //Pre-fix increment 
+    //
+    if ( *m_edge ) {
+        --m_edge;
+    } else if ( *m_vertex_iterator ) {      // !*m_edge is implicit
+        // past end of edge, but still have more vertices to visit
+        // increment the vertex, checking that the result is valid
+        if ( !*(--m_vertex_iterator) ) return *this;
+        m_edge = GenVertex::edge_iterator( **m_vertex_iterator, m_vertex_iterator.range() ); 
+    } else {        // !*m_edge and !*m_vertex_iterator are implicit
+        // past the end condition: do nothing
+        return *this;
+    }
+    advance_to_first_();
+    return *this;
+}*/

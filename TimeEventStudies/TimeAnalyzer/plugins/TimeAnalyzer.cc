@@ -190,6 +190,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   float squaremomenta=0.;
   int motherid=0;
   double particlecharge=0.0;
+  int vertexmarker=0;
 
   // reconstructed vertex in the event
   Handle<reco::VertexCollection> vertexHandle;
@@ -210,55 +211,73 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
   // loop over MC particles
   for ( HepMC::GenEvent::particle_const_iterator p = myGenEvent->particles_begin(); p != myGenEvent->particles_end(); ++p ) 
     {
-       
+//       std::cout<<"before status check"<<std::endl;
       // You only want particles with status 1
       if  ((*p)->status()!=1 ) continue; 
-       
+//       std::cout<<"after status check, before id check"<<std::endl;
       //       h_pType_ ->  Fill((*p)->pdg_id()); 
        
       // match only to truth of desired particle types
       if (std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*p)->pdg_id())==acceptedParticleTypes_.end() )  continue;
+//	std::cout<<"after id check, before minimal pt check"<<std::endl;
       if((*p)->pdg_id()>0) particlecharge=1.0;
 	else particlecharge=-1.0;
       if(lowestpt_>(*p)->momentum().perp()) continue;
+//	std::cout<<"after minimal pt check"<<std::endl;
 
-      std::cout << "after lowestpt_ cut " << std::endl;
 
-      // from: http://cmssw.cvs.cern.ch/cgi-bin/cmssw.cgi/UserCode/Minnesota/Hgg/ClusteringWithPU/plugins/SCwithTruthPUAnalysis.cc?revision=1.3&view=markup
-      //      HepMC::GenParticle* mother = 0;
-      //      HepMC::GenParticle* mother2 = 0;
-      //      if ( (*p)->production_vertex() ) {
-      //	if ( (*p)->production_vertex()->particles_begin(HepMC::parents) !=
-      //	     (*p)->production_vertex()->particles_end(HepMC::parents)) {
-      //	  mother = *((*p)->production_vertex()->particles_begin(HepMC::parents));  }
-      //      }
-      //      if (mother!=0) mother2 = *(mother->production_vertex()->particles_begin(HepMC::parents));
-      //      if (mother == 0 || (mother2!=0 && mother2->pdg_id()==25) || (mother2!=0 && mother2->pdg_id()==23)) 
+/*
+//     HepMC::GenParticle* motheraux=0.;
+//     HepMC::GenParticle* mother=0.;
+//     HepMc::GenParticle* newpart=0.;
 
-      motherid=0;
-      HepMC::GenParticle* mother=0;
-      HepMC::GenParticle* motheraux=0;
-      // setting of mothers in this procedure needs cros-checking
       if(
-	 (*p)->production_vertex() && 
-	 (*p)->production_vertex()->particles_begin(HepMC::parents)!=(*p)->production_vertex()->particles_end(HepMC::parents))
-	{
-	motheraux=*((*p)->production_vertex()->particles_begin(HepMC::parents));
-	mother=*(motheraux->production_vertex()->particles_begin(HepMC::parents));
-	if(mother==NULL) std::cout<<"error1"<<std::endl;
-	if(motheraux==NULL) std::cout<<"error2"<<std::endl;
-	std::cout << "mother: "<<mother<<" motherid: " << mother->pdg_id() << std::endl;
-
+	(*p)->production_vertex() &&
+        (*p)->production_vertex()->particles_begin(HepMC::parents)!=(*p)->production_vertex()->particles_end(HepMC::parents))
+      {
+        HepMC::GenParticle* motheraux=*((*p)->production_vertex()->particles_begin(HepMC::parents));
+        HepMC::GenParticle* mother=*(motheraux->production_vertex()->particles_begin(HepMC::parents));
+        motherid=mother->pdg_id();
+        HepMC::GenParticle* newpart=*((*p)->production_vertex()->particles_begin(HepMC::parents));
+	std::cout << "1mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
       }
-      // setting of mothers in the procedure above needs cros-checking
-	std::cout<<"motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
-      motherid=mother->pdg_id();
-      std::cout << "mother: "<<mother<<" motherid: " << motherid << std::endl;
+      while(
+	std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), motherid)!=acceptedParticleTypes_.end() &&
+	(*newpart)->production_vertex() &&
+        (*newpart)->production_vertex()->particles_begin(HepMC::parents)!=(*p)->production_vertex()->particles_end(HepMC::parents))
+      {
+	std::cout << "2mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
+	motheraux=*((*newpart)->production_vertex()->particles_begin(HepMC::parents));
+	mother=*(motheraux->production_vertex()->particles_begin(HepMC::parents));
+	motherid=mother->pdg_id();
+	std::cout << "3mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
+	newpart=*((*p)->production_vertex()->particles_begin(HepMC::parents));
+      }
+
       if(std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), motherid)==acceptedParentTypes_.end() ) continue;
 
-      std::cout << "after mother type cut " << std::endl;
-       
-      //       h_pTypeSel_ ->  Fill((*p)->pdg_id()); 
+	std::cout << "4mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
+*/
+
+  vertexmarker=0;
+  for(HepMC::GenVertex::particle_iterator anc=(*p)->production_vertex()->particles_begin(HepMC::ancestors);
+	anc!=(*p)->production_vertex()->particles_end(HepMC::ancestors); ++anc){
+	for(unsigned int dd=0;dd<acceptedParticleTypes_.size();dd++){
+		if((*anc)->pdg_id()==acceptedParticleTypes_[dd]){
+			if(vertexmarker==0 || std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), vertexmarker)!=acceptedParentTypes_.end()){
+				vertexmarker=(*anc)->pdg_id();
+			}
+//			if(vertexmarker!=0 || std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*anc)->pdg_id())!=acceptedParticleTypes_.end())
+		}
+	}	
+  }
+
+  if(vertexmarker==0) continue;
+
+
+
+
+//      h_pTypeSel_ ->  Fill((*p)->pdg_id()); 
 
       h_masses_ -> Fill((*p)->momentum().m());
 //      h_pr_ -> Fill((*p)->momentum().pseudoRapidity());
@@ -332,7 +351,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	DetId seedCrystalId = maxRH.first;
 	EcalRecHitCollection::const_iterator seedRH = theBarrelEcalRecHits->find(seedCrystalId);
 	float seedTime = (float)seedRH->time();
-	std::cout << "++ EB TimeAnalyzer rechit seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
+//	std::cout << "++ EB TimeAnalyzer rechit seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
 
         for(unsigned int bb=0;bb<acceptedParticleTypes_.size();bb++) {
           if( (*p)->pdg_id()==acceptedParticleTypes_[bb] &&
@@ -349,7 +368,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             }
 	}// close loop  over acceptedParticleTypes_
       }
-std::cout<<recoVtx.Z()<<std::endl;
+//std::cout<<recoVtx.Z()<<std::endl;
       Handle<std::vector<reco::SuperCluster> > endcapSCHandle;
       iEvent.getByLabel("correctedMulti5x5SuperClustersWithPreshower","",endcapSCHandle);
       const reco::SuperClusterCollection * endcapSCCollection = endcapSCHandle.product();
@@ -377,7 +396,7 @@ std::cout<<recoVtx.Z()<<std::endl;
 	DetId seedCrystalId = maxRH.first;
 	EcalRecHitCollection::const_iterator seedRH = theEndcapEcalRecHits->find(seedCrystalId);
 	float seedTime = (float)seedRH->time();
-	std::cout << "++ EE TimeAnalyzer seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
+//	std::cout << "++ EE TimeAnalyzer seedTime and energy : "<< seedTime << "\t" << seedRH->energy() << std::endl;
 
 	for(unsigned int broj=0;broj<acceptedParticleTypes_.size();broj++) {
 	  if( (*p)->pdg_id()==acceptedParticleTypes_[broj] && 
@@ -422,9 +441,9 @@ std::cout<<recoVtx.Z()<<std::endl;
 
     float ugh=sqrt(particledata[3][brojrazl]*particledata[3][brojrazl]-squaremomenta);
       h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
-      h_tdiffdet_->Fill(particledata[5][0]-particledata[5][1]);
+      h_tdiffdet_->Fill((particledata[5][0]-particledata[5][1])*1.0E-9);
       h_tdiffsim_ ->Fill(particledata[7][0]-particledata[7][1]);
-      h_tdiffdetsim_->Fill(particledata[5][0]-particledata[5][1]-particledata[7][0]+particledata[7][1]);
+      h_tdiffdetsim_->Fill((particledata[5][0]-particledata[5][1])*(1.0E-9)-particledata[7][0]+particledata[7][1]);
   } // close of 'if goodparent and .. '
 } // close the analyze() method 
 
@@ -466,9 +485,9 @@ TimeAnalyzer::beginJob()
   h_massofmother_ = fs->make<TH1F>("h_massofmother","e+e- particle energy",100,0.,160.);
   h_mothertype_ = fs->make<TH1F>("h_mothertype_","type of mother",80,-40.,40.);
   h_ptotal_   = fs->make<TH1F>("h_ptotal","total momentum",100,0.0,2000000.0);
-  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector",200,-0.7,0.7);
-  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation",100,-0.7,0.7);
-  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation",100,-0.7,0.7);
+  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector",100,-1.0E-7,1.0E-7);
+  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation",100,-1.0E-7,1.0E-7);
+  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation",100,-1.0E-7,1.0E-7);
 
 }
 

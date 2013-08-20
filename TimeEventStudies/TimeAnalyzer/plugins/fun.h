@@ -1,6 +1,6 @@
 #define B 3.8
-#define BarrelR 1.290
-#define Zhalflength 3.170
+#define BarrelR 1.290+0.079
+#define Zhalflength 3.170+0.079
 
 #include "TMath.h"
 using namespace TMath;
@@ -31,3 +31,4 @@ Double_t dtofcn_ddata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, D
 Double_t thetan_pdata_(Double_t eta_,Double_t zi_);
 Double_t thetac_pdata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, Double_t zi_);
 Double_t dtheta_pdata_(Double_t pt_, Double_t charge_natunits_, Double_t eta_, Double_t zi_);
+
