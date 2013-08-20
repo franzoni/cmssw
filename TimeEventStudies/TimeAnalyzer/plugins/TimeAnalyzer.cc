@@ -120,7 +120,13 @@ private:
   TH1F* h_tdiffdet_;
   TH1F* h_tdiffsim_;
   TH1F* h_tdiffdetsim_;
-
+  TH2F* h_dtofdet_zvtx_;
+  TH2F* h_dtofdet_detad_;
+  TH2F* h_dtofdet_dtofsim_;
+  TH2F* h_dtofdiff_zvtx_;
+  TH2F* h_dtofdiff_detad_;
+  TH2F* h_dtofsim_zvtx_;
+ 
   // list of particle tipe(s) which are used for the study and matched to clusters/recHits
   std::vector<int> acceptedParticleTypes_;
   double lowestpt_;
@@ -186,7 +192,7 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 #endif
 
   unsigned int brojrazl=0;
-  std::vector< std::vector<double>> particledata(8, std::vector<double> (acceptedParticleTypes_.size()+1,0.));
+  std::vector< std::vector<double>> particledata(9, std::vector<double> (acceptedParticleTypes_.size()+1,0.));
   float squaremomenta=0.;
   double particlecharge=0.0;
   int vertexmarker=0;
@@ -224,53 +230,16 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       if(lowestpt_>(*p)->momentum().perp()) continue;
 //	std::cout<<"after minimal pt check"<<std::endl;
 
-
-/*
-//     HepMC::GenParticle* motheraux=0.;
-//     HepMC::GenParticle* mother=0.;
-//     HepMc::GenParticle* newpart=0.;
-
-      if(
-	(*p)->production_vertex() &&
-        (*p)->production_vertex()->particles_begin(HepMC::parents)!=(*p)->production_vertex()->particles_end(HepMC::parents))
-      {
-        HepMC::GenParticle* motheraux=*((*p)->production_vertex()->particles_begin(HepMC::parents));
-        HepMC::GenParticle* mother=*(motheraux->production_vertex()->particles_begin(HepMC::parents));
-        motherid=mother->pdg_id();
-        HepMC::GenParticle* newpart=*((*p)->production_vertex()->particles_begin(HepMC::parents));
-	std::cout << "1mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
-      }
-      while(
-	std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), motherid)!=acceptedParticleTypes_.end() &&
-	(*newpart)->production_vertex() &&
-        (*newpart)->production_vertex()->particles_begin(HepMC::parents)!=(*p)->production_vertex()->particles_end(HepMC::parents))
-      {
-	std::cout << "2mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
-	motheraux=*((*newpart)->production_vertex()->particles_begin(HepMC::parents));
-	mother=*(motheraux->production_vertex()->particles_begin(HepMC::parents));
-	motherid=mother->pdg_id();
-	std::cout << "3mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
-	newpart=*((*p)->production_vertex()->particles_begin(HepMC::parents));
-      }
-
-      if(std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), motherid)==acceptedParentTypes_.end() ) continue;
-
-	std::cout << "4mother: "<<mother<<" motherid: " << mother->pdg_id() << " motheraux: "<<motheraux<<" motherauxid: "<<motheraux->pdg_id()<<std::endl;
-*/
-
   vertexmarker=0;
   for(HepMC::GenVertex::particle_iterator anc=(*p)->production_vertex()->particles_begin(HepMC::ancestors);
 	anc!=(*p)->production_vertex()->particles_end(HepMC::ancestors); ++anc){
 		if(std::find(acceptedParentTypes_.begin(), acceptedParentTypes_.end(), (*anc)->pdg_id())!=acceptedParentTypes_.end()){
 			vertexmarker=(*anc)->pdg_id();
 		}
-//		if(vertexmarker!=0 || std::find(acceptedParticleTypes_.begin(), acceptedParticleTypes_.end(), (*anc)->pdg_id())!=acceptedParticleTypes_.end())
   }
 
   if(vertexmarker==0) continue;
 //  std::cout<<vertexmarker<<std::endl;
-
-
 
 //      h_pTypeSel_ ->  Fill((*p)->pdg_id()); 
 
@@ -319,6 +288,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	  return ;
 	}
       
+double eta_det=0.0;
+
       // superclusters are groups of neighboring Electromagnetic Calorimeter (ECAL) recHits
       // collecting the energy relesed by (at least) one particle impinging into the ECAL
       Handle<std::vector<reco::SuperCluster> > barrelSCHandle;
@@ -327,7 +298,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       //   h_nSCEB_ -> Fill( barrelSCCollection->size() );
       for(reco::SuperClusterCollection::const_iterator blah = barrelSCCollection->begin(); blah != barrelSCCollection->end(); blah++) {
 	float deltaphib=blah->phi()-p_phi; if(deltaphib<-Pi()) deltaphib+=2*Pi(); if(deltaphib>Pi()) deltaphib-=2*Pi();
-	float deltaetab=blah->eta()-p_eta;
+	eta_det=blah->eta();
+	float deltaetab=eta_det-p_eta;
 	float deltab = sqrt(deltaphib*deltaphib+deltaetab*deltaetab);
 	// in the above, phi_SC is  phi_detector, while phi_particle is phi_physics
 	// tolerate this confusion by extendeding cut on deltab to 0.3
@@ -335,9 +307,9 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	if(deltab>0.3) continue;
 	  h_delta_b -> Fill(deltab);
 	  h_eclusterB_ -> Fill( blah->rawEnergy() );
-	  h_etaclusterB_ -> Fill( blah->eta() );
+	  h_etaclusterB_ -> Fill( eta_det );
 	  h_phiclusterB_ -> Fill( blah->phi() );
-	  h_ceta_phi_ -> Fill( blah->phi(), blah->eta() );
+	  h_ceta_phi_ -> Fill( blah->phi(), eta_det );
 	
 	// the seed basic cluster as a component of the supercluster (SC)
 	reco::CaloClusterPtr SCseed = blah->seed() ;
@@ -359,7 +331,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
               particledata[4][bb]=vertexmarker;
               particledata[5][bb]=seedTime;
 	      particledata[6][bb]=(*p)->momentum().perp();
-	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],particlecharge,blah->eta(),recoVtx.Z());
+	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],particlecharge,eta_det,recoVtx.Z());
+	      particledata[8][bb]=eta_det;
 //		std::cout<<particledata[4][0]<<" asdfasf"<<std::endl;
             }
 	}// close loop  over acceptedParticleTypes_
@@ -371,7 +344,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
       //   h_nSCEE_ -> Fill( endcapSCCollection->size() );
       for(reco::SuperClusterCollection::const_iterator blah = endcapSCCollection->begin(); blah != endcapSCCollection->end(); blah++) {
 	float deltaphie=blah->phi()-p_phi; if(deltaphie<-Pi()) deltaphie+=2*Pi(); if(deltaphie>Pi()) deltaphie-=2*Pi();
-	float deltaetae=blah->eta()-p_eta;
+	eta_det=blah->eta();
+	float deltaetae=eta_det-p_eta;
 	float deltae = sqrt(deltaphie*deltaphie+deltaetae*deltaetae);
 	// in the above, phi_SC is  phi_detector, while phi_particle is phi_physics
 	// tolerate this confusion by extendeding cut on deltab to 0.3
@@ -381,9 +355,9 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 	h_delta_e -> Fill(deltae);
 	h_eclusterE_ -> Fill( blah->rawEnergy() );
-	h_etaclusterE_ -> Fill( blah->eta() );
+	h_etaclusterE_ -> Fill( eta_det );
 	h_phiclusterE_ -> Fill( blah->phi() );
-	h_ceta_phi_ -> Fill( blah->phi(), blah->eta() );
+	h_ceta_phi_ -> Fill( blah->phi(), eta_det );
 
 	// the seed basic cluster as a component of the supercluster (SC)
 	reco::CaloClusterPtr SCseed = blah->seed() ;
@@ -405,7 +379,8 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	      particledata[4][broj]=vertexmarker;
 	      particledata[5][broj]=seedTime;
 	      particledata[6][broj]=(*p)->momentum().perp();
-              particledata[7][broj]=tofc_ddata_(particledata[6][broj],particlecharge,blah->eta(),recoVtx.Z());
+              particledata[7][broj]=tofc_ddata_(particledata[6][broj],particlecharge,eta_det,recoVtx.Z());
+	      particledata[8][broj]=eta_det;
 	    }
 	}// close loop  over acceptedParticleTypes_
       }// close loop on SC's
@@ -431,12 +406,20 @@ TimeAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     for(unsigned int ff=0;ff<3;ff++) {
       squaremomenta+=particledata[ff][brojrazl]*particledata[ff][brojrazl];
     }
-
+    double dtofdet=(particledata[5][0]-particledata[5][1])*1.0E-9;
+    double dtofsim=(particledata[7][0]-particledata[7][1]);
+    double dtofdiff=dtofdet-dtofsim;
+    double detad=particledata[8][0]-particledata[8][1];
     float ugh=sqrt(particledata[3][brojrazl]*particledata[3][brojrazl]-squaremomenta);
       h_mothertype_ -> Fill(likelyid);h_massofmother_->Fill(ugh);
-      h_tdiffdet_->Fill((particledata[5][0]-particledata[5][1])*1.0E-9);
-      h_tdiffsim_ ->Fill(particledata[7][0]-particledata[7][1]);
-      h_tdiffdetsim_->Fill((particledata[5][0]-particledata[5][1])*(1.0E-9)-particledata[7][0]+particledata[7][1]);
+      h_tdiffdet_->Fill(dtofdet);
+      h_tdiffsim_ ->Fill(dtofsim);
+      h_tdiffdetsim_->Fill(dtofdiff);
+      h_dtofdet_zvtx_->Fill(recoVtx.Z(),dtofdet);
+      h_dtofdet_detad_->Fill(detad,dtofdet);
+      h_dtofdet_dtofsim_->Fill(dtofsim,dtofdet);
+      h_dtofdiff_zvtx_->Fill(recoVtx.Z(),dtofdiff);
+      h_dtofdiff_detad_->Fill(detad,dtofdiff);
   } // close of 'if goodparent and .. '
 } // close the analyze() method 
 
@@ -481,6 +464,18 @@ TimeAnalyzer::beginJob()
   h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector",100,-1.8E-9,1.8E-9);
   h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation",100,-1.8E-9,1.8E-9);
   h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation",100,-1.8E-9,1.8E-9);
+  h_dtofdet_zvtx_ = fs->make<TH2F>("h_dtofdet_zvtx",
+"difference in tof in detector vs inital z coordinate;z_0;#Delta t_det [s]",100,-15.,15.,100,-0.7E-9,0.7E-9);
+  h_dtofdet_detad_ = fs->make<TH2F>("h_dtofdet_detad",
+"difference in tof in detector vs #Delta#eta_det;#Delta#eta_det;#Delta t_det [s]",100,-2.,2.,100,-0.7E-9,0.7E-9);
+  h_dtofdet_dtofsim_ = fs->make<TH2F>("h_dtofdet_dtofsim",
+"difference in tof in detector vs difference in tof in simulation;#Delta#t_sim;#Delta t_det [s]",100,-1.3E-9,1.3E-9,100,-0.7E-9,0.7E-9);
+  h_dtofdiff_zvtx_ = fs->make<TH2F>("h_dtofdiff_zvtx",
+"difference in tof between detector and simulation vs initial z coordinate;z_0;#Delta t_diff[s]",100,-15.,15.,100,-1.3E-9,1.3E-9);
+  h_dtofdiff_detad_ = fs->make<TH2F>("h_dtofdiff_detad",
+"difference in tof between detector and simulation vs #eta of detector;#eta_det;#Delta t_diff[s]",100,-2.,2.,100,-1.3E-9,1.3E-9);
+  h_dtofsim_zvtx_ = fs->make<TH2F>("h_dtofsim_zvtx",
+"difference in tof in simulation vs inital z coordinate;z_0;#Delta t_sim [s]",100,-15.,15.,100,-1.3E-9,1.3E-9);
 
 }
 
@@ -496,6 +491,9 @@ TimeAnalyzer::endJob()
   h_phicstack_ -> Add(h_phiclusterB_); h_phicstack_ -> Add(h_phiclusterE_);
   h_ceta_phi_ -> SetOption("colz");
   h_ecstack_ -> Add(h_eclusterE_); h_ecstack_ -> Add(h_eclusterB_);
+  h_dtofdet_zvtx_->SetOption("colz"); h_dtofdet_detad_->SetOption("colz");
+  h_dtofdet_dtofsim_->SetOption("colz");
+  h_dtofdiff_zvtx_->SetOption("colz"); h_dtofdiff_detad_->SetOption("colz");
 
 }
 
