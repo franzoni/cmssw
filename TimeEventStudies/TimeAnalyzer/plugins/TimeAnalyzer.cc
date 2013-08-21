@@ -331,7 +331,7 @@ double eta_det=0.0;
               particledata[4][bb]=vertexmarker;
               particledata[5][bb]=seedTime;
 	      particledata[6][bb]=(*p)->momentum().perp();
-	      particledata[7][bb]=tofc_ddata_(particledata[6][bb],particlecharge,eta_det,recoVtx.Z());
+	      particledata[7][bb]=dtofcn_ddata_(particledata[6][bb],particlecharge,eta_det,recoVtx.Z());
 	      particledata[8][bb]=eta_det;
 //		std::cout<<particledata[4][0]<<" asdfasf"<<std::endl;
             }
@@ -379,7 +379,7 @@ double eta_det=0.0;
 	      particledata[4][broj]=vertexmarker;
 	      particledata[5][broj]=seedTime;
 	      particledata[6][broj]=(*p)->momentum().perp();
-              particledata[7][broj]=tofc_ddata_(particledata[6][broj],particlecharge,eta_det,recoVtx.Z());
+              particledata[7][broj]=dtofcn_ddata_(particledata[6][broj],particlecharge,eta_det,recoVtx.Z());
 	      particledata[8][broj]=eta_det;
 	    }
 	}// close loop  over acceptedParticleTypes_
@@ -418,8 +418,11 @@ double eta_det=0.0;
       h_dtofdet_zvtx_->Fill(recoVtx.Z(),dtofdet);
       h_dtofdet_detad_->Fill(detad,dtofdet);
       h_dtofdet_dtofsim_->Fill(dtofsim,dtofdet);
-      h_dtofdiff_zvtx_->Fill(recoVtx.Z(),dtofdiff);
+      h_dtofdiff_zvtx_->Fill(recoVtx.Z(),dtofdet);
       h_dtofdiff_detad_->Fill(detad,dtofdiff);
+      h_dtofsim_zvtx_->Fill(recoVtx.Z(),dtofsim);
+std::cout<<recoVtx.Z()<<"asdfasdfas"<<dtofsim<<"    "<<particledata[7][0]<<"     "<<particledata[7][1]<<std::endl;
+std::cout<<dtofdet<<"      "<<particledata[5][0]*(1.0E-9)<<"     "<<particledata[5][1]*(1.0E-9)<<std::endl;
   } // close of 'if goodparent and .. '
 } // close the analyze() method 
 
@@ -494,7 +497,7 @@ TimeAnalyzer::endJob()
   h_dtofdet_zvtx_->SetOption("colz"); h_dtofdet_detad_->SetOption("colz");
   h_dtofdet_dtofsim_->SetOption("colz");
   h_dtofdiff_zvtx_->SetOption("colz"); h_dtofdiff_detad_->SetOption("colz");
-
+  h_dtofsim_zvtx_->SetOption("colz");
 }
 
 // ------------ method called when starting to processes a run  ------------
