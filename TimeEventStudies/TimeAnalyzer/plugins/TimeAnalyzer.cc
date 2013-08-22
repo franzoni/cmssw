@@ -331,9 +331,9 @@ double eta_det=0.0;
               particledata[4][bb]=vertexmarker;
               particledata[5][bb]=seedTime;
 	      particledata[6][bb]=(*p)->momentum().perp();
-	      particledata[7][bb]=dtofcn_ddata_(particledata[6][bb],particlecharge,eta_det,recoVtx.Z()*0.01);
 	      particledata[8][bb]=eta_det;
-	      particledata[9][bb]=tofn_ddata_(eta_det,recoVtx.Z()*0.01);
+              particledata[7][bb]=dtofcn_ddata_(particledata[6][bb],particlecharge,particledata[8][bb],recoVtx.Z()*0.01);          
+ 	      particledata[9][bb]=tofn_ddata_(eta_det,recoVtx.Z()*0.01);
 	      particledata[10][bb]=tofc_ddata_(particledata[6][bb],particlecharge,eta_det,recoVtx.Z()*0.01);
 //		std::cout<<particledata[4][0]<<" asdfasf"<<std::endl;
             }
@@ -381,8 +381,8 @@ double eta_det=0.0;
 	      particledata[4][broj]=vertexmarker;
 	      particledata[5][broj]=seedTime;
 	      particledata[6][broj]=(*p)->momentum().perp();
-              particledata[7][broj]=dtofcn_ddata_(particledata[6][broj],particlecharge,eta_det,recoVtx.Z()*0.01);
 	      particledata[8][broj]=eta_det;
+              particledata[7][broj]=dtofcn_ddata_(particledata[6][broj],particlecharge,particledata[8][broj],recoVtx.Z()*0.01);
               particledata[9][broj]=tofn_ddata_(eta_det,recoVtx.Z()*0.01);
               particledata[10][broj]=tofc_ddata_(particledata[6][broj],particlecharge,eta_det,recoVtx.Z()*0.01);
 
@@ -429,6 +429,8 @@ double eta_det=0.0;
 std::cout<<recoVtx.Z()<<"asdfasdfas"<<dtofsim<<"    "<<particledata[7][0]<<"     "<<particledata[7][1]<<std::endl;
 std::cout<<dtofdet<<"      "<<particledata[5][0]*(1.0E-9)<<"     "<<particledata[5][1]*(1.0E-9)<<std::endl;
 std::cout<<particledata[9][0]<<"   "<<particledata[9][1]<<"   "<<particledata[10][0]<<"   "<<particledata[10][1]<<std::endl;
+std::cout<<dtofsim<<"    "<<particledata[7][0]<<"   "<<particledata[7][1]<<std::endl;
+std::cout<<particledata[6][0]<<"   "<<particledata[6][1]<<"   "<<particledata[8][0]<<"   "<<particledata[8][1]<<std::endl;
   } // close of 'if goodparent and .. '
 } // close the analyze() method 
 
@@ -470,15 +472,15 @@ TimeAnalyzer::beginJob()
   h_massofmother_ = fs->make<TH1F>("h_massofmother","e+e- particle energy",100,0.,160.);
   h_mothertype_ = fs->make<TH1F>("h_mothertype_","type of mother",80,-40.,40.);
   h_ptotal_   = fs->make<TH1F>("h_ptotal","total momentum",100,0.0,2000000.0);
-  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector;#Delta t_det [s]",100,-1.8E-9,1.8E-9);
-  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation;#Delta t_sim [s]",100,-1.8E-9,1.8E-9);
-  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation;(#Delta t_det- #Delta t_sim) [s]",100,-1.8E-9,1.8E-9);
+  h_tdiffdet_ = fs->make<TH1F>("h_tdiffdet","e-e+ tof difference in detector;#Delta t_det [s]",100,-0.7E-9,0.7E-9);
+  h_tdiffsim_ = fs->make<TH1F>("h_tdiffsim","e-e+ tof difference in simulation;#Delta t_sim [s]",100,-0.7E-9,0.7E-9);
+  h_tdiffdetsim_ = fs->make<TH1F>("h_tdiffdetsim","e-e+ tof difference between detector and simulation;(#Delta t_det- #Delta t_sim) [s]",100,-0.7E-9,0.7E-9);
   h_dtofdet_zvtx_ = fs->make<TH2F>("h_dtofdet_zvtx","difference in tof in detector vs inital z coordinate;z_0 [cm];#Delta t_det [s]",100,-15.,15.,100,-0.7E-9,0.7E-9);
   h_dtofdet_detad_ = fs->make<TH2F>("h_dtofdet_detad","difference in tof in detector vs #Delta#eta_det;#Delta#eta_det;#Delta t_det [s]",100,-2.,2.,100,-0.7E-9,0.7E-9);
-  h_dtofdet_dtofsim_ = fs->make<TH2F>("h_dtofdet_dtofsim","difference in tof in detector vs difference in tof in simulation;#Delta#t_sim [s];#Delta t_det [s]",100,-1.3E-9,1.3E-9,100,-0.7E-9,0.7E-9);
-  h_dtofdiff_zvtx_ = fs->make<TH2F>("h_dtofdiff_zvtx","difference in tof between detector and simulation vs initial z coordinate;z_0 [cm];#Delta t_diff[s]",100,-15.,15.,100,-1.3E-9,1.3E-9);
-  h_dtofdiff_detad_ = fs->make<TH2F>("h_dtofdiff_detad","difference in tof between detector and simulation vs #Delta #eta of detector;#Delta #eta_det;#Delta t_diff[s]",100,-2.,2.,100,-1.3E-9,1.3E-9);
-  h_dtofsim_zvtx_ = fs->make<TH2F>("h_dtofsim_zvtx","difference in tof in simulation vs inital z coordinate;z_0 [cm];#Delta t_sim [s]",100,-15.,15.,100,-1.3E-9,1.3E-9);
+  h_dtofdet_dtofsim_ = fs->make<TH2F>("h_dtofdet_dtofsim","difference in tof in detector vs difference in tof in simulation;#Delta#t_sim [s];#Delta t_det [s]",100,-0.7E-9,0.7E-9,100,-0.7E-9,0.7E-9);
+  h_dtofdiff_zvtx_ = fs->make<TH2F>("h_dtofdiff_zvtx","difference in tof between detector and simulation vs initial z coordinate;z_0 [cm];#Delta t_diff[s]",100,-15.,15.,100,-0.7E-9,0.7E-9);
+  h_dtofdiff_detad_ = fs->make<TH2F>("h_dtofdiff_detad","difference in tof between detector and simulation vs #Delta #eta of detector;#Delta #eta_det;#Delta t_diff[s]",100,-2.,2.,100,-0.7E-9,0.7E-9);
+  h_dtofsim_zvtx_ = fs->make<TH2F>("h_dtofsim_zvtx","difference in tof in simulation vs inital z coordinate;z_0 [cm];#Delta t_sim [s]",100,-15.,15.,100,-0.7E-9,0.7E-9);
 
 }
 
