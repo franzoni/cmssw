@@ -1,7 +1,7 @@
 #!/usr/bin/python2.4
 import os, socket, sys, string
 import python.eos_tool_phonebook as phonebook
-
+# TODO: add parsing of the fields from Domenica with creation and access data, and do mining according to variable definition of 'stale'
 import python.eos_mining_functions as funct
 
 from optparse import OptionParser
