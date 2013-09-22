@@ -43,7 +43,9 @@ class WF(list):
     
 InputInfoNDefault=2000000    
 class InputInfo(object):
-    def __init__(self,dataSet,label='',run=[],files=1000,events=InputInfoNDefault,split=8,location='CAF',ib_blacklist=None,ib_block=None) :
+    # make splitting finer
+    #    def __init__(self,dataSet,label='',run=[],files=1000,events=InputInfoNDefault,split=8,location='CAF',ib_blacklist=None,ib_block=None) :
+    def __init__(self,dataSet,label='',run=[],files=1000,events=InputInfoNDefault,split=1,location='CAF',ib_blacklist=None,ib_block=None) :
         self.run = run
         self.files = files
         self.events = events
@@ -58,10 +60,10 @@ class InputInfo(object):
         query_by = "block" if self.ib_block else "dataset"
         query_source = "{0}#{1}".format(self.dataSet, self.ib_block) if self.ib_block else self.dataSet
         if len(self.run) is not 0:
-            command = ";".join(["das_client.py --limit=0 --query 'file {0}={1} run={2}'".format(query_by, query_source, query_run) for query_run in self.run])
+            command = ";".join(["das_client.py --host='https://dastest.cern.ch' --limit=0 --query 'file {0}={1} run={2}'".format(query_by, query_source, query_run) for query_run in self.run])
             command = "({0})".format(command)
         else:
-            command = "das_client.py --limit=0 --query 'file {0}={1} site=T2_CH_CERN'".format(query_by, query_source)
+            command = "das_client.py --host='https://dastest.cern.ch' --limit=0 --query 'file {0}={1} site=T2_CH_CERN'".format(query_by, query_source)
 
         # Run filter on DAS output
         if self.ib_blacklist:
@@ -338,7 +340,7 @@ def genS(fragment,howMuch):
 steps['Higgs200ChargedTaus']=genS('H200ChargedTaus_Tauola_8TeV_cfi',K9by100)
 ##steps['QCD_Pt_3000_3500_2']=genS('QCD_Pt_3000_3500_8TeV_cfi',K9by25)
 ##steps['QCD_Pt_80_120_2']=genS('QCD_Pt_80_120_8TeV_cfi',K9by50)
-steps['JpsiMM']=genS('JpsiMM_8TeV_cfi',{'--relval':'65250,725'})
+steps['JpsiMM']=genS('JpsiMM_8TeV_cfi',{'--relval':'65250,50'})
 ##steps['TTbar2']=genS('TTbar_Tauola_8TeV_cfi',K9by50)
 steps['WE']=genS('WE_8TeV_cfi',K9by100)
 steps['WM']=genS('WM_8TeV_cfi',K9by100)
@@ -503,11 +505,24 @@ steps['TTbarFSPU2']=merge([PUFS2,steps['TTbarFS']])
 
 # step2 
 step2Defaults = { 
-                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:run:fromSource,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',
+                  # this needs be here since it must apply only to step 2 and NOT to step3
+                  #'--runsAndWeightsForMC' : ' \"[(190482,0.25), (194270,0.25), (200466,0.25), (207214,0.25)] \" '
+                  '--runsAndWeightsForMC' : ' \"[(190482,0.25)] \" '
+                  #'--runsAndWeightsForMC' : ' \"[(194270,0.25)] \" '
+                  #'--runsAndWeightsForMC' : ' \"[(200466,0.25)] \" '
+                  #'--runsAndWeightsForMC' : ' \"[(207214,0.25)] \" '
                   }
+
+#step2Defaults = { 
+#                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
+#                  '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
+#                  '--eventcontent': 'FEVTDEBUGHLT',
+#                  '--conditions'  : 'auto:startup',
+#                  }
 
 
 steps['DIGIPROD1']=merge([{'--eventcontent':'RAWSIM','--datatier':'GEN-SIM-RAW'},step2Defaults])
@@ -595,6 +610,7 @@ steps['Pyquen_ZeemumuJets_pt10_2760GeV']=merge([{'cfg':'Pyquen_ZeemumuJets_pt10_
 # step3 
 step3Defaults = {
                   '-s'            : 'RAW2DIGI,L1Reco,RECO,VALIDATION,DQM',
+#                  '-s'            : 'RAW2DIGI,L1Reco,RECO,DQM',
                   '--conditions'  : 'auto:startup',
                   '--no_exec'     : '',
                   '--datatier'    : 'GEN-SIM-RECO,DQM',
