@@ -317,7 +317,7 @@ baseDataSetRelease=[
     'CMSSW_6_2_0_pre8-PRE_SH62_V15-v2',
     'CMSSW_6_1_0_pre6-STARTHI61_V6-v1',
     'CMSSW_6_2_0_pre8-PRE_ST62_V8-v3',
-    'CMSSW_6_2_0_pre8-PRE_PO62_V7-v1' # for _13  TeV samples
+    'CMSSW_6_2_0_patch1-POSTLS162_V1_30Aug2013-v2' # for _13  TeV samples
     ]
 
 # note: INPUT commands to be added once GEN-SIM w/ 13TeV+PostLS1Geo will be available 
@@ -381,7 +381,7 @@ steps['H130GGgluonfusion_13INPUT']={'INPUT':InputInfo(dataSet='/RelValH130GGgluo
 steps['PhotonJets_Pt_10_13INPUT']={'INPUT':InputInfo(dataSet='/RelValPhotonJets_Pt_10_13/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
 steps['QQH1352T_Tauola_13INPUT']={'INPUT':InputInfo(dataSet='/RelValQQH1352T_Tauola_13/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
 steps['ADDMonoJet_d3MD3_13INPUT']={'INPUT':InputInfo(dataSet='/RelValADDMonoJet_d3MD3_13/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
-steps['BeamHalo_13INPUT']={'INPUT':InputInfo(dataSet='/RelValBeamHalo_13/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
+steps['BeamHalo_13INPUT']={'INPUT':InputInfo(dataSet='/RelValBeamHalo_13/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
 #input for fast sim workflows to be added - TODO
 
 
