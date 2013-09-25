@@ -46,6 +46,9 @@ class EOSLsReport:
         self.size         = int(lsline_list[4])
         self.date         = 'FIXME'
         self.path         = lsline_list[8]
+        self.isDir        = False
+        if self.permissions[0] == 'd':
+            self.isDir = True
 
     def __str__(self):
         ret = self.permissions +' '+self.user+' '+self.group+' '+str(self.size)+' '+self.date+' '+self.path
