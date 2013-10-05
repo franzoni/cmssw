@@ -230,6 +230,10 @@ def Mby(N,s):
 def gen(fragment,howMuch):
     global step1Defaults
     return merge([{'cfg':fragment},howMuch,step1Defaults])
+# make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
+def genNuGun(fragment,howMuch):
+    global step1Defaults
+    return merge([fragment,howMuch,step1Defaults])
 
 steps['MinBias']=gen('MinBias_8TeV_cfi',Kby(9,300))
 steps['QCD_Pt_3000_3500']=gen('QCD_Pt_3000_3500_8TeV_cfi',Kby(9,25))
@@ -330,6 +334,7 @@ steps['SinglePiPt10']=gen('SinglePiPt10_cfi',Kby(25,250))
 steps['SingleGammaFlatPt10To100']=gen('SingleGammaFlatPt10To100_cfi',Kby(25,250))
 steps['SingleTauPt50Pythia']=gen('SingleTaupt_50_cfi',Kby(25,100))
 steps['SinglePiPt100']=gen('SinglePiPt100_cfi',Kby(25,250))
+steps['NeutrinoPt2to20gun']=gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))
 
 
 def genS(fragment,howMuch):
