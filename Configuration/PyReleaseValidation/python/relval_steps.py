@@ -321,6 +321,7 @@ steps['SinglePiE50HCAL']=merge([{'cfg':'SinglePiE50HCAL_cfi'},ecalHcal,Kby(25,25
 
 steps['MinBiasHS']=gen('MinBias_8TeV_cfi',Kby(25,300))
 steps['MinBiasVHS']=gen('MinBias_8TeV_cfi',Mby(4,50000))
+steps['MinBiasVHS-QGSP-FTFP-BERT']=gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))
 steps['InclusiveppMuX']=gen('InclusiveppMuX_8TeV_cfi',Mby(11,45000))
 steps['SingleElectronFlatPt5To100']=gen('SingleElectronFlatPt5To100_cfi',Kby(25,250))
 steps['SinglePiPt1']=gen('SinglePiPt1_cfi',Kby(25,250))
