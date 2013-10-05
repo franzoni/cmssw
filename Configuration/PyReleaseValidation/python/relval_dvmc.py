@@ -8,4 +8,4 @@ workflows = Matrix()
 workflows[20011] = ['', ['MinBiasVHS','DIGI','RECO','HARVEST']]
 
 #neutrino gun
-#workflows[20011] = ['', ['MinBiasVHS','DIGI','RECO','HARVEST']]
+workflows[20012] = ['', ['NeutrinoPt2to20gun','DIGI','RECO','HARVEST']]
