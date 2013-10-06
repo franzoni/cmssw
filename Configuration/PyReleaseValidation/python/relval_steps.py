@@ -219,6 +219,9 @@ steps['ZElSkim2012D']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012D-ZElec
 stCond={'--conditions':'auto:startup'}
 def Kby(N,s):
     return {'--relval':'%s000,%s'%(N,s)}
+def Mby(N,s):
+    return {'--relval':'%s000000,%s'%(N,s)}
+
 
 
 def gen(fragment,howMuch):
@@ -311,6 +314,8 @@ steps['SingleElectronE120EHCAL']=merge([{'cfg':'SingleElectronE120EHCAL_cfi'},ec
 steps['SinglePiE50HCAL']=merge([{'cfg':'SinglePiE50HCAL_cfi'},ecalHcal,K25by250,step1Defaults])
 
 steps['MinBiasHS']=gen('MinBias_8TeV_cfi',Kby(25,300))
+steps['MinBiasVHS']=gen('MinBias_8TeV_cfi',Mby(4,50000))
+steps['MinBiasVHS-QGSP-FTFP-BERT']=gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))
 steps['InclusiveppMuX']=gen('InclusiveppMuX_8TeV_cfi',K110000by45000)
 steps['SingleElectronFlatPt5To100']=gen('SingleElectronFlatPt5To100_cfi',K250by250)
 steps['SinglePiPt1']=gen('SinglePiPt1_cfi',K250by250)
@@ -321,7 +326,8 @@ steps['SinglePiPt10']=gen('SinglePiPt10_cfi',K250by250)
 steps['SingleGammaFlatPt10To100']=gen('SingleGammaFlatPt10To100_cfi',K250by250)
 steps['SingleTauPt50Pythia']=gen('SingleTaupt_50_cfi',K250by100)
 steps['SinglePiPt100']=gen('SinglePiPt100_cfi',K250by250)
-
+# make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
+steps['NeutrinoPt2to20gun']=gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))
 
 def genS(fragment,howMuch):
     global step1Defaults,stCond
