@@ -12,30 +12,33 @@ parser.add_option("-f", "--fileWithPath",
 parser.add_option("-v", "--verbose",
                   action="store_true", dest="verbose", default=False,
                   help="verbose output for debug mode")
-parser.add_option("--showEmail",
-                  action="store_true", dest="showEmail", default=False,
+parser.add_option("--showEmailAddresses",
+                  action="store_true", dest="showEmailAddresses", default=False,
                   help="show email address of person owner of directory present in popularity file")
 parser.add_option("-n", "--nonexisting",
                   action="store_true", dest="nonexisting", default=False,
                   help="show non existing directories among those signalled by popularity")
-parser.add_option("-e", "--emailSend",
-                  action="store_true", dest="emailSend", default=False,
-                  help="send templated email to people who have directories in popularity report")
+parser.add_option("-b", "--buildEmail",
+                  action="store_true", dest="buildEmail", default=False,
+                  help="build templated email to people who have directories in popularity report; --sendEmail to actually send. ")
+parser.add_option("--sendEmail",
+                  action="store_true", dest="sendEmail", default=False,
+                  help="actually send templated email to people who have directories in popularity report; requires --buildEmail.")
 parser.add_option("--subj",
                   action="store", dest="emailSubject", default="",
-                  help="subject of the emails which will be sent out (if --emailSend) ")
+                  help="subject of the emails which will be sent out (if --buildEmail) ")
 parser.add_option("--from",
                   action="store", dest="emailFrom", default="",
-                  help="emailFrom for the emails which will be sent out (if --emailSend) ")
+                  help="emailFrom for the emails which will be sent out (if --buildEmail) ")
 parser.add_option("--cc",
                   action="store", dest="emailCc", default="",
-                  help="emailCc for the emails which will be sent out (if --emailSend) ")
+                  help="emailCc for the emails which will be sent out (if --buildEmail) ")
 parser.add_option("--rep",
                   action="store", dest="emailReplyTo", default="",
-                  help="emailReplyTo for the emails which will be sent out (if --emailSend) ")
+                  help="emailReplyTo for the emails which will be sent out (if --buildEmail) ")
 parser.add_option("--tem",
                   action="store", dest="emailTemplate", default="",
-                  help="emailTemplate for the emails which will be sent out (if --emailSend) ")
+                  help="emailTemplate for the emails which will be sent out (if --buildEmail) ")
 
 (options, args) = parser.parse_args()
 
@@ -102,7 +105,7 @@ for oneLine in fileLines:
 
 for userId in dict.keys():
     print '\n   ++ %s (%s) holds %s GB of data in %s directories: '%( phonebook.nameAndSurnameFromLogin( userId ),  userId, dict[userId][0], len( dict[userId][1] )  )
-    if options.showEmail:
+    if options.showEmailAddresses:
         print '      email: %s '%( phonebook.emailFromLogin( userId )  )
     print '\n     '.join( dict[userId][1]  )
     print ''
@@ -119,12 +122,12 @@ print ''
 print ''
 
 from sys import exit
-if not options.emailSend :
+if not options.buildEmail :
     exit()
 
-if options.emailSend and (options.emailSubject=="" or options.emailFrom=="" or options.emailReplyTo=="" or options.emailTemplate=="") :
+if options.buildEmail and (options.emailSubject=="" or options.emailFrom=="" or options.emailReplyTo=="" or options.emailTemplate=="") :
     print ''
-    print "    emailSubject, emailFrom, emailReplyTo and emailTemplate all need to be set when emailSend. Bailing out. "
+    print "    *** emailSubject, emailFrom, emailReplyTo and emailTemplate all need to be set when --buildEmail is set. Bailing out. "
     print ''
     print ''
     exit()
@@ -133,6 +136,7 @@ if options.emailSend and (options.emailSubject=="" or options.emailFrom=="" or o
 # Make sure that the user is CERTAIN about sending out all those emials.. 
 print '    ***************************************** \n'
 print '    You\'re about to send %s emails - are you sure ? '%( len( dict.keys() )  )
+if not options.sendEmail : print '    (** in default dry mode, no emails will be sent ** ) '
 confirm = raw_input('    Do you confirm? (y/N) ')
 print '\n    ***************************************** \n'
 confirm = confirm.lower() #convert to lowercase
@@ -156,7 +160,8 @@ for userId in dict.keys():
     replyto_address = options.emailReplyTo
     cc_address      = options.emailCc 
     templatefile    = options.emailTemplate
-
+    dryrun          = not (options.sendEmail)
+    
     # this is the recipient 
     to_address = phonebook.emailFromLogin( userId )
     # to perform local tests
@@ -168,7 +173,7 @@ for userId in dict.keys():
     
     # this is where the email is actually sent out!
     print '   ++sending email to : %s'%(to_address)
-    mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces)
+    mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces, dryrun)
 
 print ''
 print ''
