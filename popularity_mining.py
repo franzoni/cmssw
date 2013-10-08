@@ -1,26 +1,32 @@
 #!/usr/bin/python2.4
 import os, socket, sys, string
+from datetime import date
 import python.eos_tool_phonebook as phonebook
-# TODO: add parsing of the fields from Domenica with creation and access data, and do mining according to variable definition of 'stale' (now from my laptop)
 import python.eos_mining_functions as funct
 
 from optparse import OptionParser
 parser = OptionParser()
 parser.add_option("-f", "--fileWithPath",
                   action="store", dest="fileWithPath", default="",
-                  help="file (with full path) holding popularity statistics")
+                  help="file (with full path) holding popularity statistics from IT/Giordano")
 parser.add_option("-v", "--verbose",
                   action="store_true", dest="verbose", default=False,
                   help="verbose output for debug mode")
+parser.add_option("--timeCreationSel",type="int",
+                  action="store", dest="timeCreationSel", default=-1,
+                  help="selection on most recent file creation inside directory (in days, 'older than')")
+parser.add_option("--timeAccessSel",type="int",
+                  action="store", dest="timeAccessSel", default=-1,
+                  help="selection on most recent access to directory (in days, 'older than')")
 parser.add_option("--showEmailAddresses",
                   action="store_true", dest="showEmailAddresses", default=False,
-                  help="show email address of person owner of directory present in popularity file")
+                  help="show email address of owner of the directory in popularity file")
 parser.add_option("-n", "--nonexisting",
                   action="store_true", dest="nonexisting", default=False,
                   help="show non existing directories among those signalled by popularity")
 parser.add_option("-b", "--buildEmail",
                   action="store_true", dest="buildEmail", default=False,
-                  help="build templated email to people who have directories in popularity report; --sendEmail to actually send. ")
+                  help="build email starting from template to people who have directories in popularity report; --sendEmail required to actually send. ")
 parser.add_option("--sendEmail",
                   action="store_true", dest="sendEmail", default=False,
                   help="actually send templated email to people who have directories in popularity report; requires --buildEmail.")
@@ -61,11 +67,15 @@ fileLines = fileLines.split('\n')
 
 linesCounter          =0
 missingFoldersCounter =0
-integralSpace         =0.
+integralSpace         =0.    # itegral of space recoverable with popularity
+integralSpaceOld      =0.    # itegral of space recoverable with popularity from very stale files
 # dictionary with 0) userID as key, holding a list whose two members are
 # 1) total size of his/her data and 2) a list of directories
-dict = {}
+dict     = {}
+# a second dictionary holding directories which are older than a certain much
+dictOld  = {}
 
+today = date.today()
 ##########################################################################
 # loop over all lines of input file
 for oneLine in fileLines:
@@ -75,11 +85,14 @@ for oneLine in fileLines:
     linesCounter        +=1
     size=0.
     oneFilePath=''
+    latestCreationT=''
+    latestAccessT=''
     #debug
     #print oneLine
     #debug
-    size, oneFilePath   = funct.filePathFromLine(oneLine)
-    userId              = funct.userIdFromFilePath( oneFilePath )
+    size, oneFilePath, latestCreationT, latestAccessT   = funct.filePathFromLine(oneLine)
+    userId                                              = funct.userIdFromFilePath( oneFilePath )
+    #print 'latestCreationT: %s latestAccessTL:%s'%(latestCreationT, latestAccessT)
     if options.verbose:
         print ''
         print 'eos folder number %s of size: %s GB  for user %s'%(linesCounter,size,userId)
@@ -91,16 +104,39 @@ for oneLine in fileLines:
             print  '    folder: %s does NOT EXIST'%( oneFilePath )
         continue
 
+    thisDirIsVeryStale=False
+    #print "timeAccessSel: %s , timeCreationSel: %s "%(options.timeAccessSel,options.timeCreationSel)
+    if (options.timeAccessSel>0) or (options.timeCreationSel>0) : 
+        access      =date(  int(latestAccessT.split("-")[0]), int(latestAccessT.split("-")[1]), int(latestAccessT.split("-")[2]) )
+        sinceAccess = int((today-access).days);
+        #print 'access date after parsing: %s which was %s ago'%(access, sinceAccess)
+        creation=date(  int(latestCreationT.split("-")[0]), int(latestCreationT.split("-")[1]), int(latestCreationT.split("-")[2]) )
+        sinceCreation = int((today-creation).days);
+        #print 'creation date after parsing: %s which was %s ago'%(creation, sinceCreation)
+        if sinceCreation>options.timeCreationSel and sinceAccess>options.timeAccessSel:
+            thisDirIsVeryStale=True
+
+    #insert directory in the dict
     if not (userId in dict.keys() ) :
         dict[userId]=[float(size),[oneFilePath]]
     else :
         dict[userId][1].append(oneFilePath)
         dict[userId][0]+=float(size)
-
     integralSpace+=float(size)
+
+    # if a directory is very stale, insert it also in the dictOld
+    if thisDirIsVeryStale :
+        if not (userId in dictOld.keys() ) :
+            dictOld[userId]=[float(size),[oneFilePath]]
+        else :
+            dictOld[userId][1].append(oneFilePath)
+            dictOld[userId][0]+=float(size)
+        integralSpaceOld+=float(size)
+
 
     if options.verbose:
         print dict
+        print dictOld 
 ##########################################################################
 
 for userId in dict.keys():
@@ -108,6 +144,11 @@ for userId in dict.keys():
     if options.showEmailAddresses:
         print '      email: %s '%( phonebook.emailFromLogin( userId )  )
     print '\n     '.join( dict[userId][1]  )
+    if ( (options.timeAccessSel>0) or (options.timeCreationSel>0) )  :
+        if userId in dictOld.keys() :
+            print '   ++ of which %s are very stale:'%len( dictOld[userId][1])
+            print '\n     '.join( dictOld[userId][1]  )
+
     print ''
     
 
@@ -116,7 +157,7 @@ print ''
 print ''        
 print '    popularity file analyzed: %s'%options.fileWithPath
 print '    found % s folders in input file, of which %s don\'t exist'%(linesCounter,missingFoldersCounter)
-print '    total eos space in this popularity report:  %s GB'%(integralSpace)
+print '    total eos space in this popularity report:  %s (%s very stale) GB'%(integralSpace,integralSpaceOld)
 print '    %s user(s) involved'%( len( dict.keys() )  )
 print ''
 print ''
@@ -167,10 +208,16 @@ for userId in dict.keys():
     # to perform local tests
     #to_address = 'giovanni.franzoni@cern.ch'
     # and his / her directories
-    listOfDirectories =   '\n     '.join( dict[userId][1]  )
-    replaces = [("@NAME@", phonebook.firstNameFromLogin( userId ) ), ("@DUMP@",listOfDirectories) ]
-
-    
+    listOfDirectories    =   '\n     '.join( dict[userId][1]  )
+    # if you're setting time selectings for the 'very stale' files, include also @DUMP2@ in your templated email
+    if ((options.timeAccessSel>0) or (options.timeCreationSel>0))  :
+        if userId in dictOld.keys() :
+            listOfDirectoriesOld =   '\n     '.join( dictOld[userId][1]  )
+            replaces = [("@NAME@", phonebook.firstNameFromLogin( userId ) ), ("@DUMP@",listOfDirectories), ("@DUMP2@",listOfDirectoriesOld) ]
+    # otherwise, include only @DUMP@
+    else :
+        replaces = [("@NAME@", phonebook.firstNameFromLogin( userId ) ), ("@DUMP@",listOfDirectories) ]
+        
     # this is where the email is actually sent out!
     print '   ++sending email to : %s'%(to_address)
     mail.sendMonitoringMail(subject, from_address, to_address, cc_address, replyto_address, templatefile, replaces, dryrun)
