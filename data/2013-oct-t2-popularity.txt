@@ -2,12 +2,9 @@ Dear @NAME@,
 
 TEXT TO BE WRITTEN - 
 
-Best regards,
-Andreas, Gianluca and Giovanni - CMS T3 List
 
-
-Best regards,
-Gianluca and Giovanni - for PPD and Physics
+	 Best regards,
+	 Gianluca, Luca and Giovanni - for PPD and Physics
 
 
 ++ list of your 'stale' directories :
