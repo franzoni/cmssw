@@ -21,4 +21,6 @@ TEXT TO BE WRITTEN -
 [2] Domenico Giordano's talk at PPD
 https://indico.cern.ch/conferenceDisplay.py?confId=251052
 
-[3] https://twiki.cern.ch/twiki/bin/view/CMSPublic/CompOpsCERNArchive
+[3] archival example
+    eos cp -r  /eos/cms/store/cmst3/user/franzoni/ root://castorcms///castor/cern.ch/cms/archive/user/f/franzoni/
+    Note: files in the castor archive are meant for long term archival and will be accessible one week after placing a dedicated request
