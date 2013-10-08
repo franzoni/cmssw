@@ -1,14 +1,14 @@
 import subprocess
 
-# return filename from a line of popularity file
+# returns size, filename, latest-date-of-file-creation, latest-acces  -  from a line of popularity file
 def filePathFromLine( oneLine ):
     oneLineSplit = oneLine.split('\t')
     if len(oneLineSplit) < 6:
         print  'line is: %s and does not fit expected format (filePathFromLine) '%(oneLine)
         return '** path-not-found'
     else :
-        #print 'DEBUG %s '%(    ((oneLineSplit)[3].split())[0] )  # remove this        
-        return  (  ((oneLineSplit)[3].split())[0],   oneLineSplit[5]  )
+        #print 'DEBUG %s '%(    ((oneLineSplit)[3].split())[0] )  # remove this
+        return  (  ((oneLineSplit)[3].split())[0], oneLineSplit[5], oneLineSplit[1], oneLineSplit[2] )
 
 
 # get from eos userId, starting from a directory path in eos 
