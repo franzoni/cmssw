@@ -1,0 +1,40 @@
+Dear @NAME@,
+
+we want to continue using data popularity on a bimonthly basis to manage the eos space of the CMS T3.
+This strategy was introduced at the CMG group meeting in June [1];
+
+There's some directories (full list below) in the CMS T3 eos space which belong to you
+and have gone 'stale' or 'very stale', hence you receive this automated email.
+
+The definition of 'stale' data is [2]:
+   created > 120 days ago, never accessed in the past 90 days
+and of 'very stale' is:
+   created > 240 days ago, never accessed in the past 180 days
+
+Several colleagues replied providing feedback and validating the pilot popularity notification of August 1st
+(for this update, there might have been few glitches in the file access detection between Sep 3rd and 9th, please inform us if you establish that).
+Now we ask you to please take action and free the space taken by old files,
+by either archiving or removing them.
+
+       Best regards,
+       Andreas, Gianluca and Giovanni - CMS T3 admin
+
+
+
+++ list of your 'stale' directories (inclusive) :
+@DUMP@
+
+++ list of your 'very stale' directories :
+@DUMP2@
+
+
+
+
+[1] https://indico.cern.ch/materialDisplay.py?contribId=0&materialId=slides&confId=258619
+
+[2] Domenico Giordano's talk at PPD
+https://indico.cern.ch/conferenceDisplay.py?confId=251052
+
+[3] archival example
+    eos cp -r  /eos/cms/store/cmst3/user/franzoni/ root://castorcms///castor/cern.ch/cms/archive/user/f/franzoni/
+    Note: files in the castor archive are meant for long term archival and will be accessible one week after placing a dedicated request
