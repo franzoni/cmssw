@@ -1,0 +1,27 @@
+Dear @NAME@,
+
+TEXT TO BE WRITTEN - 
+
+Best regards,
+Andreas, Gianluca and Giovanni - CMS T3 List
+
+
+Best regards,
+Gianluca and Giovanni - for PPD and Physics
+
+
+++ list of your 'stale' directories :
+@DUMP@
+
+++ list of your 'very stale' directories :
+@DUMP2@
+
+
+
+
+[1] https://indico.cern.ch/materialDisplay.py?contribId=0&materialId=slides&confId=258619
+
+[2] Domenico Giordano's talk at PPD
+https://indico.cern.ch/conferenceDisplay.py?confId=251052
+
+[3] https://twiki.cern.ch/twiki/bin/view/CMSPublic/CompOpsCERNArchive
