@@ -220,7 +220,7 @@ steps['WElSkim2012D']={'INPUT':InputInfo(dataSet='/SingleElectron/Run2012D-WElec
 steps['ZElSkim2012D']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012D-ZElectron-PromptSkim-v1/RAW-RECO',label='zEl2012D',location='STD',run=Run2012Dsk)}
 
 #### Standard release validation samples ####
-
+# '--relval':'numEvents,eventsPerJob'
 stCond={'--conditions':'auto:startup'}
 def Kby(N,s):
     return {'--relval':'%s000,%s'%(N,s)}
@@ -321,7 +321,7 @@ steps['SingleElectronE120EHCAL']=merge([{'cfg':'SingleElectronE120EHCAL_cfi'},ec
 steps['SinglePiE50HCAL']=merge([{'cfg':'SinglePiE50HCAL_cfi'},ecalHcal,Kby(25,250),step1Defaults])
 
 steps['MinBiasHS']=gen('MinBias_8TeV_cfi',Kby(25,300))
-steps['MinBiasVHS']=gen('MinBias_8TeV_cfi',Mby(4,50000))
+steps['MinBiasVHS']=gen('MinBias_8TeV_cfi',Mby(4,500))
 steps['MinBiasVHS-QGSP-FTFP-BERT']=gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))
 steps['InclusiveppMuX']=gen('InclusiveppMuX_8TeV_cfi',Mby(11,45000))
 steps['SingleElectronFlatPt5To100']=gen('SingleElectronFlatPt5To100_cfi',Kby(25,250))
@@ -333,10 +333,6 @@ steps['SinglePiPt10']=gen('SinglePiPt10_cfi',Kby(25,250))
 steps['SingleGammaFlatPt10To100']=gen('SingleGammaFlatPt10To100_cfi',Kby(25,250))
 steps['SingleTauPt50Pythia']=gen('SingleTaupt_50_cfi',Kby(25,100))
 steps['SinglePiPt100']=gen('SinglePiPt100_cfi',Kby(25,250))
-# make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
-steps['NeutrinoPt2to20gun']=gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))
-steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
-#####################steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v1/GEN-SIM',location='STD')}
 
 
 
@@ -1185,6 +1181,11 @@ steps['COPYPASTE']={'-s':'NONE',
 ################################
 # data vs mc dedicated workflows
 ################################
+
+# make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
+steps['NeutrinoPt2to20gun']=gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))
+steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
+
 myrun=199812 # => this is available at CERN, for tests!
 #myrun=203002 # => this is whatIwant in production
 Run2012Cdvmc=[myrun]
@@ -1218,7 +1219,19 @@ steps['RunZBias2012Advmc']={'INPUT':InputInfo(dataSet='/LP_ZeroBias/Run2012A-v1/
 Run25ns201DCdvmc=[209148]
 steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v1/RAW',label='zb2012Ddvmc',location='STD',run=Run25ns201DCdvmc)}
 
-PUrun203002={'-n':10,'--pileup':'default','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[2],)}
-steps['DIGIPUdvmc']=merge([PUrun203002,step2Defaults])
 
+dvmcCondMC={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED 
+PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,step2Defaults])
+steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
+steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
+PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,step2Defaults])
+steps['RECOMIN198588dvmc']=merge([PUrun198588,dvmcCondMC,steps['RECOMIN']])
+
+PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC,step2Defaults])
+steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC,steps['RECOMIN']])
+
+steps['DYJetsToLL']=gen('--evt_type=Configuration/genproductions/python/EightTeV/DYJetsToLL_M_50_8TeV_madgraph_tarball_cfg.py',Mby(1,200))
