@@ -321,8 +321,6 @@ steps['SingleElectronE120EHCAL']=merge([{'cfg':'SingleElectronE120EHCAL_cfi'},ec
 steps['SinglePiE50HCAL']=merge([{'cfg':'SinglePiE50HCAL_cfi'},ecalHcal,Kby(25,250),step1Defaults])
 
 steps['MinBiasHS']=gen('MinBias_8TeV_cfi',Kby(25,300))
-steps['MinBiasVHS']=gen('MinBias_8TeV_cfi',Mby(4,500))
-steps['MinBiasVHS-QGSP-FTFP-BERT']=gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))
 steps['InclusiveppMuX']=gen('InclusiveppMuX_8TeV_cfi',Mby(11,45000))
 steps['SingleElectronFlatPt5To100']=gen('SingleElectronFlatPt5To100_cfi',Kby(25,250))
 steps['SinglePiPt1']=gen('SinglePiPt1_cfi',Kby(25,250))
@@ -1182,17 +1180,36 @@ steps['COPYPASTE']={'-s':'NONE',
 # data vs mc dedicated workflows
 ################################
 
+#------------------------------
+# MC basics: MinBias for PU
+#------------------------------
+
+dvmcCondMC={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED 
+dvmcCondData={'--conditions':'GR_R_62_V1::All',}    # GT TO BE REPLACED 
+
+steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
+steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
+steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
+steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
+
 # make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
-steps['NeutrinoPt2to20gun']=gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))
+steps['NeutrinoPt2to20gun']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))])
 steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
 
-myrun=199812 # => this is available at CERN, for tests!
-#myrun=203002 # => this is whatIwant in production
+steps['MinBiasVHS-QGSP-FTFP-BERT']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))])
+
+
+#------------------------------
+# data
+#------------------------------
+
+#myrun=199812 # => this is available at CERN, for tests!
+myrun=203002 # => this is whatIwant in production
 Run2012Cdvmc=[myrun]
 # phedex transefr ongoing for run 203002 RunMinBias2012Cdvmc
 steps['RunMinBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012C-v1/RAW',label='mb2012Cdvmc',run=Run2012Cdvmc, events=100000,location='STD')}
-steps['RECODdvmc']=merge([{'--conditions':'GR_R_62_V1::All','--scenario':'pp'},steps['RECOD']])             # GT to be replaced
-steps['HARVESTDdvmc']=merge([{'--conditions':'GR_R_62_V1::All'},steps['HARVESTD']])                         # GT to be replaced, same as above
+steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['RECOD']])             # GT to be replaced
+steps['HARVESTDdvmc']=merge([dvmcCondData,steps['HARVESTD']])                         # GT to be replaced, same as above
 
 # phedex transefr ongoing for run 203002 ZElSkim2012Cdvmc
 steps['ZElSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012C-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012Cdvmc',location='STD',run=Run2012Cdvmc)}
@@ -1201,9 +1218,14 @@ steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOSK
 
 steps['DoubleMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMu/Run2012C-v1/RAW',label='douMu2012C',location='STD',run=Run2012Cdvmc)}
 
+
+#------------------------------
+# MC
+#------------------------------
+
 # das makes no run selection
-#whole2012Cdvmc=[-1]
-whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
+whole2012Cdvmc=[-1]
+#whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
 steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012C-Zmmg-22Jan2013-v1/RAW-RECO',label='douMuPar2012B',location='STD',run=whole2012Cdvmc)}
 
 steps['RunMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-v1/RAW',label='mu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
@@ -1220,11 +1242,9 @@ Run25ns201DCdvmc=[209148]
 steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v1/RAW',label='zb2012Ddvmc',location='STD',run=Run25ns201DCdvmc)}
 
 
-dvmcCondMC={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED 
 PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
 steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,step2Defaults])
 steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
-steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
 PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
 steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,step2Defaults])
@@ -1234,4 +1254,14 @@ PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':
 steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC,step2Defaults])
 steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC,steps['RECOMIN']])
 
-steps['DYJetsToLL']=gen('--evt_type=Configuration/genproductions/python/EightTeV/DYJetsToLL_M_50_8TeV_madgraph_tarball_cfg.py',Mby(1,200))
+steps['ZEEdvmc']=merge([dvmcCondMC,gen('ZEE_8TeV_cfi',Kby(200,200))])
+steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
+# gridpack and fragment asked to SMP - GEN seem need be made outside of relVal
+#steps['DYJetsToLL']=gen('--evt_type=Configuration/genproductions/python/EightTeV/DYJetsToLL_M_50_8TeV_madgraph_tarball_cfg.py',Mby(1,200))
+#
+steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])
+# 
+steps['ZMMGammadvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi ENRICH GEN FILTER',Mby(1,500))])
+PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+steps['DIGIPU2012Cdvmc']=merge([PU2012C,dvmcCondMC,step2Defaults])
+steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])

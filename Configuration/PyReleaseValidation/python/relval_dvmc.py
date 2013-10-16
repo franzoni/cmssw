@@ -9,19 +9,18 @@ workflows = Matrix()
 ###############################
 
 # plain MC minbias (sent both in 612 and 621)
-workflows[20011] = ['', ['MinBiasVHS','DIGI','RECO','HARVEST']]
+workflows[20011] = ['', ['MinBiasVHS','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 #neutrino gun
-workflows[20012] = ['', ['NeutrinoPt2to20gun','DIGI','RECO','HARVEST']]
+workflows[20012] = ['', ['NeutrinoPt2to20gun','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 # minbias MC with G4 customization 
-workflows[20013] = ['', ['MinBiasVHS-QGSP-FTFP-BERT','DIGI','RECO','HARVEST']]
-
+workflows[20013] = ['', ['MinBiasVHS-QGSP-FTFP-BERT','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 
 ###############################
 # data
 ###############################
 # 
 workflows[20101] = ['', ['RunMinBias2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
-# 
+# input dataset available at CERN => 20102 can be tested
 workflows[20102] = ['',['ZElSkim2012Cdvmc','RECOSKIMdvmc','HARVESTDdvmc']]
 # 
 workflows[20103] = ['',['DoubleMu2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
@@ -44,7 +43,18 @@ workflows[20110] = ['',['RunZBias2012Ddvmc','RECODdvmc','HARVESTDdvmc']]
 ###############################
 # MC samples for comparisons
 ###############################
-workflows[20201] = ['', ['NeutrinoPt2to20gun','DIGIPUdvmc','RECOMIN','HARVEST','ALCAMIN']]
-workflows[20202] = ['', ['QCD_Pt_80_120','DIGI','RECO','HARVEST']]
+# typical min bias run 2012C
+workflows[20201] = ['', ['NeutrinoPt2to20gun','DIGIPU203002dvmc','RECOMIN203002dvmc','HARVESTdvmc','ALCAMIN']]
+# high pile up
+workflows[20202] = ['', ['NeutrinoPt2to20gun','DIGIPU198588dvmc','RECOMIN198588dvmc','HARVESTdvmc','ALCAMIN']]
+# low pile up
+workflows[20203] = ['', ['NeutrinoPt2to20gun','DIGIPU209148dvmc','RECOMIN209148dvmc','HARVESTdvmc','ALCAMIN']]
+# 
+workflows[20204] = ['', ['ZEEdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+# wf with lhe to be followed up
+#workflows[20205] = ['', ['DYJetsToLL','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+# 
+workflows[20206] = ['', ['ZMMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+# 
+workflows[20207] = ['', ['ZMMGammadvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc',]]
 
-#  LocalWords:  HARVESTDdvmc
