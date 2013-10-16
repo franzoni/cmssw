@@ -272,7 +272,8 @@ baseDataSetRelease=[
     'CMSSW_6_2_0_pre2-START61_V11_g496p1-v2',#'CMSSW_6_1_0_pre6-START61_V5-v2',#'CMSSW_6_0_0-PU_START60_V4-v1',
     'CMSSW_6_1_0_pre6-START61_V5_FastSim-v1',#'CMSSW_6_0_0-START60_V4_FastSim-v1'
     'CMSSW_6_2_0_pre2-START61_V11_g496p1-v3',
-    'CMSSW_6_2_0_pre2-START61_V11_g496p1_02May2013-v1' ## this is a fuck up in the dataset naming
+    'CMSSW_6_2_0_pre2-START61_V11_g496p1_02May2013-v1', ## this is a fuck up in the dataset naming
+    'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v1',#data.vs.mc validation
     ]
 
 steps['MinBiasINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[2],),location='STD')}
@@ -334,6 +335,9 @@ steps['SingleTauPt50Pythia']=gen('SingleTaupt_50_cfi',Kby(25,100))
 steps['SinglePiPt100']=gen('SinglePiPt100_cfi',Kby(25,250))
 # make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
 steps['NeutrinoPt2to20gun']=gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))
+steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
+#####################steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v1/GEN-SIM',location='STD')}
+
 
 
 def genS(fragment,howMuch):
@@ -1176,3 +1180,45 @@ steps['COPYPASTE']={'-s':'NONE',
                     '--conditions':'auto:startup',
                     '--output':'\'[{"t":"RAW","e":"ALL"}]\'',
                     '--customise_commands':'"process.ALLRAWoutput.fastCloning=cms.untracked.bool(False)"'}
+
+
+################################
+# data vs mc dedicated workflows
+################################
+myrun=199812 # => this is available at CERN, for tests!
+#myrun=203002 # => this is whatIwant in production
+Run2012Cdvmc=[myrun]
+# phedex transefr ongoing for run 203002 RunMinBias2012Cdvmc
+steps['RunMinBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012C-v1/RAW',label='mb2012Cdvmc',run=Run2012Cdvmc, events=100000,location='STD')}
+steps['RECODdvmc']=merge([{'--conditions':'GR_R_62_V1::All','--scenario':'pp'},steps['RECOD']])             # GT to be replaced
+steps['HARVESTDdvmc']=merge([{'--conditions':'GR_R_62_V1::All'},steps['HARVESTD']])                         # GT to be replaced, same as above
+
+# phedex transefr ongoing for run 203002 ZElSkim2012Cdvmc
+steps['ZElSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012C-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+steps['RECOSKIMALCAdvmc']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'},steps['RECODdvmc']])
+steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOSKIMALCAdvmc']])
+
+steps['DoubleMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMu/Run2012C-v1/RAW',label='douMu2012C',location='STD',run=Run2012Cdvmc)}
+
+# das makes no run selection
+#whole2012Cdvmc=[-1]
+whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
+steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012C-Zmmg-22Jan2013-v1/RAW-RECO',label='douMuPar2012B',location='STD',run=whole2012Cdvmc)}
+
+steps['RunMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-v1/RAW',label='mu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+steps['ZMuSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-ZMu-22Jan2013-v1/RAW-RECO',label='zMu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+steps['RunJetMon2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetMon/Run2012C-v1/RAW',label='jetMon2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+
+RunHighPU2012Cdvmc=[198588]
+steps['RunZBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/ZeroBias/Run2012C-v1/RAW',label='zb2012Cdvmc',location='STD',run=RunHighPU2012Cdvmc)}
+
+RunLowPU2012Cdvmc=[193092]
+steps['RunZBias2012Advmc']={'INPUT':InputInfo(dataSet='/LP_ZeroBias/Run2012A-v1/RAW',label='zb2012Advmc',location='STD',run=RunLowPU2012Cdvmc)}
+
+Run25ns201DCdvmc=[209148]
+steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v1/RAW',label='zb2012Ddvmc',location='STD',run=Run25ns201DCdvmc)}
+
+PUrun203002={'-n':10,'--pileup':'default','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[2],)}
+steps['DIGIPUdvmc']=merge([PUrun203002,step2Defaults])
+
+
