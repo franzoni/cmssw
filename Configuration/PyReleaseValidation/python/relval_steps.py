@@ -1188,6 +1188,7 @@ dvmcCondMC25ns={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED
 dvmcCondData  ={'--conditions':'GR_R_62_V1::All',}
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
+steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',location='STD')}
 steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
@@ -1231,7 +1232,7 @@ steps['RunJetMon2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetMon/Run2012C-v1/RAW'
 
 steps['RunJetHT2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetHT/Run2012C-v1/RAW',label='jetHT2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 
-steps['RECODmultiJetdvmc']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterZeroBias.filterZeroBias,RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,DQM',},steps['RECOD']])             # GT to be replaced
+steps['RECODmultiJetdvmc']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterZeroBias.filterZeroBias,RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,DQM',},steps['RECOD']])
 steps['RECODmultiJetdvmcNEW']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterHLT_PFJet40.filterHLT_PFJet40,RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOD']])             # GT to be replaced
 
 
@@ -1250,23 +1251,36 @@ steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v
 # MC
 #------------------------------
 
-PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
-steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,step2Defaults])
+SetRun193092={'--runsAndWeightsForMC' : ' \"[(193092,1.)] \" ',}
+steps['DIGIPU193092dvmc']=merge([dvmcCondMC,SetRun193092,step2Defaults])
+steps['RECOMIN193092dvmc']=merge([dvmcCondMC,steps['RECOMIN']])
+
+
+PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',}
+SetRun203002={'--runsAndWeightsForMC' : ' \"[(203002,1.)] \" ',}
+steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,SetRun203002,step2Defaults])
 steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
+# looking at this
 
 PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
-steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,step2Defaults])
+SetRun198588={'--runsAndWeightsForMC' : ' \"[(198588,1.)] \" ',}
+steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,SetRun198588,step2Defaults])
 steps['RECOMIN198588dvmc']=merge([PUrun198588,dvmcCondMC,steps['RECOMIN']])
 
 PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
-steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC,step2Defaults])
-steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC,steps['RECOMIN']])
+SetRun209148={'--runsAndWeightsForMC' : ' \"[(209148,1.)] \" ',}
+steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2Defaults])
+steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])
 
 steps['ZEEdvmc']=merge([dvmcCondMC,gen('ZEE_8TeV_cfi',Kby(200,200))])
 steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
+
+# this still needs be done - FIX
 # gridpack and fragment asked to SMP - GEN seem need be made outside of relVal
 #steps['DYJetsToLL']=gen('--evt_type=Configuration/genproductions/python/EightTeV/DYJetsToLL_M_50_8TeV_madgraph_tarball_cfg.py',Mby(1,200))
 #
+# this still needs be done - FIX
+
 steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])
 #
 #steps['ZMMGammadvmcURK']=merge([dvmcCondMC,{"-s":"GEN,FILTER:GeneratorInterface/GenFilters/ZgammaFilter_cfi.ZgammaFilter,SIM"},gen('ZMM_8TeV_cfi',Mby(1,500))])
@@ -1279,7 +1293,7 @@ steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
 
 steps['WMdvmc']=merge([dvmcCondMC,gen('WM_8TeV_cfi',Kby(200,200))])
 
-steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(66,1000))])
+steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(200,200))])
 
 steps['QCD_Pt_30to50']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_30to50_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])
 steps['QCD_Pt_50to80']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_50to80_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])

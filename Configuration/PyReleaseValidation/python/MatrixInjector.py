@@ -334,6 +334,8 @@ class MatrixInjector(object):
                     t['KeepOutput']=True
                 elif t['TaskName'] in self.keep:
                     t['KeepOutput']=True
+                if t['TaskName'].startswith('DIGI'):     #GF force no dataset is kept
+                    t['KeepOutput']=False                #GF out of digi step 
                 t.pop('nowmIO')
                 itask+=1
                 chainDict['Task%d'%(itask)]=t

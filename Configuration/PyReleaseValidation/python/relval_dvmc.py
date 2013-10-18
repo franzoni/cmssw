@@ -52,25 +52,30 @@ workflows[20111] = ['',['RunZBias2012Ddvmc','RECODdvmc','HARVESTDdvmc']]
 workflows[20201] = ['', ['NeutrinoPt2to20gun','DIGIPU203002dvmc','RECOMIN203002dvmc','HARVESTdvmc','ALCAMIN']]
 # high pile up
 workflows[20202] = ['', ['NeutrinoPt2to20gun','DIGIPU198588dvmc','RECOMIN198588dvmc','HARVESTdvmc','ALCAMIN']]
-# low pile up
-workflows[20203] = ['', ['NeutrinoPt2to20gun','DIGIPU209148dvmc','RECOMIN209148dvmc','HARVESTdvmc','ALCAMIN']]
-# 
-workflows[20204] = ['', ['ZEEdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
-# wf with lhe to be followed up
-#workflows[20205] = ['', ['DYJetsToLL','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
-# 
-workflows[20206] = ['', ['ZMMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
-# gen level filter pull requested ; issue with cmsDriver.py and handling of filters
-#workflows[20207] = ['', ['ZMMGammadvmc','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc',]]
-# 
-workflows[20208] = ['', ['WMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
-# 
-workflows[20209] = ['', ['JpsiMMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
-#
-workflows[20210] = ['', ['QCD_Pt_30to50','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc']]
-workflows[20211] = ['', ['QCD_Pt_50to80','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc']]
-workflows[20212] = ['', ['QCD_Pt_80to120','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc']]
-workflows[20213] = ['', ['QCD_Pt_120to170','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc']]
-workflows[20214] = ['', ['QCD_Pt_170to300','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc']]
-workflows[20215] = ['', ['QCD_Pt_300to470','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc']]
+# 25 ns to be done when GT available FIX
+#workflows[20203] = ['', ['NeutrinoPt2to20gun','DIGIPU209148dvmc','RECOMIN209148dvmc','HARVESTdvmc','ALCAMIN']]
+# re-digi single MB for low pu
+workflows[20204] = ['', ['MinBiasVHS','DIGIPU193092dvmc','RECOMIN193092dvmc','HARVESTdvmc']]
 
+workflows[20205] = ['', ['ZEEdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+
+# wf with lhe to be followed up
+#workflows[20206] = ['', ['DYJetsToLL','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+# 
+
+workflows[20207] = ['', ['ZMMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+
+# gen level filter pull requested ; issue with cmsDriver.py and handling of filters
+#workflows[20208] = ['', ['ZMMGammadvmc','DIGIPU2012Cdvmc','RECO2012Cdvmc','HARVESTdvmc',]]
+
+# 
+workflows[20209] = ['', ['WMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+# 
+workflows[20210] = ['', ['JpsiMMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+# The following wf's (jetMet) may need be re-run with DIGIPU2012Cdvmc (btag)
+workflows[20211] = ['', ['QCD_Pt_30to50','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+workflows[20212] = ['', ['QCD_Pt_50to80','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+workflows[20213] = ['', ['QCD_Pt_80to120','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+workflows[20214] = ['', ['QCD_Pt_120to170','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+workflows[20215] = ['', ['QCD_Pt_170to300','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+workflows[20216] = ['', ['QCD_Pt_300to470','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
