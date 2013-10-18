@@ -128,6 +128,7 @@ class MatrixInjector(object):
             "InputDataset" : None,                                       #Input Dataset to be processed
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
+            #"LumisPerJob" : 50,               #Size of jobs in terms of splitting algorithm  GF
             "nowmIO": {},
             "KeepOutput" : False
             }
@@ -139,6 +140,7 @@ class MatrixInjector(object):
             "GlobalTag": None,
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
+            #"LumisPerJob" : 50,               #Size of jobs in terms of splitting algorithm  #GF
             "nowmIO": {},
             "KeepOutput" : False
             }
@@ -226,11 +228,14 @@ class MatrixInjector(object):
                                 chainDict['nowmTasklist'][-1]['InputDataset']=nextHasDSInput.dataSet
                                 splitForThisWf=nextHasDSInput.split
                                 chainDict['nowmTasklist'][-1]['LumisPerJob']=splitForThisWf
+                                #chainDict['nowmTasklist'][-1]['LumisPerJob']=75 # GF
                                 if step in wmsplit:
                                     chainDict['nowmTasklist'][-1]['LumisPerJob']=wmsplit[step]
+                                    #chainDict['nowmTasklist'][-1]['LumisPerJob']=75   #GF
                                 # get the run numbers or #events
                                 if len(nextHasDSInput.run):
                                     chainDict['nowmTasklist'][-1]['RunWhitelist']=nextHasDSInput.run
+                                    #chainDict['nowmTasklist'][-1]['RunWhitelist']='[]'  # GF GF
                                 #print "what is s",s[2][index]
                                 if '--data' in s[2][index] and nextHasDSInput.label:
                                     thisLabel+='_RelVal_%s'%nextHasDSInput.label

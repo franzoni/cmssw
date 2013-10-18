@@ -1183,9 +1183,9 @@ steps['COPYPASTE']={'-s':'NONE',
 #------------------------------
 # MC basics: MinBias for PU
 #------------------------------
-
-dvmcCondMC={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED 
-dvmcCondData={'--conditions':'GR_R_62_V1::All',}    # GT TO BE REPLACED 
+dvmcCondMC    ={'--conditions':'START62_V1::All',}
+dvmcCondMC25ns={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED 
+dvmcCondData  ={'--conditions':'GR_R_62_V1::All',}
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
 steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
@@ -1203,36 +1203,33 @@ steps['MinBiasVHS-QGSP-FTFP-BERT']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi  --cu
 # data
 #------------------------------
 
-#myrun=199812 # => this is available at CERN, for tests!
 myrun=203002 # => this is whatIwant in production
 Run2012Cdvmc=[myrun]
 # phedex transefr ongoing for run 203002 RunMinBias2012Cdvmc
 steps['RunMinBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012C-v1/RAW',label='mb2012Cdvmc',run=Run2012Cdvmc, events=100000,location='STD')}
-steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['RECOD']])             # GT to be replaced
-steps['HARVESTDdvmc']=merge([dvmcCondData,steps['HARVESTD']])                         # GT to be replaced, same as above
+steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['RECOD']])
+steps['HARVESTDdvmc']=merge([dvmcCondData,steps['HARVESTD']])
 
-# phedex transefr ongoing for run 203002 ZElSkim2012Cdvmc
 steps['ZElSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012C-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 steps['RECOSKIMALCAdvmc']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'},steps['RECODdvmc']])
 steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOSKIMALCAdvmc']])
 
 steps['DoubleMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMu/Run2012C-v1/RAW',label='douMu2012C',location='STD',run=Run2012Cdvmc)}
 
-
-#------------------------------
-# MC
-#------------------------------
-
 # das makes no run selection
 whole2012Cdvmc=[-1]
 #whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
-steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012C-Zmmg-22Jan2013-v1/RAW-RECO',label='douMuPar2012B',location='STD',run=whole2012Cdvmc)}
+steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012C-Zmmg-22Jan2013-v1/RAW-RECO',label='douMuPar2012C',location='STD',run=whole2012Cdvmc)}
 
 steps['RunMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-v1/RAW',label='mu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 steps['ZMuSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-ZMu-22Jan2013-v1/RAW-RECO',label='zMu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 steps['RunJetMon2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetMon/Run2012C-v1/RAW',label='jetMon2012Cdvmc',location='STD',run=Run2012Cdvmc)}
-steps['RunMultiJet2012Cdvmc']={'INPUT':InputInfo(dataSet='/MultiJet/Run2012C-v1/RAW',label='multiJet2012Cdvmc',location='STD',run=Run2012Cdvmc)} # FIXME for run range
+
+# this one below is to be worked on FIX
+#steps['RunMultiJet2012Cdvmc']={'INPUT':InputInfo(dataSet='/MultiJet/Run2012C-v1/RAW',label='multiJet2012Cdvmc',location='STD',run=Run2012Cdvmc)} # FIXME for run range
 #steps['RunMultiJet2012Cdvmc']={'INPUT':InputInfo(dataSet='/MultiJet/Run2012C-v1/RAW',label='multiJet2012Cdvmc',location='STD',run=whole2012Cdvmc)} # FIXME for run range
+
+steps['RunJetHT2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetHT/Run2012C-v1/RAW',label='jetHT2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 
 steps['RECODmultiJetdvmc']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterZeroBias.filterZeroBias,RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,DQM',},steps['RECOD']])             # GT to be replaced
 steps['RECODmultiJetdvmcNEW']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterHLT_PFJet40.filterHLT_PFJet40,RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOD']])             # GT to be replaced
@@ -1247,6 +1244,11 @@ steps['RunZBias2012Advmc']={'INPUT':InputInfo(dataSet='/LP_ZeroBias/Run2012A-v1/
 Run25ns201DCdvmc=[209148]
 steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v1/RAW',label='zb2012Ddvmc',location='STD',run=Run25ns201DCdvmc)}
 
+
+
+#------------------------------
+# MC
+#------------------------------
 
 PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
 steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,step2Defaults])
@@ -1283,4 +1285,5 @@ steps['QCD_Pt_30to50']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproduc
 steps['QCD_Pt_50to80']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_50to80_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])
 steps['QCD_Pt_80to120']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_80to120_TuneZ2star_8TeV_pythia6_cff',Kby(130,100))])
 steps['QCD_Pt_120to170']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_120to170_TuneZ2star_8TeV_pythia6_cff',Kby(20,100))])
-steps['QCD_Pt_170to300']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_170to300_TuneZ2star_8TeV_pythia6_cff',Kby(9,100))])
+steps['QCD_Pt_170to300']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_170to300_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
+steps['QCD_Pt_300to470']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_300to470_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
