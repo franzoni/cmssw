@@ -274,6 +274,7 @@ baseDataSetRelease=[
     'CMSSW_6_2_0_pre2-START61_V11_g496p1-v3',
     'CMSSW_6_2_0_pre2-START61_V11_g496p1_02May2013-v1', ## this is a fuck up in the dataset naming
     'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v1',#data.vs.mc validation
+    'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2',#data.vs.mc validation
     ]
 
 steps['MinBiasINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[2],),location='STD')}
@@ -1188,7 +1189,7 @@ dvmcCondMC25ns={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED
 dvmcCondData  ={'--conditions':'GR_R_62_V1::All',}
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
-steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',location='STD')}
+steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetRelease[7],),location='STD')}
 steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
