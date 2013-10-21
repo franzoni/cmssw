@@ -162,6 +162,7 @@ class MatrixInjector(object):
             wmsplit['DIGIHISt3']=5
             wmsplit['RECOHISt4']=5
             wmsplit['SingleMuPt10_ID']=1
+            wmsplit['RECODSplitdvmc']=2
             wmsplit['DIGI_ID']=1
             wmsplit['RECO_ID']=1
             wmsplit['TTbar_ID']=1
@@ -228,10 +229,8 @@ class MatrixInjector(object):
                                 chainDict['nowmTasklist'][-1]['InputDataset']=nextHasDSInput.dataSet
                                 splitForThisWf=nextHasDSInput.split
                                 chainDict['nowmTasklist'][-1]['LumisPerJob']=splitForThisWf
-                                #chainDict['nowmTasklist'][-1]['LumisPerJob']=75 # GF
                                 if step in wmsplit:
                                     chainDict['nowmTasklist'][-1]['LumisPerJob']=wmsplit[step]
-                                    #chainDict['nowmTasklist'][-1]['LumisPerJob']=75   #GF
                                 # get the run numbers or #events
                                 if len(nextHasDSInput.run):
                                     chainDict['nowmTasklist'][-1]['RunWhitelist']=nextHasDSInput.run
