@@ -27,7 +27,7 @@ workflows[20103] = ['',['DoubleMu2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
 # 
 workflows[20104] = ['',['DoubleMuParked2012Cdvmc','RECOSKIMdvmc','HARVESTDdvmc']]
 # 
-workflows[20105] = ['',['RunMu2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
+workflows[20105] = ['',['RunMu2012Cdvmc','RECODSplitdvmc','HARVESTDdvmc']]
 # 
 workflows[20106] = ['',['ZMuSkim2012Cdvmc','RECOSKIMdvmc','HARVESTDdvmc']]
 # STILL TO BE DONE
@@ -38,7 +38,7 @@ workflows[20106] = ['',['ZMuSkim2012Cdvmc','RECOSKIMdvmc','HARVESTDdvmc']]
 # 
 workflows[20108] = ['',['RunJetHT2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
 # high PU ZeroBias 
-workflows[20109] = ['',['RunZBias2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
+workflows[20109] = ['',['RunZBias2012Cdvmc','RECODSplitdvmc','HARVESTDdvmc']]
 # low PU ZeroBias 
 workflows[20110] = ['',['RunZBias2012Advmc','RECODdvmc','HARVESTDdvmc']]
 # 25 ns ZeroBias 
