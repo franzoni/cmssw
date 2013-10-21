@@ -1210,6 +1210,7 @@ Run2012Cdvmc=[myrun]
 # phedex transefr ongoing for run 203002 RunMinBias2012Cdvmc
 steps['RunMinBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012C-v1/RAW',label='mb2012Cdvmc',run=Run2012Cdvmc, events=100000,location='STD')}
 steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['RECOD']])
+steps['RECODSplitdvmc']=steps['RECODdvmc']     # selected to have higher job splitting , see wmsplit in MatrixInjector
 steps['HARVESTDdvmc']=merge([dvmcCondData,steps['HARVESTD']])
 
 steps['ZElSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012C-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012Cdvmc',location='STD',run=Run2012Cdvmc)}
@@ -1219,8 +1220,9 @@ steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOSK
 steps['DoubleMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMu/Run2012C-v1/RAW',label='douMu2012C',location='STD',run=Run2012Cdvmc)}
 
 # das makes no run selection
-whole2012Cdvmc=[-1]
-#whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
+#whole2012Cdvmc=[]
+#whole2012Cdvmc=[-1]
+whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
 steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012C-Zmmg-22Jan2013-v1/RAW-RECO',label='douMuPar2012C',location='STD',run=whole2012Cdvmc)}
 
 steps['RunMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-v1/RAW',label='mu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
