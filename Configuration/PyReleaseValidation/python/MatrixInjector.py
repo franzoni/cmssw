@@ -128,6 +128,7 @@ class MatrixInjector(object):
             "InputDataset" : None,                                       #Input Dataset to be processed
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
+            #"LumisPerJob" : 50,               #Size of jobs in terms of splitting algorithm  GF
             "nowmIO": {},
             "KeepOutput" : False
             }
@@ -139,6 +140,7 @@ class MatrixInjector(object):
             "GlobalTag": None,
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
+            #"LumisPerJob" : 50,               #Size of jobs in terms of splitting algorithm  #GF
             "nowmIO": {},
             "KeepOutput" : False
             }
@@ -160,6 +162,7 @@ class MatrixInjector(object):
             wmsplit['DIGIHISt3']=5
             wmsplit['RECOHISt4']=5
             wmsplit['SingleMuPt10_ID']=1
+            wmsplit['RECODSplitdvmc']=2
             wmsplit['DIGI_ID']=1
             wmsplit['RECO_ID']=1
             wmsplit['TTbar_ID']=1
@@ -231,6 +234,7 @@ class MatrixInjector(object):
                                 # get the run numbers or #events
                                 if len(nextHasDSInput.run):
                                     chainDict['nowmTasklist'][-1]['RunWhitelist']=nextHasDSInput.run
+                                    #chainDict['nowmTasklist'][-1]['RunWhitelist']='[]'  # GF GF
                                 #print "what is s",s[2][index]
                                 if '--data' in s[2][index] and nextHasDSInput.label:
                                     thisLabel+='_RelVal_%s'%nextHasDSInput.label
@@ -329,6 +333,8 @@ class MatrixInjector(object):
                     t['KeepOutput']=True
                 elif t['TaskName'] in self.keep:
                     t['KeepOutput']=True
+                if t['TaskName'].startswith('DIGI'):     #GF force no dataset is kept
+                    t['KeepOutput']=False                #GF out of digi step 
                 t.pop('nowmIO')
                 itask+=1
                 chainDict['Task%d'%(itask)]=t
