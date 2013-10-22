@@ -49,11 +49,11 @@ workflows[20111] = ['',['RunZBias2012Ddvmc','RECODdvmc','HARVESTDdvmc']]
 # MC samples for comparisons
 ###############################
 # typical min bias run 2012C
-workflows[20201] = ['', ['NeutrinoPt2to20gun','DIGIPU203002dvmc','RECOMIN203002dvmc','HARVESTdvmc','ALCAMIN']]
+workflows[20201] = ['', ['NeutrinoPt2to20gun','DIGIPU203002dvmc','RECOMIN203002dvmc','HARVESTdvmc','ALCAMIN']]  # TMP: **WHEN SUBMITTING** label needed to differentiate ProcessingString
 # high pile up
-workflows[20202] = ['', ['NeutrinoPt2to20gun','DIGIPU198588dvmc','RECOMIN198588dvmc','HARVESTdvmc','ALCAMIN']]
+workflows[20202] = ['', ['NeutrinoPt2to20gun','DIGIPU198588dvmc','RECOMIN198588dvmc','HARVESTdvmc','ALCAMIN']]  # TMP: **WHEN SUBMITTING** label needed to differentiate ProcessingString
 # 25 ns to be done when GT available FIX
-#workflows[20203] = ['', ['NeutrinoPt2to20gun','DIGIPU209148dvmc','RECOMIN209148dvmc','HARVESTdvmc','ALCAMIN']]
+#workflows[20203] = ['', ['NeutrinoPt2to20gun','DIGIPU209148dvmc','RECOMIN209148dvmc','HARVESTdvmc','ALCAMIN']]  # TMP: **WHEN SUBMITTING** label needed to differentiate ProcessingString
 # re-digi single MB for low pu
 workflows[20204] = ['', ['MinBiasVHS','DIGIPU193092dvmc','RECOMIN193092dvmc','HARVESTdvmc']]
 
