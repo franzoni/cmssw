@@ -1185,7 +1185,7 @@ steps['COPYPASTE']={'-s':'NONE',
 # MC basics: MinBias for PU
 #------------------------------
 dvmcCondMC    ={'--conditions':'START62_V1::All',}
-dvmcCondMC25ns={'--conditions':'START62_V1::All',}    # GT TO BE REPLACED 
+dvmcCondMC25ns={'--conditions':'START62_V1B::All',}
 dvmcCondData  ={'--conditions':'GR_R_62_V1::All',}
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
