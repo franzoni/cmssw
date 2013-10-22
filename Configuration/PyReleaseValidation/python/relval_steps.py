@@ -1259,18 +1259,19 @@ steps['DIGIPU193092dvmc']=merge([dvmcCondMC,SetRun193092,step2Defaults])
 steps['RECOMIN193092dvmc']=merge([dvmcCondMC,steps['RECOMIN']])
 
 
-PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',}
+PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',}
 SetRun203002={'--runsAndWeightsForMC' : ' \"[(203002,1.)] \" ',}
 steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,SetRun203002,step2Defaults])
+steps['DIGIPU203002Splitdvmc']=steps['DIGIPU203002dvmc'] # a clone to force the finest possible splitting
 steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
 # looking at this
 
-PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
 SetRun198588={'--runsAndWeightsForMC' : ' \"[(198588,1.)] \" ',}
 steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,SetRun198588,step2Defaults])
 steps['RECOMIN198588dvmc']=merge([PUrun198588,dvmcCondMC,steps['RECOMIN']])
 
-PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
 SetRun209148={'--runsAndWeightsForMC' : ' \"[(209148,1.)] \" ',}
 steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2Defaults])
 steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])
@@ -1290,7 +1291,7 @@ steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])
 #steps['ZMMGammadvmc']=merge([dvmcCondMC,{"-s":"GEN,SIM"},gen('ZMM_8TeV_cfi',Mby(1,500))])
 steps['ZMMGammadvmc']=merge([dvmcCondMC,{"-s":"GEN,FILTER:GeneratorInterface/GenFilters/ZgammaFilter_cfi.ZgammaFilter,SIM"},gen('ZMM_8TeV_cfi',Mby(1,500))])
 #
-PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--inline_object':'mix','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
 steps['DIGIPU2012Cdvmc']=merge([PU2012C,dvmcCondMC,step2Defaults])
 steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
 
