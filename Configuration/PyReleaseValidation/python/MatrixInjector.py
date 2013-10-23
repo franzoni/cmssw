@@ -166,6 +166,9 @@ class MatrixInjector(object):
             wmsplit['DIGIPU203002Splitdvmc']=1  # force maximal splitting because nugun in inout has HUGE lumi sections 
             wmsplit['DIGIPU198588dvmc']=1       # "
             wmsplit['DIGIPU209148dvmc']=1       # "
+            wmsplit['RECOMIN203002dvmc']=1       # "
+            wmsplit['RECOMIN198588dvmc']=1       # "
+            wmsplit['RECOMIN209148dvmc']=1       # "
             wmsplit['DIGI_ID']=1
             wmsplit['RECO_ID']=1
             wmsplit['TTbar_ID']=1
