@@ -59,7 +59,8 @@ class InputInfo(object):
             command = ";".join(["das_client.py --limit=0 --query 'file {0}={1} run={2}'".format(query_by, query_source, query_run) for query_run in self.run])
             command = "({0})".format(command)
         else:
-            command = "das_client.py --limit=0 --query 'file {0}={1} site=T2_CH_CERN'".format(query_by, query_source)
+            command = "das_client.py --limit=0 --query 'file {0}={1}'".format(query_by, query_source)
+            #command = "das_client.py --limit=0 --query 'file {0}={1} site=T2_CH_CERN'".format(query_by, query_source)
        
         # Run filter on DAS output 
         if self.ib_blacklist:
@@ -273,8 +274,9 @@ baseDataSetRelease=[
     'CMSSW_6_1_0_pre6-START61_V5_FastSim-v1',#'CMSSW_6_0_0-START60_V4_FastSim-v1'
     'CMSSW_6_2_0_pre2-START61_V11_g496p1-v3',
     'CMSSW_6_2_0_pre2-START61_V11_g496p1_02May2013-v1', ## this is a fuck up in the dataset naming
-    'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v1',#data.vs.mc validation
-    'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2',#data.vs.mc validation
+    'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v1',        #data.vs.mc validation
+    'CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2',        #data.vs.mc validation
+    'CMSSW_6_2_1-START62_V1_rundepMC_dvmc-v1',#data.vs.mc validation
     ]
 
 steps['MinBiasINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[2],),location='STD')}
@@ -1277,6 +1279,9 @@ steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2De
 steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])
 
 steps['ZEEdvmc']=merge([dvmcCondMC,gen('ZEE_8TeV_cfi',Kby(200,200))])
+steps['ZEEdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZEEdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+
 steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
 
 # this still needs be done - FIX
@@ -1285,7 +1290,9 @@ steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
 #
 # this still needs be done - FIX
 
-steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])
+steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])   # filter efficiency in ZMM_8TeV_cfi is approx 0.5
+steps['ZMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+# gen-sim still in production
 #
 #steps['ZMMGammadvmcURK']=merge([dvmcCondMC,{"-s":"GEN,FILTER:GeneratorInterface/GenFilters/ZgammaFilter_cfi.ZgammaFilter,SIM"},gen('ZMM_8TeV_cfi',Mby(1,500))])
 #steps['ZMMGammadvmc']=merge([dvmcCondMC,{"-s":"GEN,SIM"},gen('ZMM_8TeV_cfi',Mby(1,500))])
@@ -1296,12 +1303,23 @@ steps['DIGIPU2012Cdvmc']=merge([PU2012C,dvmcCondMC,step2Defaults])
 steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
 
 steps['WMdvmc']=merge([dvmcCondMC,gen('WM_8TeV_cfi',Kby(200,200))])
+steps['WMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValWMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 
-steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(200,200))])
+steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(200,200))])  # filter efficiency in is JpsiMM_8TeV_cfi 0.138  
+steps['JpsiMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+steps['INPUT']={'INPUT':InputInfo(dataSet='//%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
 
 steps['QCD_Pt_30to50']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_30to50_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])
+steps['QCD_Pt_30to50INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_30to50/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_50to80']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_50to80_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])
+steps['QCD_Pt_50to80INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_50to80/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_80to120']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_80to120_TuneZ2star_8TeV_pythia6_cff',Kby(130,100))])
+steps['QCD_Pt_80to120INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_80to120/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_120to170']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_120to170_TuneZ2star_8TeV_pythia6_cff',Kby(20,100))])
+steps['QCD_Pt_120to170INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_120to170/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_170to300']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_170to300_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
+steps['QCD_Pt_170to300INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_170to300/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_300to470']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_300to470_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
+steps['QCD_Pt_300to470INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_300to470/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
