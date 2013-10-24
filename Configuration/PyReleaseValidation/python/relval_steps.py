@@ -1227,12 +1227,18 @@ steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run
 
 steps['RunMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-v1/RAW',label='mu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 steps['ZMuSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-ZMu-22Jan2013-v1/RAW-RECO',label='zMu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
-steps['RunJetMon2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetMon/Run2012C-v1/RAW',label='jetMon2012Cdvmc',location='STD',run=Run2012Cdvmc)}
-#steps['RECODmultiJetdvmc']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterZeroBias.filterZeroBias,RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,DQM',},steps['RECOD']])
-#steps['RECODmultiJetdvmcNEW']=merge([dvmcCondData,{'--scenario':'pp','-s':'FILTER:Configuration/PyReleaseValidation/filterHLT_PFJet40.filterHLT_PFJet40,RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOD']])             # GT to be replaced
 
+steps['RunJetMon2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetMon/Run2012C-v1/RAW',label='jetMon2012Cdvmc',location='STD',run=Run2012Cdvmc)} # FIX: remove the selection on one run!
+steps['filterJetMon2012C']={'--conditions':'auto:com10',
+                            '-s':'FILTER:Configuration/PyReleaseValidation/filterHLT_PFJet40.filterHLT_PFJet40',
+                            '--datatier':'RAW',
+                            '--eventcontent':'RAW',
+                            '--data':'',
+                            '--process':'filterRAW',
+                            '--scenario':'pp',
+                            }
+steps['FILTERJetMon2012Ddvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['filterJetMon2012C']])
 steps['RunJetHT2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetHT/Run2012C-v1/RAW',label='jetHT2012Cdvmc',location='STD',run=Run2012Cdvmc)}
-
 
 RunHighPU2012Cdvmc=[198588]
 steps['RunZBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/ZeroBias/Run2012C-v1/RAW',label='zb2012Cdvmc',location='STD',run=RunHighPU2012Cdvmc)}
