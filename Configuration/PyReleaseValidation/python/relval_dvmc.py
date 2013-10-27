@@ -57,7 +57,7 @@ workflows[20204] = ['', ['MinBiasVHS','DIGIPU193092dvmc','RECOMIN193092dvmc','HA
 workflows[20205] = ['', ['ZEEdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
 
 # wf with lhe to be followed up
-#workflows[20206] = ['', ['DYJetsToLL','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
+workflows[20206] = ['', ['DYJetsToLL','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
 # 
 
 workflows[20207] = ['', ['ZMMdvmc','DIGIPU203002dvmc','RECO203002dvmc','HARVESTdvmc']]
