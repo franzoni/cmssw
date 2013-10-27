@@ -765,7 +765,6 @@ steps['WToLNu_TuneZ2star_8TeV_pythia6-tauola']=genvalid('WToLNu_TuneZ2star_8TeV_
 steps['QCD_Pt-30_8TeV_herwig6']=genvalid('QCD_Pt_30_8TeV_herwig6_cff',step1GenDefaults)
 steps['MinBias_8TeV_pythia8']=genvalid('MinBias_8TeV_pythia8_cff',step1GenDefaults)
 
-
 steps['QCD_Ht-100To250_TuneZ2star_8TeV_madgraph-tauola']=genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1GenDefaults,fi=5475)
 steps['QCD_Ht-250To500_TuneZ2star_8TeV_madgraph-tauola']=genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1GenDefaults,fi=5476)
 steps['QCD_Ht-500To1000_TuneZ2star_8TeV_madgraph-tauola']=genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1GenDefaults,fi=5481)
@@ -1283,11 +1282,8 @@ steps['ZEEdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZEEdvmc/%s/GEN-SIM'%(ba
 
 steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
 
-# this still needs be done - FIX
-# gridpack and fragment asked to SMP - GEN seem need be made outside of relVal
-#steps['DYJetsToLL']=gen('--evt_type=Configuration/genproductions/python/EightTeV/DYJetsToLL_M_50_8TeV_madgraph_tarball_cfg.py',Mby(1,200))
-#
-# this still needs be done - FIX
+# import lhe from a given article
+steps['DYJetsToLL']=merge([dvmcCondMC,{"-s":"GEN,SIM"},Kby(2300,300),step1Defaults,genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1Defaults,fi=5591)])
 
 steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])   # filter efficiency in ZMM_8TeV_cfi is approx 0.5
 steps['ZMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
