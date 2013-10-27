@@ -385,7 +385,7 @@ steps['BeamHalo']=merge([{'cfg':'BeamHalo_cfi.py','--scenario':'cosmics'},Kby(9,
 steps['CosmicsINPUT']={'INPUT':InputInfo(dataSet='/RelValCosmics/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
 steps['BeamHaloINPUT']={'INPUT':InputInfo(dataSet='/RelValBeamHalo/%s/GEN-SIM'%(baseDataSetRelease[0],),location='STD')}
 
-steps['QCD_Pt_50_80']=genS('QCD_Pt_50_80_8TeV_cfi',Kby(25,100))
+steps['QCD_Pt_50_80']=genS('QCD_Pt_50_80_8TeV_cfi',Kby(25,75))
 steps['QCD_Pt_15_20']=genS('QCD_Pt_15_20_8TeV_cfi',Kby(25,100))
 steps['ZTTHS']=merge([Kby(25,100),steps['ZTT']])
 steps['QQH120Inv']=genS('QQH120Inv_8TeV_cfi',Kby(25,100))
@@ -1276,7 +1276,7 @@ SetRun209148={'--runsAndWeightsForMC' : ' \"[(209148,1.)] \" ',}
 steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2Defaults])
 steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])
 
-steps['ZEEdvmc']=merge([dvmcCondMC,gen('ZEE_8TeV_cfi',Kby(200,200))])
+steps['ZEEdvmc']=merge([dvmcCondMC,gen('ZEE_8TeV_cfi',Kby(200,150))])
 steps['ZEEdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZEEdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 
 
@@ -1295,7 +1295,7 @@ PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelVa
 steps['DIGIPU2012Cdvmc']=merge([PU2012C,dvmcCondMC,SetRun203002,step2Defaults])
 steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
 
-steps['WMdvmc']=merge([dvmcCondMC,gen('WM_8TeV_cfi',Kby(200,200))])
+steps['WMdvmc']=merge([dvmcCondMC,gen('WM_8TeV_cfi',Kby(200,150))])
 steps['WMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValWMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 
 steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(200,200))])  # filter efficiency in is JpsiMM_8TeV_cfi 0.138  
@@ -1303,13 +1303,13 @@ steps['JpsiMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMdvmc/%s/GEN-SI
 
 steps['INPUT']={'INPUT':InputInfo(dataSet='//%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 
-steps['QCD_Pt_30to50']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_30to50_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])
+steps['QCD_Pt_30to50']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_30to50_TuneZ2star_8TeV_pythia6_cff',Mby(1,150))])
 steps['QCD_Pt_30to50INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_30to50/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
-steps['QCD_Pt_50to80']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_50to80_TuneZ2star_8TeV_pythia6_cff',Mby(1,200))])
+steps['QCD_Pt_50to80']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_50to80_TuneZ2star_8TeV_pythia6_cff',Mby(1,150))])
 steps['QCD_Pt_50to80INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_50to80/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
-steps['QCD_Pt_80to120']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_80to120_TuneZ2star_8TeV_pythia6_cff',Kby(130,100))])
+steps['QCD_Pt_80to120']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_80to120_TuneZ2star_8TeV_pythia6_cff',Kby(130,80))])
 steps['QCD_Pt_80to120INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_80to120/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
-steps['QCD_Pt_120to170']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_120to170_TuneZ2star_8TeV_pythia6_cff',Kby(20,100))])
+steps['QCD_Pt_120to170']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_120to170_TuneZ2star_8TeV_pythia6_cff',Kby(20,80))])
 steps['QCD_Pt_120to170INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_120to170/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_170to300']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_170to300_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
 steps['QCD_Pt_170to300INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_170to300/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
