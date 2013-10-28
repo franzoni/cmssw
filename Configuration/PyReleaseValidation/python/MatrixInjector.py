@@ -115,6 +115,7 @@ class MatrixInjector(object):
             "GlobalTag": None,
             "SplittingAlgo"  : "EventBased",             #Splitting Algorithm
             "EventsPerJob" : None,                       #Size of jobs in terms of splitting algorithm
+            "EventsPerLumi" : 100,                       #Size of jobs in terms of num events per luminosity section
             "RequestNumEvents" : None,                      #Total number of events to generate
             "Seeding" : "AutomaticSeeding",                          #Random seeding method
             "PrimaryDataset" : None,                          #Primary Dataset to be created
