@@ -1194,7 +1194,7 @@ steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
 # make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
-steps['NeutrinoPt2to20gun']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,5000))])
+steps['NeutrinoPt2to20gun']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,1000))])
 steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
 
 steps['MinBiasVHS-QGSP-FTFP-BERT']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))])
