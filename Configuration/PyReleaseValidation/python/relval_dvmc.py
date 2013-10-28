@@ -12,6 +12,7 @@ workflows = Matrix()
 workflows[20011] = ['', ['MinBiasVHS','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 #neutrino gun
 workflows[20012] = ['', ['NeutrinoPt2to20gun','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
+workflows[20012.1] = ['', ['NeutrinoPt2to20gun']]
 # minbias MC with G4 customization 
 workflows[20013] = ['', ['MinBiasVHS-QGSP-FTFP-BERT','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 
