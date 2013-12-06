@@ -1,3 +1,4 @@
+# LOOK FOR GF where there's action items, below
 class Matrix(dict):
     def __setitem__(self,key,value):
         if key in self:
@@ -245,7 +246,7 @@ def gen2015(fragment,howMuch):
     return merge([{'cfg':fragment},howMuch,step1Up2015Defaults])
 
 ### Production test: 13 TeV equivalents
-steps['ProdMinBias_13']=gen2015('MinBias_13TeV_cfi',Kby(9,100))
+steps['ProdMinBias_13']=gen2015('MinBias_13TeV_cfi',Kby(9,100)) # GF keep this low stats in prod style
 steps['ProdTTbar_13']=gen2015('TTbar_Tauola_13TeV_cfi',Kby(9,100))
 steps['ProdQCD_Pt_3000_3500_13']=gen2015('QCD_Pt_3000_3500_13TeV_cfi',Kby(9,100))
 
@@ -254,7 +255,7 @@ steps['MinBias']=gen('MinBias_8TeV_cfi',Kby(9,300))
 steps['QCD_Pt_3000_3500']=gen('QCD_Pt_3000_3500_8TeV_cfi',Kby(9,25))
 steps['QCD_Pt_600_800']=gen('QCD_Pt_600_800_8TeV_cfi',Kby(9,50))
 steps['QCD_Pt_80_120']=gen('QCD_Pt_80_120_8TeV_cfi',Kby(9,100))
-steps['MinBias_13']=gen2015('MinBias_13TeV_cfi',Kby(9,300))
+steps['MinBias_13']=gen2015('MinBias_13TeV_cfi',Kby(9,300)) # GF
 steps['QCD_Pt_3000_3500_13']=gen2015('QCD_Pt_3000_3500_13TeV_cfi',Kby(9,25))
 steps['QCD_Pt_600_800_13']=gen2015('QCD_Pt_600_800_13TeV_cfi',Kby(9,50))
 steps['QCD_Pt_80_120_13']=gen2015('QCD_Pt_80_120_13TeV_cfi',Kby(9,100))
@@ -297,6 +298,10 @@ steps['Wjet_Pt_3000_3500_13']=gen2015('Wjet_Pt_3000_3500_13TeV_cfi',Kby(9,50))
 steps['LM1_sfts_13']=gen2015('LM1_sfts_13TeV_cfi',Kby(9,100))
 steps['QCD_FlatPt_15_3000_13']=gen2015('QCDForPF_13TeV_cfi',Kby(9,100))
 steps['QCD_FlatPt_15_3000HS_13']=gen2015('QCDForPF_13TeV_cfi',Kby(50,100))
+# 2 wf's below: wait for gen card to enter release
+#steps['Pythia6_BuJpsiK_TuneZ2star_13TeV']=gen2015('Pythia6_BuJpsiK_TuneZ2star_13TeV_cfi',Kby(56604,628931)) # filterEfficiency 1.59e-4
+#steps['RSKKGluon_m3000GeV_13TeV']=gen2015('RSKKGluon_m3000GeV_13TeV_cff',Kby(9,100))
+steps['ZmumuJets_Pt_20_300_GEN_13TeV']=gen2015('ZmumuJets_Pt_20_300_GEN_13TeV_cfg',Kby(9,100))
 
 steps['ZpMM_2250_8TeV_Tauola']=gen('ZpMM_2250_8TeV_Tauola_cfi',Kby(9,100))
 steps['ZpEE_2250_8TeV_Tauola']=gen('ZpEE_2250_8TeV_Tauola_cfi',Kby(9,100))
@@ -411,7 +416,7 @@ steps['SingleElectronE120EHCAL']=merge([{'cfg':'SingleElectronE120EHCAL_cfi'},ec
 steps['SinglePiE50HCAL']=merge([{'cfg':'SinglePiE50HCAL_cfi'},ecalHcal,Kby(25,250),step1Defaults])
 
 steps['MinBiasHS']=gen('MinBias_8TeV_cfi',Kby(25,300))
-steps['MinBiasHS_13']=gen2015('MinBias_13TeV_cfi',Kby(25,300))
+steps['MinBiasHS_13']=gen2015('MinBias_13TeV_cfi',Kby(25,300)) # GF push this to 100k
 steps['InclusiveppMuX']=gen('InclusiveppMuX_8TeV_cfi',Mby(11,45000))
 steps['SingleElectronFlatPt5To100']=gen('SingleElectronFlatPt5To100_cfi',Kby(25,250))
 steps['SinglePiPt1']=gen('SinglePiPt1_cfi',Kby(25,250))
