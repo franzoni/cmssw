@@ -299,9 +299,9 @@ steps['LM1_sfts_13']=gen2015('LM1_sfts_13TeV_cfi',Kby(9,100))
 steps['QCD_FlatPt_15_3000_13']=gen2015('QCDForPF_13TeV_cfi',Kby(9,100))
 steps['QCD_FlatPt_15_3000HS_13']=gen2015('QCDForPF_13TeV_cfi',Kby(50,100))
 # 2 wf's below: wait for gen card to enter release
-#steps['Pythia6_BuJpsiK_TuneZ2star_13TeV']=gen2015('Pythia6_BuJpsiK_TuneZ2star_13TeV_cfi',Kby(56604,628931)) # filterEfficiency 1.59e-4
-#steps['RSKKGluon_m3000GeV_13TeV']=gen2015('RSKKGluon_m3000GeV_13TeV_cff',Kby(9,100))
-steps['ZmumuJets_Pt_20_300_GEN_13TeV']=gen2015('ZmumuJets_Pt_20_300_GEN_13TeV_cfg',Kby(9,100))
+#steps['Pythia6_BuJpsiK_TuneZ2star_13']=gen2015('Pythia6_BuJpsiK_TuneZ2star_13TeV_cfi',Kby(56604,628931)) # filterEfficiency 1.59e-4
+#steps['RSKKGluon_m3000GeV_13']=gen2015('RSKKGluon_m3000GeV_13TeV_cff',Kby(9,100))
+steps['ZmumuJets_Pt_20_300_GEN_13']=gen2015('ZmumuJets_Pt_20_300_GEN_13TeV_cfg',Kby(9,100))
 
 steps['ZpMM_2250_8TeV_Tauola']=gen('ZpMM_2250_8TeV_Tauola_cfi',Kby(9,100))
 steps['ZpEE_2250_8TeV_Tauola']=gen('ZpEE_2250_8TeV_Tauola_cfi',Kby(9,100))

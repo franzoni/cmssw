@@ -197,9 +197,9 @@ workflows[1343] = ['', ['ZpMM_2250_13TeV_Tauola','DIGIUP15','RECOUP15','HARVESTU
 workflows[1344] = ['', ['ZpEE_2250_13TeV_Tauola','DIGIUP15','RECOUP15','HARVESTUP15']]
 workflows[1345] = ['', ['ZpTT_1500_13TeV_Tauola','DIGIUP15','RECOUP15','HARVESTUP15']]
 
-#workflows[1346] = ['', ['Pythia6_BuJpsiK_TuneZ2star_13TeV','DIGI','RECO','HARVEST']]
-#workflows[1347] = ['', ['RSKKGluon_m3000GeV_13TeV','DIGI','RECO','HARVEST']]
-workflows[1348] = ['', ['ZmumuJets_Pt_20_300_GEN_13TeV','DIGI','RECO','HARVEST']]
+#workflows[1346] = ['', ['Pythia6_BuJpsiK_TuneZ2star_13','DIGI','RECO','HARVEST']]
+#workflows[1347] = ['', ['RSKKGluon_m3000GeV_13','DIGI','RECO','HARVEST']]
+workflows[1348] = ['', ['ZmumuJets_Pt_20_300_GEN_13','DIGI','RECO','HARVEST']]
 
 
 
