@@ -235,8 +235,13 @@ steps['MinBias']=gen('MinBias_8TeV_cfi',Kby(9,300))
 steps['QCD_Pt_3000_3500']=gen('QCD_Pt_3000_3500_8TeV_cfi',Kby(9,25))
 steps['QCD_Pt_600_800']=gen('QCD_Pt_600_800_8TeV_cfi',Kby(9,50))
 steps['QCD_Pt_80_120']=gen('QCD_Pt_80_120_8TeV_cfi',Kby(9,100))
-steps['QCD_Pt_30_80_BCtoE_8TeV']=gen('QCD_Pt_30_80_BCtoE_8TeV',Kby(9000,100))
-steps['QCD_Pt_80_170_BCtoE_8TeV']=gen('QCD_Pt_80_170_BCtoE_8TeV',Kby(9000,100))
+#steps['QCD_Pt_30_80_BCtoE_8TeV']=gen('QCD_Pt_30_80_BCtoE_8TeV',Kby(9000,100))
+#steps['QCD_Pt_80_170_BCtoE_8TeV']=gen('QCD_Pt_80_170_BCtoE_8TeV',Kby(9000,100))
+#                                                                  164200
+steps['QCD_Pt_30_80_BCtoE_8TeV']=gen('QCD_Pt_30_80_BCtoE_8TeV',Kby(414938,41494))  # want 1M and eff = 0.00241
+steps['QCD_Pt_80_170_BCtoE_8TeV']=gen('QCD_Pt_80_170_BCtoE_8TeV',Kby(91743,9174))  # want 1M and eff = 0.0109
+steps['PYTHIA6_Tauola_TTbar_TuneZ2star_8TeV']=gen('--evt_type=Configuration/genproductions/python/EightTeV/PYTHIA6_Tauola_TTbar_TuneZ2star_8TeV_cff',Kby(1000,150))
+#
 steps['SingleElectronPt10']=gen('SingleElectronPt10_cfi',Kby(9,3000))
 steps['SingleElectronPt35']=gen('SingleElectronPt35_cfi',Kby(9,500))
 steps['SingleElectronPt1000']=gen('SingleElectronPt1000_cfi',Kby(9,50))
