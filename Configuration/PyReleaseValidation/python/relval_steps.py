@@ -265,7 +265,8 @@ steps['SingleMuPt10_ID']=identitySim(steps['SingleMuPt10'])
 steps['TTbar_ID']=identitySim(steps['TTbar'])
 
 baseDataSetRelease=[
-    'CMSSW_5_2_1-START52_V4-v1',
+    #'CMSSW_5_2_1-START52_V4-v1',
+    'CMSSW_4_1_8_patch9-START311_V2-v1',
     'CMSSW_5_2_1-STARTHI52_V4-v1',
     'CMSSW_5_2_1-PU_START52_V4-v1',
     'CMSSW_5_2_1-START52_V4_FastSim-v1'
@@ -503,7 +504,7 @@ steps['TTbarFSPU2']=merge([PUFS2,steps['TTbarFS']])
 
 # step2 
 step2Defaults = { 
-                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:2011,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',
