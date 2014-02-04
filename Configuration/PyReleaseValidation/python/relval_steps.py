@@ -266,8 +266,8 @@ steps['TTbar_ID']=identitySim(steps['TTbar'])
 
 baseDataSetRelease=[
     #'CMSSW_5_2_1-START52_V4-v1',
-    #'CMSSW_4_1_8_patch9-START311_V2-v1',
-    'CMSSW_5_3_11_patch5-START53_LV4_24Jul2013-v1',
+    'CMSSW_4_1_8_patch9-START311_V2-v1',
+    #'CMSSW_5_3_11_patch5-START53_LV4_24Jul2013-v1',
     'CMSSW_5_2_1-STARTHI52_V4-v1',
     'CMSSW_5_2_1-PU_START52_V4-v1',
     'CMSSW_5_2_1-START52_V4_FastSim-v1'
