@@ -509,6 +509,7 @@ step2Defaults = {
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',
+                  '--customise'   : 'Configuration/StandardSequences/DigiToRecoNoPU.customise',
                   }
 
 
