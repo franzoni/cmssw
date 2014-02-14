@@ -505,7 +505,9 @@ steps['TTbarFSPU2']=merge([PUFS2,steps['TTbarFS']])
 
 # step2 
 step2Defaults = { 
-                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:2011,RAW2DIGI,L1Reco',
+                  # '-s'            : 'DIGI,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:7E33v2,RAW2DIGI,L1Reco',  # compatible with L1 which is in START53_LV3
+                  '-s'            : 'DIGI,L1,DIGI2RAW,HLT:2011,RAW2DIGI,L1Reco',    # => for START53_LV4
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:startup',

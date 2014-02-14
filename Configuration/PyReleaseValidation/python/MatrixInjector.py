@@ -77,7 +77,7 @@ class MatrixInjector(object):
             "GlobalTag": None,                                #Global Tag (overridden per task)
             "CouchURL": self.couch,                           #URL of CouchDB containing Config Cache
             "ConfigCacheURL": self.couch,                           #URL of CouchDB containing Config Cache
-            "DbsUrl": "http://cmsdbsprod.cern.ch/cms_dbs_prod_global/servlet/DBSServlet",
+            "DbsUrl": "https://cmsweb.cern.ch/dbs/prod/global/DBSReader",
             #"CouchDBName": self.couchDB,                      #Name of Couch Database containing config cache
             #- Will contain all configs for all Tasks
             "SiteWhitelist" : ["T2_CH_CERN", "T1_US_FNAL"],   #Site whitelist
