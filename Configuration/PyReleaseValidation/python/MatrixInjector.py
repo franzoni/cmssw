@@ -76,7 +76,7 @@ class MatrixInjector(object):
             "ProcessingVersion": self.version,                #Processing Version (used for all tasks in chain)
             "GlobalTag": None,                                #Global Tag (overridden per task)
             "CouchURL": self.couch,                           #URL of CouchDB containing Config Cache
-            "ConfigCacheURL": self.couch,                           #URL of CouchDB containing Config Cache
+            "ConfigCacheURL": self.couch,                     #URL of CouchDB containing Config Cache
             "DbsUrl": "https://cmsweb.cern.ch/dbs/prod/global/DBSReader",
             #"CouchDBName": self.couchDB,                      #Name of Couch Database containing config cache
             #- Will contain all configs for all Tasks
