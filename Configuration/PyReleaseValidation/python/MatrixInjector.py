@@ -266,7 +266,9 @@ class MatrixInjector(object):
                             chainDict['GlobalTag']=chainDict['nowmTasklist'][-1]['nowmIO']['GT'] #set in general to the last one of the chain
                             if 'pileup' in chainDict['nowmTasklist'][-1]['nowmIO']:
                                 chainDict['nowmTasklist'][-1]['MCPileup']=chainDict['nowmTasklist'][-1]['nowmIO']['pileup']
-                            if '--pileup' in s[2][index]:
+                            if '--pileup ' in s[2][index]: # introduced space to guarantee that it's the --pileup and not --pileup_
+                                print 'entering this IF'
+                                print s[2][index].split()
                                 processStrPrefix='PU_'
                                 if   (  s[2][index].split()[  s[2][index].split().index('--pileup')+1 ]  ).find('50ns')  > 0 :
                                     processStrPrefix='PU50ns_'

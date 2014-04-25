@@ -117,7 +117,6 @@ step1Up2015Defaults = {'-s' : 'GEN,SIM',
 # differences between upgradePLS150ns and upgradePLS1 ought to be irrelevant for GEN-SIM
 #step1Up2015Defaults50ns = merge([{'--conditions':'auto:upgradePLS150ns'},step1Up2015Defaults])
 
-
 steps = Steps()
 #wmsplit = {}
 
@@ -910,7 +909,6 @@ steps['TTbarFSPU2']=merge([PUFS2,Kby(100,500),steps['TTbarFS']])
 ##########################
 
 
-
 # step2 
 step2Defaults = { '-s'            : 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
@@ -976,6 +974,69 @@ step2Upg2017Defaults = {'-s':'DIGI:pdigi_valid,L1,DIGI2RAW',
 steps['DIGIUP17']=merge([step2Upg2017Defaults])
 #add this line when testing from an input file that is not strictly GEN-SIM
 #addForAll(step2,{'--process':'DIGI'})
+
+# PRE-MIXING
+premixUp2015Defaults = {
+    '--evt_type'    : 'SingleNuE10_cfi',
+    '-s'            : 'GEN,SIM,DIGIPREMIX,L1,DIGI2RAW',
+    '-n'            : '10',
+    '--conditions'  : 'auto:upgradePLS1', # 25ns GT
+    '--datatier'    : 'GEN-SIM-DIGI-RAW',
+    '--eventcontent': 'GENRAW',
+    '--geometry'    : 'Extended2015',
+    '--magField'    : '38T_PostLS1',
+    '--customise'   : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1'
+}
+premixUp2015Defaults50ns = merge([{'--conditions':'auto:upgradePLS150ns'},premixUp2015Defaults])
+
+# PREMIX25={'--pileup':'AVE_10_BX_25ns_m8','--pileup_input':'das:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],}
+# PREMIX50={'--pileup':'AVE_20_BX_50ns_m8','--pileup_input':'das:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],}
+# --conditions auto:upgradePLS1   # done 
+# --pileup AVE_10_BX_25ns_m8      # done
+
+steps['PREMIXUP15_PU25']=merge([PU25,Kby(45,100),premixUp2015Defaults])
+steps['PREMIXUP15_PU50']=merge([PU50,Kby(45,100),premixUp2015Defaults50ns])
+
+# DIGI with pileup using PRE-MIXED
+
+# this is temporary and for the reference
+#--conditions auto:upgradePLS150ns 
+#--filein /store/relval/CMSSW_6_2_0_patch1/RelValZEE_13/GEN-SIM/POSTLS162_V1_30Aug2013-v2/00000/82D91502-A615-E311-BAEF-00261894384A.root 
+#--pileup_input file:/afs/cern.ch/user/f/franzoni/public/4mikeH/gio-made-DMPreProcess_RAW2DIGI.root 
+#--eventcontent FEVTDEBUGHLT 
+#-s DIGI:pdigi_valid,DATAMIX,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco 
+#--datatier GEN-SIM-DIGI-RAW-HLTDEBUG 
+#--datamix PreMix 
+#--customise SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1 
+#--geometry Extended2015 
+#--magField 38T_PostLS1 
+#-n 10 
+#--no_exec
+
+digiPremixUp2015Defaults25ns = { 
+    '--conditions'   : 'auto:upgradePLS1',
+    '-s'             : 'DIGI:pdigi_valid,DATAMIX,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',  # pdigi_valid?
+#     '--filein'       : '/store/relval/CMSSW_6_2_0_patch1/RelValZEE_13/GEN-SIM/POSTLS162_V1_30Aug2013-v2/00000/82D91502-A615-E311-BAEF-00261894384A.root' # this is the GEN-SIM of the signal
+#    '--pileup_input' :  'file:/afs/cern.ch/user/f/franzoni/public/4mikeH/gio-made-DMPreProcess_RAW2DIGI.root', # this needs be set to the outout of the previous step
+    '--pileup_input' : 'das:/RelValPREMIXUP15_PU25/CMSSW_7_0_1-PU25ns_POSTLS170_V7-v1/GEN-SIM-DIGI-RAW',
+    # '--pileup'       : 'AVE_10_BX_25ns_m8',
+    '--eventcontent' : 'FEVTDEBUGHLT',
+    '--datatier'     : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
+    '--datamix'      : 'PreMix',
+    '--customise'    : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1',
+    '--geometry'     : 'Extended2015',
+    '--magField'     : '38T_PostLS1',
+    '-n'             : 10
+    }
+# premixUp2015Defaults50ns = merge([{'--conditions':'auto:upgradePLS150ns'},premixUp2015Defaults])
+
+#steps['ZEE_13_PREMIXUP15_PU25']=merge([{'INPUT':InputInfo(dataSet='/RelValZEE_13/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')},
+#steps['ZEE_13_PREMIXUP15_PU25']=merge([PU25,{'--filein'       : '/store/relval/CMSSW_6_2_0_patch1/RelValZEE_13/GEN-SIM/POSTLS162_V1_30Aug2013-v2/00000/82D91502-A615-E311-BAEF-00261894384A.root'},digiPremixUp2015Defaults25ns])
+#steps['ZEE_13_PREMIXUP15_PU25']=merge([PU25,{'--filein'       : '/RelValZEE_13/%s/GEN-SIM'%(baseDataSetRelease[6],) },digiPremixUp2015Defaults25ns])
+#steps['ZEE_13_PREMIXUP15_PU25']=merge([digiPremixUp2015Defaults25ns,{'INPUT':InputInfo(dataSet='/RelValZEE_13/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD') }])
+steps['ZEE_13_PREMIXUP15_PU25']=merge([digiPremixUp2015Defaults25ns])
+steps['ZEE_13_PREMIXUP15_PU50']=merge([{'--conditions':'auto:upgradePLS150ns'},{'--pileup_input' : 'das:/RelValPREMIXUP15_PU50/CMSSW_7_0_1-PU50ns_POSTLS170_V6-v1/GEN-SIM-DIGI-RAW'},digiPremixUp2015Defaults25ns])
+
 
 dataReco={'--conditions':'auto:com10',
           '-s':'RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,DQM',
@@ -1098,7 +1159,13 @@ steps['RECODDQM']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM:@common+@muon+@hcal+
 
 steps['RECOPU1']=merge([PU,steps['RECO']])
 steps['RECOUP15_PU25']=merge([PU25,step3Up2015Defaults])
+steps['RECOUP15_PU25_PM']=merge([
+        {'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM'},
+        step3Up2015Defaults])
 steps['RECOUP15_PU50']=merge([PU50,step3Up2015Defaults50ns])
+steps['RECOUP15_PU50_PM']=merge([
+        {'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM'},
+        step3Up2015Defaults50ns])
 #wmsplit['RECOPU1']=1
 steps['RECOPUDBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECOPU1']])
 steps['RERECOPU1']=merge([{'--hltProcess':'REDIGI'},steps['RECOPU1']])
