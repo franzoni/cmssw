@@ -333,6 +333,9 @@ baseDataSetRelease=[
     'CMSSW_7_1_0_pre5-START71_V1-v2',   # 8 TeV , for the one sample which is part of the routine relval production (RelValZmumuJets_Pt_20_300, because of -v2)
                                         # this an previous should be unified, when -v2 will be gone
     'CMSSW_7_1_0_pre6-PRE_LS171_V5-v1', # 13 TeV samples with GEN-SIM from 710pre6; geometry is the updated one provuded by the 710pre6 GT
+    'CMSSW_7_1_0_pre6-PRE_LS171_V5-v1', # 13 TeV samples with GEN-SIM from 710pre6; geometry is the updated one provuded by the 710pre6 GT
+    'CMSSW_7_1_0_pre6-PRE_LS171_V5-v1', # 13 TeV samples with GEN-SIM from 710pre6; geometry is the updated one provuded by the 710pre6 GT
+    'CMSSW_7_1_0_pre6-PRE_LS171_V5-v1', # 13 TeV samples with GEN-SIM from 710pre6; geometry is the updated one provuded by the 710pre6 GT
     ]
 
 # note: INPUT commands to be added once GEN-SIM w/ 13TeV+PostLS1Geo will be available 
