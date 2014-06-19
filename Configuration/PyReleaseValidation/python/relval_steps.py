@@ -1492,9 +1492,9 @@ steps['MINIAODMCFS50']=merge([{'--filein':'file:step1.root'},stepMiniAODMCFS50ns
 #------------------------------
 # MC basics: MinBias for PU
 #------------------------------
-dvmcCondMC    ={'--conditions':'START62_V1::All',}
-dvmcCondMC25ns={'--conditions':'START62_V1B::All',}
-dvmcCondData  ={'--conditions':'GR_R_62_V1::All',}
+dvmcCondMC    ={'--conditions':'run1_mc',}
+dvmcCondMC25ns={'--conditions':'run1_mc',}
+dvmcCondData  ={'--conditions':'run1_data',}
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
 steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetRelease[7],),location='STD')}
@@ -1503,8 +1503,8 @@ steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
 # make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
-steps['NeutrinoPt2to20gun']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,1000))])
-steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
+steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,1000))])
+steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')} # update w/ GEN-SIM
 
 steps['MinBiasVHS-QGSP-FTFP-BERT']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))])
 
