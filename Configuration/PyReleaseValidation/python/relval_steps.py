@@ -1445,6 +1445,7 @@ steps['COPYPASTE']={'-s':'NONE',
                     '--output':'\'[{"t":"RAW","e":"ALL"}]\'',
                     '--customise_commands':'"process.ALLRAWoutput.fastCloning=cms.untracked.bool(False)"'}
 
+
 #miniaod
 stepMiniAODDefaults = { '-s'              : 'PAT',
                         '--runUnscheduled': '',
@@ -1483,3 +1484,142 @@ steps['MINIAODMC']=merge([{'--filein':'file:step3.root'},stepMiniAODMC])
 steps['MINIAODMC50']=merge([{'--filein':'file:step3.root'},stepMiniAODMC50ns])
 steps['MINIAODMCFS']=merge([{'--filein':'file:step1.root'},stepMiniAODMCFS])
 steps['MINIAODMCFS50']=merge([{'--filein':'file:step1.root'},stepMiniAODMCFS50ns])
+
+################################
+# data vs mc dedicated workflows
+################################
+
+#------------------------------
+# MC basics: MinBias for PU
+#------------------------------
+dvmcCondMC    ={'--conditions':'START62_V1::All',}
+dvmcCondMC25ns={'--conditions':'START62_V1B::All',}
+dvmcCondData  ={'--conditions':'GR_R_62_V1::All',}
+
+steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
+steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetRelease[7],),location='STD')}
+steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
+steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
+steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
+
+# make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
+steps['NeutrinoPt2to20gun']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/Neutrino_Pt2to20_gun_cff.py',Mby(1,1000))])
+steps['NeutrinoPt2to20gunINPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')}
+
+steps['MinBiasVHS-QGSP-FTFP-BERT']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))])
+
+
+#------------------------------
+# data
+#------------------------------
+
+myrun=203002 # => this is whatIwant in production
+Run2012Cdvmc=[myrun]
+# phedex transefr ongoing for run 203002 RunMinBias2012Cdvmc
+steps['RunMinBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012C-v1/RAW',label='mb2012Cdvmc',run=Run2012Cdvmc, events=100000,location='STD')}
+steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['RECOD']])
+steps['RECODSplitdvmc']=steps['RECODdvmc']     # selected to have higher job splitting , see wmsplit in MatrixInjector
+steps['HARVESTDdvmc']=merge([dvmcCondData,steps['HARVESTD']])
+
+steps['ZElSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012C-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+steps['RECOSKIMALCAdvmc']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'},steps['RECODdvmc']])
+steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOSKIMALCAdvmc']])
+
+steps['DoubleMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMu/Run2012C-v1/RAW',label='douMu2012C',location='STD',run=Run2012Cdvmc)}
+
+# das makes no run selection
+#whole2012Cdvmc=[]
+#whole2012Cdvmc=[-1]
+whole2012Cdvmc=[myrun] ### PROVISIONALLY set a run in order to have smaller file list
+steps['DoubleMuParked2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012C-Zmmg-22Jan2013-v1/RAW-RECO',label='douMuPar2012C',location='STD',run=whole2012Cdvmc)}
+
+steps['RunMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-v1/RAW',label='mu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+steps['ZMuSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012C-ZMu-22Jan2013-v1/RAW-RECO',label='zMu2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+
+steps['RunJetMon2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetMon/Run2012C-v1/RAW',label='jetMon2012Cdvmc',location='STD',run=Run2012Cdvmc)} # FIX: remove the selection on one run!
+steps['filterJetMon2012C']={'--conditions':'auto:com10',
+                            '-s':'FILTER:Configuration/PyReleaseValidation/filterHLT_PFJet40.filterHLT_PFJet40',
+                            '--datatier':'RAW',
+                            '--eventcontent':'RAW',
+                            '--data':'',
+                            '--process':'filterRAW',
+                            '--scenario':'pp',
+                            }
+steps['FILTERJetMon2012Ddvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['filterJetMon2012C']])
+steps['RunJetHT2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetHT/Run2012C-v1/RAW',label='jetHT2012Cdvmc',location='STD',run=Run2012Cdvmc)}
+
+RunHighPU2012Cdvmc=[198588]
+steps['RunZBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/ZeroBias/Run2012C-v1/RAW',label='zb2012Cdvmc',location='STD',run=RunHighPU2012Cdvmc)}
+
+RunLowPU2012Cdvmc=[193092]
+steps['RunZBias2012Advmc']={'INPUT':InputInfo(dataSet='/LP_ZeroBias/Run2012A-v1/RAW',label='zb2012Advmc',location='STD',run=RunLowPU2012Cdvmc)}
+
+Run25ns201DCdvmc=[209148]
+steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v1/RAW',label='zb2012Ddvmc',location='STD',run=Run25ns201DCdvmc)}
+
+
+#------------------------------
+# MC
+#------------------------------
+
+SetRun193092={'--runsAndWeightsForMC' : ' \"[(193092,1.)] \" ',}
+steps['DIGIPU193092dvmc']=merge([dvmcCondMC,SetRun193092,step2Defaults])
+steps['RECOMIN193092dvmc']=merge([dvmcCondMC,steps['RECOMIN']])
+
+
+PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',}
+SetRun203002={'--runsAndWeightsForMC' : ' \"[(203002,1.)] \" ',}
+steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,SetRun203002,step2Defaults])
+steps['DIGIPU203002Splitdvmc']=steps['DIGIPU203002dvmc'] # a clone to force the finest possible splitting
+steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
+# looking at this
+
+PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+SetRun198588={'--runsAndWeightsForMC' : ' \"[(198588,1.)] \" ',}
+steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,SetRun198588,step2Defaults])
+steps['RECOMIN198588dvmc']=merge([PUrun198588,dvmcCondMC,steps['RECOMIN']])
+
+PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+SetRun209148={'--runsAndWeightsForMC' : ' \"[(209148,1.)] \" ',}
+steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2Defaults])
+steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])
+
+steps['ZEEdvmc']=merge([dvmcCondMC,gen('ZEE_8TeV_cfi',Kby(200,150))])
+steps['ZEEdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZEEdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+
+steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
+
+# import lhe from a given article
+steps['DYJetsToLL']=merge([dvmcCondMC,{"-s":"GEN,SIM"},Kby(2300,300),step1Defaults,genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1Defaults,fi=5591)])
+
+steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])   # filter efficiency in ZMM_8TeV_cfi is approx 0.5
+steps['ZMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+# gen-sim still in production
+#
+steps['ZMMGammadvmc']=merge([dvmcCondMC,{"-s":"GEN,SIM"},gen('--evt_type=Configuration/PyReleaseValidation/python/ZMMgamma_8TeV_cfi',Mby(40,5000))])
+#
+PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+steps['DIGIPU2012Cdvmc']=merge([PU2012C,dvmcCondMC,SetRun203002,step2Defaults])
+steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
+
+steps['WMdvmc']=merge([dvmcCondMC,gen('WM_8TeV_cfi',Kby(200,150))])
+steps['WMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValWMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(200,200))])  # filter efficiency in is JpsiMM_8TeV_cfi 0.138  
+steps['JpsiMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+steps['INPUT']={'INPUT':InputInfo(dataSet='//%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+steps['QCD_Pt_30to50']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_30to50_TuneZ2star_8TeV_pythia6_cff',Mby(1,150))])
+steps['QCD_Pt_30to50INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_30to50/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+steps['QCD_Pt_50to80']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_50to80_TuneZ2star_8TeV_pythia6_cff',Mby(1,150))])
+steps['QCD_Pt_50to80INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_50to80/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+steps['QCD_Pt_80to120']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_80to120_TuneZ2star_8TeV_pythia6_cff',Kby(130,80))])
+steps['QCD_Pt_80to120INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_80to120/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+steps['QCD_Pt_120to170']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_120to170_TuneZ2star_8TeV_pythia6_cff',Kby(20,80))])
+steps['QCD_Pt_120to170INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_120to170/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+steps['QCD_Pt_170to300']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_170to300_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
+steps['QCD_Pt_170to300INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_170to300/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+steps['QCD_Pt_300to470']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_300to470_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
+steps['QCD_Pt_300to470INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_300to470/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
