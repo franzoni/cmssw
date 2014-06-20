@@ -1503,7 +1503,7 @@ steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
 # make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
-steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,1000))])
+steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,500))])
 steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')} # update w/ GEN-SIM
 
 
