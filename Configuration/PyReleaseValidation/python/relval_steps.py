@@ -1492,12 +1492,12 @@ steps['MINIAODMCFS50']=merge([{'--filein':'file:step1.root'},stepMiniAODMCFS50ns
 #------------------------------
 # MC basics: MinBias for PU
 #------------------------------
-dvmcCondMC    ={'--conditions':'run1_mc',}
-dvmcCondMC25ns={'--conditions':'run1_mc',}
-dvmcCondData  ={'--conditions':'run1_data',}
+dvmcCondMC    ={'--conditions':'auto:run1_mc',}
+dvmcCondMC25ns={'--conditions':'auto:run1_mc',}     # to be updated with 25ns specific conditions for DIGI-RECO (L1)
+dvmcCondData  ={'--conditions':'auto:run1_data',}
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
-steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetRelease[7],),location='STD')}
+steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetRelease[7],),location='STD')} # TB mod when gen-sim
 steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
@@ -1505,8 +1505,6 @@ steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 # make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
 steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,1000))])
 steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')} # update w/ GEN-SIM
-
-steps['MinBiasVHS-QGSP-FTFP-BERT']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi  --customise Configuration/genproductions/FTFP_BERT_EML_cff.py  --inline_custom',Mby(4,50000))])
 
 
 #------------------------------
