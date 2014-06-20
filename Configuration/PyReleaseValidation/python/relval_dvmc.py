@@ -5,7 +5,7 @@ from  Configuration.PyReleaseValidation.relval_steps import *
 workflows = Matrix()
 
 ###############################
-# MC basics: MinBias for PU
+# MC basics:  MinBias for PU
 ###############################
 
 # plain MC minbias (sent both in 612 and 621)
