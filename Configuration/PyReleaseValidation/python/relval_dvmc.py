@@ -10,11 +10,11 @@ workflows = Matrix()
 
 # plain MC minbias (sent both in 612 and 621)
 workflows[20011] = ['', ['MinBiasVHS','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
+workflows[20011.1] = ['', ['MinBiasVHS']]
 #neutrino gun
 workflows[20012] = ['', ['SingleNuE10','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 workflows[20012.1] = ['', ['SingleNuE10']]
-# minbias MC with G4 customization 
-workflows[20013] = ['', ['MinBiasVHS-QGSP-FTFP-BERT','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
+
 
 ###############################
 # data
