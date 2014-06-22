@@ -1497,7 +1497,8 @@ dvmcCondMC25ns={'--conditions':'auto:run1_mc',}     # to be updated with 25ns sp
 dvmcCondData  ={'--conditions':'auto:run1_data',}
 
 baseDataSetReleaseDvmc=[
-    'CMSSW_7_1_0_pre6-PRE_STA71_V2-v1', # GF solely to run tests on 2014-06-22; change it to CMSSW_7_1_0_pre9-START71_V5_dvmc-v1 when available!
+    'CMSSW_7_1_0_pre6-PRE_STA71_V2-v1', # GF solely to run tests on 2014-06-22; FOR MINBIAS, 
+                                        # change it to CMSSW_7_1_0_pre9-START71_V5_dvmc-v1 when available!
 ]
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
@@ -1510,7 +1511,7 @@ steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 # SingleNuE10 GEN-SIM to overlay minbias to an empty event; SingleNuE10 is now in the release :-)
 steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,500))])
 #steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/SingleNuE10/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}  # GF switch to this when GEN-SIM become available for dvmc 2014 MinBiasVHS 
-steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests!
+steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests! Change it to SingelNuE10 when it'll become available !
 
 
 #------------------------------
@@ -1570,18 +1571,21 @@ SetRun193092={'--runsAndWeightsForMC' : ' \"[(193092,1.)] \" ',}
 steps['DIGIPU193092dvmc']=merge([dvmcCondMC,SetRun193092,step2Defaults])
 steps['RECOMIN193092dvmc']=merge([dvmcCondMC,steps['RECOMIN']])
 
-PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',} # GF: update this when new MB is available from pre9
+PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0]),} # GF: update this when new MB is available from pre9 - in four places
+#PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',} # GF: update this when new MB is available from pre9 - in four places
 SetRun203002={'--runsAndWeightsForMC' : ' \"[(203002,1.)] \" ',}
 steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,SetRun203002,step2Defaults])
 steps['DIGIPU203002Splitdvmc']=steps['DIGIPU203002dvmc'] # a clone to force the finest possible splitting
 steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
 
-PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9
+PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0]),} # GF: update this when new MB is available from pre9 - in four places
+#PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9 - in four places
 SetRun198588={'--runsAndWeightsForMC' : ' \"[(198588,1.)] \" ',}
 steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,SetRun198588,step2Defaults])
 steps['RECOMIN198588dvmc']=merge([PUrun198588,dvmcCondMC,steps['RECOMIN']])
 
-PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9
+PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0]),} # GF: update this when new MB is available from pre9 - in four places
+#PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9 - in four places
 SetRun209148={'--runsAndWeightsForMC' : ' \"[(209148,1.)] \" ',}
 steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2Defaults])
 steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])
@@ -1601,7 +1605,8 @@ steps['ZMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZMMdvmc/%s/GEN-SIM'%(ba
 #
 steps['ZMMGammadvmc']=merge([dvmcCondMC,{"-s":"GEN,SIM"},gen('--evt_type=Configuration/PyReleaseValidation/python/ZMMgamma_8TeV_cfi',Mby(40,5000))])
 #
-PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0]),} # GF: update this when new MB is available from pre9 - in four places
+#PU2012C={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9 - in four places
 steps['DIGIPU2012Cdvmc']=merge([PU2012C,dvmcCondMC,SetRun203002,step2Defaults])
 steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
 
