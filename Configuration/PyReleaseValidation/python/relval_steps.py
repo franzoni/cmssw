@@ -1496,15 +1496,21 @@ dvmcCondMC    ={'--conditions':'auto:run1_mc',}
 dvmcCondMC25ns={'--conditions':'auto:run1_mc',}     # to be updated with 25ns specific conditions for DIGI-RECO (L1)
 dvmcCondData  ={'--conditions':'auto:run1_data',}
 
+baseDataSetReleaseDvmc=[
+    'CMSSW_7_1_0_pre6-PRE_STA71_V2-v1', # GF solely to run tests on 2014-06-22; change it to CMSSW_7_1_0_pre9-START71_V5_dvmc-v1 when available!
+]
+
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
-steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetRelease[7],),location='STD')} # TB mod when gen-sim
+#steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # GF switch to this when GEN-SIM become available for dvmc 2014 MinBiasVHS 
+steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests!
 steps['DIGIdvmc']=merge([dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
-# make up for the fact that there's no nu-gun gen-card in Configuration/Generator (and you need genproductions)
+# SingleNuE10 GEN-SIM to overlay minbias to an empty event; SingleNuE10 is now in the release :-)
 steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,500))])
-steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValNeutrinoPt2to20gun/%s/GEN-SIM'%(baseDataSetRelease[6],),location='STD')} # update w/ GEN-SIM
+#steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/SingleNuE10/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}  # GF switch to this when GEN-SIM become available for dvmc 2014 MinBiasVHS 
+steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests!
 
 
 #------------------------------
@@ -1564,20 +1570,18 @@ SetRun193092={'--runsAndWeightsForMC' : ' \"[(193092,1.)] \" ',}
 steps['DIGIPU193092dvmc']=merge([dvmcCondMC,SetRun193092,step2Defaults])
 steps['RECOMIN193092dvmc']=merge([dvmcCondMC,steps['RECOMIN']])
 
-
-PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',}
+PUrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM',} # GF: update this when new MB is available from pre9
 SetRun203002={'--runsAndWeightsForMC' : ' \"[(203002,1.)] \" ',}
 steps['DIGIPU203002dvmc']=merge([PUrun203002,dvmcCondMC,SetRun203002,step2Defaults])
 steps['DIGIPU203002Splitdvmc']=steps['DIGIPU203002dvmc'] # a clone to force the finest possible splitting
 steps['RECOMIN203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECOMIN']])
-# looking at this
 
-PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+PUrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588_BX_50ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9
 SetRun198588={'--runsAndWeightsForMC' : ' \"[(198588,1.)] \" ',}
 steps['DIGIPU198588dvmc']=merge([PUrun198588,dvmcCondMC,SetRun198588,step2Defaults])
 steps['RECOMIN198588dvmc']=merge([PUrun198588,dvmcCondMC,steps['RECOMIN']])
 
-PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'}
+PUrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148_BX_25ns','--pileup_input':'dbs:/RelValMinBiasVHS/CMSSW_6_2_1-PRE_ST62_V8_dvmc-v2/GEN-SIM'} # GF: update this when new MB is available from pre9
 SetRun209148={'--runsAndWeightsForMC' : ' \"[(209148,1.)] \" ',}
 steps['DIGIPU209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,SetRun209148,step2Defaults])
 steps['RECOMIN209148dvmc']=merge([PUrun209148,dvmcCondMC25ns,steps['RECOMIN']])

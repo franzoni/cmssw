@@ -8,7 +8,7 @@ workflows = Matrix()
 # MC basics:  MinBias for PU
 ###############################
 
-# plain MC minbias (sent both in 612 and 621)
+# plain MC minbias
 workflows[20011] = ['', ['MinBiasVHS','DIGIdvmc','RECOdvmc','HARVESTdvmc']]
 workflows[20011.1] = ['', ['MinBiasVHS']]
 #neutrino gun
