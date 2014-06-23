@@ -1492,8 +1492,10 @@ steps['MINIAODMCFS50']=merge([{'--filein':'file:step1.root'},stepMiniAODMCFS50ns
 #------------------------------
 # MC basics: MinBias for PU
 #------------------------------
-dvmcCondMC    ={'--conditions':'auto:run1_mc',}
-dvmcCondMC25ns={'--conditions':'auto:run1_mc',}     # to be updated with 25ns specific conditions for DIGI-RECO (L1)
+#dvmcCondMC    ={'--conditions':'auto:run1_mc',}
+#dvmcCondMC25ns={'--conditions':'auto:run1_mc',}      # to be updated with 25ns specific conditions for DIGI-RECO (L1)
+dvmcCondMC    ={'--conditions':'START71_V8::All','--geometry':'DB:ExtendedTest2014'}
+dvmcCondMC25ns={'--conditions':'START71_V8::All','--geometry':'DB:ExtendedTest2014'}    # GT only for GEN-SIM; with the updated material budget
 dvmcCondData  ={'--conditions':'auto:run1_data',}
 step2dvmcHLT  ={'-s': 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@frozen,RAW2DIGI,L1Reco'}
 
