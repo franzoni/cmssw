@@ -1499,21 +1499,20 @@ dvmcCondData  ={'--conditions':'auto:run1_data',}
 step2dvmcHLT  ={'-s': 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@frozen,RAW2DIGI,L1Reco'}
 
 baseDataSetReleaseDvmc=[
-    'CMSSW_7_1_0_pre6-PRE_STA71_V2-v1', # GF solely to run tests on 2014-06-22; FOR MINBIAS, 
-                                        # change it to CMSSW_7_1_0_pre9-START71_V5_dvmc-v1 when available!
+    'CMSSW_7_1_0-START71_V8_dvmc-v1', # processing strings for MinBias and NuGun
 ]
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
-#steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # GF switch to this when GEN-SIM become available for dvmc 2014 MinBiasVHS 
-steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests!
+steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}
+# steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests!
 steps['DIGIdvmc']=merge([step2dvmcHLT,dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
 
 # SingleNuE10 GEN-SIM to overlay minbias to an empty event; SingleNuE10 is now in the release :-)
 steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,500))])
-#steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/SingleNuE10/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}  # GF switch to this when GEN-SIM become available for dvmc 2014 MinBiasVHS 
-steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests! Change it to SingelNuE10 when it'll become available !
+steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleNuE10/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}
+
 
 
 #------------------------------
