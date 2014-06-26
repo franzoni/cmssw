@@ -1504,7 +1504,6 @@ baseDataSetReleaseDvmc=[
 
 steps['MinBiasVHS']=merge([dvmcCondMC,gen('MinBias_8TeV_cfi',Mby(4,500))])
 steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}
-# steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBias/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')} # this is only TEMPORARY to run tests!
 steps['DIGIdvmc']=merge([step2dvmcHLT,dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
