@@ -1596,7 +1596,7 @@ steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
 # import lhe from a given article
 steps['DYJetsToLL']=merge([dvmcCondMC,{"-s":"GEN,SIM"},Kby(2300,300),step1Defaults,genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1Defaults,fi=5591)])
 
-steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(200,200))])   # filter efficiency in ZMM_8TeV_cfi is approx 0.5
+steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(400,200))])   # filter efficiency in ZMM_8TeV_cfi is approx 0.5
 steps['ZMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 # gen-sim still in production
 #
@@ -1610,7 +1610,7 @@ steps['RECO2012Cdvmc']=merge([PU2012C,dvmcCondMC,steps['RECO']])
 steps['WMdvmc']=merge([dvmcCondMC,gen('WM_8TeV_cfi',Kby(200,150))])
 steps['WMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValWMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 
-steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(200,200))])  # filter efficiency in is JpsiMM_8TeV_cfi 0.138  
+steps['JpsiMMdvmc']=merge([dvmcCondMC,gen('JpsiMM_8TeV_cfi',Kby(1000,200))])  # filter efficiency in is JpsiMM_8TeV_cfi 0.138  
 steps['JpsiMMdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValJpsiMMdvmc/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 
 steps['INPUT']={'INPUT':InputInfo(dataSet='//%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
