@@ -1493,10 +1493,12 @@ steps['MINIAODMCFS50']=merge([{'--filein':'file:step1.root'},stepMiniAODMCFS50ns
 # MC basics: MinBias for PU
 #------------------------------
 # see: https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideFrontierConditions#DATA_MC_validation_exercise_71X
-dvmcCondMC    ={'--conditions':'START71_V8A::All','--geometry':'DB:ExtendedTest2014'}
-dvmcCondMC25ns={'--conditions':'START71_V8A::All','--geometry':'DB:ExtendedTest2014'}    # name set to START71_V8B, but GT does not yet exist
-dvmcCondData  ={'--conditions':'auto:run1_data',}
-step2dvmcHLT  ={'-s': 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@frozen,RAW2DIGI,L1Reco'}
+dvmcCondMC    ={'--conditions':'START71_V8A::All','--geometry':'DB:ExtendedTest2014',}
+dvmcCondMC25ns={'--conditions':'START71_V8B::All','--geometry':'DB:ExtendedTest2014',}   # name set to START71_V8B, but GT does not yet exist
+dvmcCondData    ={'--conditions':'auto:run1_data',}
+step2dvmcHLT    ={'-s': 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@frozen,RAW2DIGI,L1Reco'}
+dvmcStep1Fast   =merge([{'-s':'GEN,SIM,RECO,EI,HLT:@frozen,VALIDATION',},step1FastDefaults])
+del dvmcStep1Fast['--relval']
 
 baseDataSetReleaseDvmc=[
     'CMSSW_7_1_0-START71_V8_dvmc-v1', # processing strings for MinBias and NuGun
@@ -1507,11 +1509,11 @@ steps['MinBiasVHSINPUT']={'INPUT':InputInfo(dataSet='/RelValMinBiasVHS/%s/GEN-SI
 steps['DIGIdvmc']=merge([step2dvmcHLT,dvmcCondMC,step2Defaults])
 steps['RECOdvmc']=merge([dvmcCondMC,step3Defaults])
 steps['HARVESTdvmc']=merge([dvmcCondMC,steps['HARVEST']])
+steps['HARVESTFSdvmc']=merge([dvmcCondMC,steps['HARVESTFS']])
 
 # SingleNuE10 GEN-SIM to overlay minbias to an empty event; SingleNuE10 is now in the release :-)
 steps['SingleNuE10']=merge([dvmcCondMC,gen('SingleNuE10_cfi',Mby(1,500))])
 steps['SingleNuE10INPUT']={'INPUT':InputInfo(dataSet='/RelValSingleNuE10/%s/GEN-SIM'%(baseDataSetReleaseDvmc[0],),location='STD')}
-
 
 
 #------------------------------
@@ -1564,7 +1566,7 @@ steps['RunZBias2012Ddvmc']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v
 
 
 #------------------------------
-# MC
+# MC - fullsim
 #------------------------------
 
 SetRun193092={'--runsAndWeightsForMC' : ' \"[(193092,1.)] \" ',}
@@ -1593,7 +1595,7 @@ steps['ZEEdvmcINPUT']={'INPUT':InputInfo(dataSet='/RelValZEEdvmc/%s/GEN-SIM'%(ba
 
 steps['RECO203002dvmc']=merge([PUrun203002,dvmcCondMC,steps['RECO']])
 
-# import lhe from a given article
+# import lhe from a given article, still accessible interactively. match efficiency 0.43
 steps['DYJetsToLL']=merge([dvmcCondMC,{"-s":"GEN,SIM"},Kby(2300,300),step1Defaults,genvalid('Hadronizer_MgmMatchTuneZ2star_8TeV_madgraph_tauola_cff',step1Defaults,fi=5591)])
 
 steps['ZMMdvmc']=merge([dvmcCondMC,gen('ZMM_8TeV_cfi',Kby(400,200))])   # filter efficiency in ZMM_8TeV_cfi is approx 0.5
@@ -1628,3 +1630,29 @@ steps['QCD_Pt_170to300']=merge([dvmcCondMC,gen('--evt_type=Configuration/genprod
 steps['QCD_Pt_170to300INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_170to300/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
 steps['QCD_Pt_300to470']=merge([dvmcCondMC,gen('--evt_type=Configuration/genproductions/python/EightTeV/QCD_Pt_300to470_TuneZ2star_8TeV_pythia6_cff',Kby(20,50))])
 steps['QCD_Pt_300to470INPUT']={'INPUT':InputInfo(dataSet='/RelValQCD_Pt_300to470/%s/GEN-SIM'%(baseDataSetRelease[8],),location='CAF')}
+
+
+# FastSim for dvmc
+
+PUFSrun203002={'-n':10,'--pileup':'E8TeV_2012_run203002',}
+PUFSrun198588={'-n':10,'--pileup':'E8TeV_2012_run198588',}
+PUFSrun209148={'-n':10,'--pileup':'E8TeV_2012_run209148',}
+PUFS2012C    ={'-n':10,'--pileup':'E8TeV_2012_ZmumugSkim',}
+
+steps['SingleNuE10FS203002dvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['SingleNuE10']])
+steps['SingleNuE10FS198588dvmc']=merge([SetRun198588,PUFSrun198588,dvmcCondMC,dvmcStep1Fast,steps['SingleNuE10']])
+steps['SingleNuE10FS209148dvmc']=merge([SetRun209148,PUFSrun209148,dvmcCondMC,dvmcStep1Fast,steps['SingleNuE10']])
+steps['MinBiasVHFSdvmc']=merge([SetRun198588,dvmcCondMC,dvmcStep1Fast,steps['MinBiasVHS']])
+steps['ZEEFSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['ZEEdvmc']])
+steps['DYJetsToLLFSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['DYJetsToLL']])
+steps['ZMMFSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['ZMMdvmc']])
+steps['ZMMGammaFSdvmc']=merge([SetRun203002,PUFS2012C,dvmcCondMC,dvmcStep1Fast,steps['ZMMGammadvmc']])
+steps['WMFSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['WMdvmc']])
+steps['JpsiMMFSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['JpsiMMdvmc']])
+
+steps['QCD_Pt_30to50FSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['QCD_Pt_30to50']])
+steps['QCD_Pt_50to80FSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['QCD_Pt_50to80']])
+steps['QCD_Pt_80to120FSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['QCD_Pt_80to120']])
+steps['QCD_Pt_120to170FSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['QCD_Pt_120to170']])
+steps['QCD_Pt_170to300FSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['QCD_Pt_170to300']])
+steps['QCD_Pt_300to470FSdvmc']=merge([SetRun203002,PUFSrun203002,dvmcCondMC,dvmcStep1Fast,steps['QCD_Pt_300to470']])
