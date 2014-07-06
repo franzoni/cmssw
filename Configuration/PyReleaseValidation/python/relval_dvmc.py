@@ -38,7 +38,7 @@ workflows[20108] = ['',['RunJetHT2012Cdvmc','RECODdvmc','HARVESTDdvmc']]
 # high PU ZeroBias 
 workflows[20109] = ['',['RunZBias2012Cdvmc','RECODSplitdvmc','HARVESTDdvmc']]
 # low PU ZeroBias 
-workflows[20110] = ['',['RunZBias2012Advmc','RECODdvmc','HARVESTDdvmc']]
+workflows[20110] = ['',['RunZBias2012Advmc','RECOZBias2012Advmc','HARVESTDdvmc']]
 # 25 ns ZeroBias 
 workflows[20111] = ['',['RunZBias2012Ddvmc','RECODdvmc','HARVESTDdvmc']]
 

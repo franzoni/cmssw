@@ -1524,13 +1524,19 @@ myrun=203002 # => this is whatIwant in production
 Run2012Cdvmc=[myrun]
 # phedex transefr ongoing for run 203002 RunMinBias2012Cdvmc
 steps['RunMinBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012C-v1/RAW',label='mb2012Cdvmc',run=Run2012Cdvmc, events=100000,location='STD')}
-steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},steps['RECOD']])
+steps['RECODdvmc']=merge([dvmcCondData,{'--scenario':'pp',},
+                          {'-s':'RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,USER:DPGAnalysis/Skims/golden_json_2012.golden_json_2012_pickEvents,DQM',},
+                          steps['RECOD']])
+steps['RECOZBias2012Advmc'] = merge([
+    {'-s':'RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,USER:DPGAnalysis/Skims/dcsonly_json_2012.dcsonly_json_2012_pickEvents,DQM',},
+    steps['RECODdvmc'],
+     ])
 steps['RECODSplitdvmc']=steps['RECODdvmc']     # selected to have higher job splitting , see wmsplit in MatrixInjector
 steps['HARVESTDdvmc']=merge([dvmcCondData,steps['HARVESTD']])
 
 steps['ZElSkim2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012C-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012Cdvmc',location='STD',run=Run2012Cdvmc)}
 steps['RECOSKIMALCAdvmc']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'},steps['RECODdvmc']])
-steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM',},steps['RECOSKIMALCAdvmc']])
+steps['RECOSKIMdvmc']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,USER:DPGAnalysis/Skims/golden_json_2012.golden_json_2012_pickEvents,DQM',},steps['RECOSKIMALCAdvmc']])
 
 steps['DoubleMu2012Cdvmc']={'INPUT':InputInfo(dataSet='/DoubleMu/Run2012C-v1/RAW',label='douMu2012C',location='STD',run=Run2012Cdvmc)}
 
@@ -1558,7 +1564,7 @@ steps['RunJetHT2012Cdvmc']={'INPUT':InputInfo(dataSet='/JetHT/Run2012C-v1/RAW',l
 RunHighPU2012Cdvmc=[198588]
 steps['RunZBias2012Cdvmc']={'INPUT':InputInfo(dataSet='/ZeroBias/Run2012C-v1/RAW',label='zb2012Cdvmc',location='STD',run=RunHighPU2012Cdvmc)}
 
-RunLowPU2012Cdvmc=[193092]
+RunLowPU2012Cdvmc=[193092,191090,193112,193116] # 190049 not in dcs json
 steps['RunZBias2012Advmc']={'INPUT':InputInfo(dataSet='/LP_ZeroBias/Run2012A-v1/RAW',label='zb2012Advmc',location='STD',run=RunLowPU2012Cdvmc)}
 
 Run25ns201DCdvmc=[209148]
