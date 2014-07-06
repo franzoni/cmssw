@@ -200,7 +200,6 @@ class MatrixInjector(object):
                     processStrPrefix=''
                     setPrimaryDs=None
                     for step in s[3]:
-                        
                         if 'INPUT' in step or (not isinstance(s[2][index],str)):
                             nextHasDSInput=s[2][index]
 
