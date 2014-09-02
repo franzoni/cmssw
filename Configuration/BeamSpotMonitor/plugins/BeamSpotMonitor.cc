@@ -91,11 +91,11 @@ BeamSpotMonitor::BeamSpotMonitor(const edm::ParameterSet& iConfig)
    //now do what ever initialization is needed
 
   edm::Service<TFileService> fs;
-  int numLS = 2000;
+  int numLS = 2004;
   
   h_sigmaBeamZ = fs->make<TH2F>("sigmaBeamZ", "sigmaBeamZ", numLS, 0., numLS-1,500, 4.6, 5.1 );
-  h_sigmaBeamY = fs->make<TH2F>("sigmaBeamY", "sigmaBeamY", numLS, 0., numLS-1,500, 1.6, 2.1 );
-  h_sigmaBeamX = fs->make<TH2F>("sigmaBeamX", "sigmaBeamX", numLS, 0., numLS-1,500, 1.6, 2.1 );
+  h_sigmaBeamY = fs->make<TH2F>("sigmaBeamY", "sigmaBeamY", numLS, 0., numLS-1,500, 0.0016, 0.0021 );
+  h_sigmaBeamX = fs->make<TH2F>("sigmaBeamX", "sigmaBeamX", numLS, 0., numLS-1,500, 0.0016, 0.0021 );
 
   h_BeamZ = fs->make<TH2F>("BeamZ", "BeamZ", numLS, 0., numLS-1,500, -1     , 0      );
   h_BeamY = fs->make<TH2F>("BeamY", "BeamY", numLS, 0., numLS-1,500, 0.0633 , 0.0639 );
@@ -187,10 +187,13 @@ BeamSpotMonitor::beginLuminosityBlock(edm::LuminosityBlock const& iLumi, edm::Ev
 	      << "\t z: " << spotDB->GetZ() << "\t sigz: "   << spotDB->GetSigmaZ()
 	      << std::endl;
 
-
     h_sigmaBeamX->Fill(iLumi.id().luminosityBlock(), spotDB->GetBeamWidthX());
     h_sigmaBeamY->Fill(iLumi.id().luminosityBlock(), spotDB->GetBeamWidthY());
     h_sigmaBeamZ->Fill(iLumi.id().luminosityBlock(), spotDB->GetSigmaZ());
+
+    h_BeamX->Fill(iLumi.id().luminosityBlock(), spotDB->GetX());
+    h_BeamY->Fill(iLumi.id().luminosityBlock(), spotDB->GetY());
+    h_BeamZ->Fill(iLumi.id().luminosityBlock(), spotDB->GetZ());
 
   }
   else {
