@@ -94,8 +94,8 @@ BeamSpotMonitor::BeamSpotMonitor(const edm::ParameterSet& iConfig)
   int numLS = 2004;
   
   h_sigmaBeamZ = fs->make<TH2F>("sigmaBeamZ", "sigmaBeamZ", numLS, 0., numLS-1,500, 4.6, 5.1 );
-  h_sigmaBeamY = fs->make<TH2F>("sigmaBeamY", "sigmaBeamY", numLS, 0., numLS-1,500, 0.0016, 0.0021 );
-  h_sigmaBeamX = fs->make<TH2F>("sigmaBeamX", "sigmaBeamX", numLS, 0., numLS-1,500, 0.0016, 0.0021 );
+  h_sigmaBeamY = fs->make<TH2F>("sigmaBeamY", "sigmaBeamY", numLS, 0., numLS-1,500, 0.0016, 0.0019 );
+  h_sigmaBeamX = fs->make<TH2F>("sigmaBeamX", "sigmaBeamX", numLS, 0., numLS-1,500, 0.0018, 0.0021 );
 
   h_BeamZ = fs->make<TH2F>("BeamZ", "BeamZ", numLS, 0., numLS-1,500, -1     , 0      );
   h_BeamY = fs->make<TH2F>("BeamY", "BeamY", numLS, 0., numLS-1,500, 0.0633 , 0.0639 );
