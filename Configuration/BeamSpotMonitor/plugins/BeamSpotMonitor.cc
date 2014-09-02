@@ -99,7 +99,7 @@ BeamSpotMonitor::BeamSpotMonitor(const edm::ParameterSet& iConfig)
 
   h_BeamZ = fs->make<TH2F>("BeamZ", "BeamZ", numLS, 0., numLS-1,500, -1     , 0      );
   h_BeamY = fs->make<TH2F>("BeamY", "BeamY", numLS, 0., numLS-1,500, 0.0633 , 0.0639 );
-  h_BeamX = fs->make<TH2F>("BeamX", "BeamX", numLS, 0., numLS-1,500, 0.071  , 7.23   );
+  h_BeamX = fs->make<TH2F>("BeamX", "BeamX", numLS, 0., numLS-1,500, 0.071  , 0.0723   );
 
 }
 
