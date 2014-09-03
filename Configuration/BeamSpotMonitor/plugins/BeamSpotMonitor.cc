@@ -93,13 +93,13 @@ BeamSpotMonitor::BeamSpotMonitor(const edm::ParameterSet& iConfig)
   edm::Service<TFileService> fs;
   int numLS = 2004;
   
-  h_sigmaBeamZ = fs->make<TH2F>("sigmaBeamZ", "sigmaBeamZ", numLS, 0., numLS-1,500, 4.6, 5.1 );
-  h_sigmaBeamY = fs->make<TH2F>("sigmaBeamY", "sigmaBeamY", numLS, 0., numLS-1,500, 0.0016, 0.0019 );
-  h_sigmaBeamX = fs->make<TH2F>("sigmaBeamX", "sigmaBeamX", numLS, 0., numLS-1,500, 0.0018, 0.0021 );
+  h_sigmaBeamZ = fs->make<TH2F>("sigmaBeamZ", "sigmaBeamZ;luminosity section;#sigma_{beam Z}", numLS, 0., numLS-1,500, 4.6, 5.1 );
+  h_sigmaBeamY = fs->make<TH2F>("sigmaBeamY", "sigmaBeamY;luminosity section;#sigma_{beam Y}", numLS, 0., numLS-1,500, 0.0016, 0.0019 );
+  h_sigmaBeamX = fs->make<TH2F>("sigmaBeamX", "sigmaBeamX;luminosity section;#sigma_{beam X}", numLS, 0., numLS-1,500, 0.0018, 0.0021 );
 
-  h_BeamZ = fs->make<TH2F>("BeamZ", "BeamZ", numLS, 0., numLS-1,500, -1     , 0      );
-  h_BeamY = fs->make<TH2F>("BeamY", "BeamY", numLS, 0., numLS-1,500, 0.0633 , 0.0639 );
-  h_BeamX = fs->make<TH2F>("BeamX", "BeamX", numLS, 0., numLS-1,500, 0.071  , 0.0723   );
+  h_BeamZ = fs->make<TH2F>("BeamZ", "BeamZ;luminosity section;beamspot Z", numLS, 0., numLS-1,500, -1     , 0      );
+  h_BeamY = fs->make<TH2F>("BeamY", "BeamY;luminosity section;beamspot Y", numLS, 0., numLS-1,500, 0.0633 , 0.0639 );
+  h_BeamX = fs->make<TH2F>("BeamX", "BeamX;luminosity section;beamspot X", numLS, 0., numLS-1,500, 0.071  , 0.0723   );
 
 }
 
