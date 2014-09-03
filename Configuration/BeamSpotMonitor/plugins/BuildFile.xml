@@ -3,7 +3,6 @@
 <use name="FWCore/ParameterSet"/>
 <use   name="DataFormats/BeamSpot"/>
 <use   name="RecoVertex/BeamSpotProducer"/>
-<use   name="DataFormats/BeamSpot"/>
 <use   name="CondFormats/DataRecord"/>
 <use   name="CondFormats/BeamSpotObjects"/>
 
