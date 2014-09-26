@@ -114,11 +114,12 @@ step1Defaults = {'--relval'      : None, # need to be explicitly set
 step1Up2015Defaults = {'-s' : 'GEN,SIM',
                              '-n'            : 10,
                              '--conditions'  : 'auto:run2_mc',
-                             '--beamspot'    : 'NominalCollision2015',
+                       # '--beamspot'    : 'NominalCollision2015',
                              '--datatier'    : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--magField'    : '38T_PostLS1',
-                             '--customise'   : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1'
+                             '--customise'   : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,Configuration/PyReleaseValidation/custom.customiseBS',
+                             '--inline_custom' : ''
                              }
 
 steps = Steps()
