@@ -255,7 +255,7 @@ def gen2015(fragment,howMuch):
     return merge([{'cfg':fragment},howMuch,step1Up2015Defaults])
 
 ### Production test: 13 TeV equivalents
-steps['ProdMinBias_13']=gen2015('MinBias_13TeV_cfi',Kby(9,100))
+steps['ProdMinBias_13']=gen2015('MinBias_13TeV_cfi',Kby(500,100))
 steps['ProdTTbar_13']=gen2015('TTbar_Tauola_13TeV_cfi',Kby(9,100))
 steps['ProdZEE_13']=gen2015('ZEE_13TeV_cfi',Kby(9,100))
 steps['ProdQCD_Pt_3000_3500_13']=gen2015('QCD_Pt_3000_3500_13TeV_cfi',Kby(9,100))
