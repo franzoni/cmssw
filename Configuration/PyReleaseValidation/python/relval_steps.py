@@ -984,6 +984,7 @@ steps['TTbarFSPU13AVE20']=merge([PUFSAVE20,Kby(100,500),steps['TTbarFS_13']] )
 # step2 
 step2Defaults = { '-s'            : 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@fake,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
+                  '--inputEventContent': 'REGEN',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:run1_mc',
                   }
@@ -1169,7 +1170,7 @@ step3Defaults = {
 steps['DIGIPU']=merge([{'--process':'REDIGI'},steps['DIGIPU1']])
 
 #for 2015
-step3Up2015Defaults = {'-s':'RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM',
+step3Up2015Defaults = {'-s':'GEN:fixGenInfo,RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM',
                  '--conditions':'auto:run2_mc', 
                  '--magField'    : '38T_PostLS1',
                  '-n':'10',
