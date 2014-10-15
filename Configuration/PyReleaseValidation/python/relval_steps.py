@@ -335,7 +335,7 @@ baseDataSetRelease=[
                                                # this an previous should be unified, when -v2 will be gone
     #'CMSSW_7_2_0_pre4-POSTLS172_V3-v2',        # 13 TeV samples with GEN-SIM from 720_p4;
     'CMSSW_6_2_0_patch1-POSTLS162_V1_30Aug2013-v2',        # 13 TeV samples with GEN-SIM from 6_2_0_patch1;
-    'CMSSW_6_2_0_patch1-POSTLS162_V1_30Aug2013HS-v3'       # 13 TeV samples with GEN-SIM from 6_2_0_patch1 only for minbias;
+    'CMSSW_6_2_0_patch1-POSTLS162_V1_30Aug2013HS-v3',      # 13 TeV samples with GEN-SIM from 6_2_0_patch1 only for minbias;
     'CMSSW_6_2_0_patch1-POSTLS162_V1_30Aug2013-v3',        # 13 TeV samples with GEN-SIM from 6_2_0_patch1;
     ]
 
@@ -984,7 +984,6 @@ steps['TTbarFSPU13AVE20']=merge([PUFSAVE20,Kby(100,500),steps['TTbarFS_13']] )
 # step2 
 step2Defaults = { '-s'            : 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@fake,RAW2DIGI,L1Reco',
                   '--datatier'    : 'GEN-SIM-DIGI-RAW-HLTDEBUG',
-                  '--inputEventContent': 'REGEN',
                   '--eventcontent': 'FEVTDEBUGHLT',
                   '--conditions'  : 'auto:run1_mc',
                   }
@@ -993,6 +992,7 @@ step2Upg2015Defaults = {'-s'     :'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval,RAW2
                  '--conditions'  :'auto:run2_mc',
                  '--magField'    :'38T_PostLS1',
                  '--datatier'    :'GEN-SIM-DIGI-RAW-HLTDEBUG',
+                  '--inputEventContent': 'REGEN',
                  '--eventcontent':'FEVTDEBUGHLT',
                  '--customise'   :'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1',
                  '-n'            :'10'
