@@ -988,7 +988,7 @@ step2Defaults = { '-s'            : 'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@fake,RAW2
                   '--conditions'  : 'auto:run1_mc',
                   }
 #for 2015
-step2Upg2015Defaults = {'-s'     :'DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
+step2Upg2015Defaults = {'-s'     :'GEN:fixGenInfo,DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval,RAW2DIGI,L1Reco',
                  '--conditions'  :'auto:run2_mc',
                  '--magField'    :'38T_PostLS1',
                  '--datatier'    :'GEN-SIM-DIGI-RAW-HLTDEBUG',
@@ -1170,7 +1170,9 @@ step3Defaults = {
 steps['DIGIPU']=merge([{'--process':'REDIGI'},steps['DIGIPU1']])
 
 #for 2015
-step3Up2015Defaults = {'-s':'GEN:fixGenInfo,RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM',
+step3Up2015Defaults = {
+    #'-s':'GEN:fixGenInfo,RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM',
+    '-s':'RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM',
                  '--conditions':'auto:run2_mc', 
                  '--magField'    : '38T_PostLS1',
                  '-n':'10',
