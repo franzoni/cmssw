@@ -59,6 +59,7 @@ workflows[4.37] = ['',['ZMuSkim2011B','RECOSKIM']]
 workflows[4.38] = ['',['ZElSkim2011B','RECOSKIM']]
 workflows[4.39] = ['',['HighMet2011B','RECOSKIM']]
 
+workflows[99999] = ['',['RunPPJetRun2013A','HLTD','RECODreHLT']]
 workflows[4.40] = ['',['RunMinBias2012A','HLTD','RECODreHLT']]
 workflows[4.41] = ['',['RunTau2012A','HLTD','RECODreHLT']]
 workflows[4.42] = ['',['RunMET2012A','HLTD','RECODreHLT']]

@@ -188,6 +188,8 @@ steps['RunMu2012A']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012A-v1/RAW',label
 steps['RunElectron2012A']={'INPUT':InputInfo(dataSet='/SingleElectron/Run2012A-v1/RAW',label='electron2012A', run=Run2012A, events=100000,location='STD')}
 steps['RunJet2012A']={'INPUT':InputInfo(dataSet='/Jet/Run2012A-v1/RAW',label='jet2012A', run=Run2012A, events=100000,location='STD')}
 
+Run2013A=[211739]
+steps['RunPPJetRun2013A']={'INPUT':InputInfo(dataSet='/PPJet/Run2013A-v1/RAW',label='ppJ2013A',run=Run2013A, events=100000,location='STD')}
 
 Run2012B=[194533]
 Run2012Bsk=Run2012B+[194912,195016]
