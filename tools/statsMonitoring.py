@@ -218,19 +218,24 @@ def get_dataset_name(reqname):
       #decision=t1[2] < t2[2]
       def tierP(t):
         tierPriority=[
-                      '/RECO', 
+                      'RECO',
                       'SIM-RECO',
                       'DIGI-RECO',
+                      'AODSIM',
                       'AOD',
                       'SIM-RAW-RECO',
-                      'DQM' ,
                       'GEN-SIM',
                       'RAW-RECO',
                       'USER',
-                      'ALCARECO']
+                      'ALCARECO',
+                      'DQM' ,
+                      'DQMIO',
+                      'MINIAOD',
+                      'MINIAODSIM'
+                      ]
         
         for (p,tier) in enumerate(tierPriority):
-          if tier in t:
+          if tier == t:
             #print t,p
             return p
         #print t
