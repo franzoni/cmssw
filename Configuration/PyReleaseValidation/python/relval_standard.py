@@ -235,6 +235,7 @@ workflows[1345] = ['', ['ZpTT_1500_13TeV','DIGIUP15','RECOUP15','HARVESTUP15','M
 workflows[140] = ['',['HydjetQ_MinBias_2760GeV','DIGIHI','RECOHI','HARVESTHI']]
 workflows[140.9] = ['',['HydjetQ_MinBias_2760GeV']]
 workflows[140.1] = ['',['QCD_Pt_80_120_13_HI','DIGIHI','RECOHI','HARVESTHI']]
+workflows[140.19] = ['',['QCD_Pt_80_120_13_HI']]
 workflows[140.2] = ['',['PhotonJets_Pt_10_13_HI','DIGIHI','RECOHI','HARVESTHI']]
 workflows[140.3] = ['',['ZMM_13_HI','DIGIHI','RECOHI','HARVESTHI']]
 workflows[140.4] = ['',['ZEEMM_13_HI','DIGIHI','RECOHI','HARVESTHI']]
