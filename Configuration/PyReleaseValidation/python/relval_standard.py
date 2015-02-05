@@ -243,4 +243,5 @@ workflows[140.4] = ['',['ZEEMM_13_HI','DIGIHI','RECOHI','HARVESTHI']]
 #workflows[142] = ['',['HydjetQ_B8_2760GeV','DIGIHI','RECOHI','HARVESTHI','MINIAODMCUP15HI']]
 
 ### pPb test ###
-workflows[280]= ['',['AMPT_PPb_5020GeV_MinimumBias','DIGI','RECO','HARVEST']]
+#workflows[280]= ['',['AMPT_PPb_5020GeV_MinimumBias','DIGI','RECO','HARVEST']]
+#commenting out workflow for which we have not had GEN-SIM for a while
