@@ -199,6 +199,7 @@ class MatrixInjector(object):
                     thisLabel=self.speciallabel
                     if 'HARVESTGEN' in s[3]:
                         thisLabel=thisLabel+"_gen"
+                        chainDict['TimePerEvent']=0.1
                     processStrPrefix=''
                     setPrimaryDs=None
                     for step in s[3]:
