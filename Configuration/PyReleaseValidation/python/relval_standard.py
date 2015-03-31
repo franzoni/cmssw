@@ -98,11 +98,28 @@ workflows[4.74] = ['',['RunEl2012D','HLTD','RECODreHLT','HARVESTDreHLT','MINIAOD
 workflows[4.75] = ['',['RunJet2012D','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.76] = ['',['ZMuSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.77] = ['',['ZElSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
-workflows[4.78] = ['',['WElSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 
 workflows[140.51] = ['',['RunHI2010','REPACKHID','RECOHID11St3','HARVESTDHI']]
 workflows[140.52] = ['',['RunHI2010','RECOHID10','RECOHIR10D11','HARVESTDHI']]
 workflows[140.53] = ['',['RunHI2011','RECOHID11','HARVESTDHI']]
+
+
+workflows[4.001] = ['',['ZeroMinBias2012C','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.002]  = ['',['JetHT2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.003]  = ['',['DoubleMuParked2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.004]  = ['',['MinimumBias2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.005]  = ['',['JetMon2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.006]  = ['',['MuEG2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.007]  = ['',['SingleMu2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.008]  = ['',['ZeroBias25ns12012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.009]  = ['',['MinimumBias25ns2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.010] = ['',['JetHT25ns2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.011] = ['',['JetMon25ns2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+
+workflows[4.101] = ['',['DoubleElectronZel2012D','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.102] = ['',['SingleMuZmu2012D','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+
+
 
 ### fastsim ###
 workflows[5.1] = ['TTbar', ['TTbarFS','HARVESTFS']]

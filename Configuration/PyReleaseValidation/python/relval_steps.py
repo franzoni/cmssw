@@ -78,9 +78,9 @@ class InputInfo(object):
         query_by = "block" if self.ib_block else "dataset"
         query_source = "{0}#{1}".format(self.dataSet, self.ib_block) if self.ib_block else self.dataSet
         if len(self.run) is not 0:
-            return ["file {0}={1} run={2} site=T2_CH_CERN".format(query_by, query_source, query_run) for query_run in self.run]
+            return ["file {0}={1} run={2} ".format(query_by, query_source, query_run) for query_run in self.run]
         else:
-            return ["file {0}={1} site=T2_CH_CERN".format(query_by, query_source)]
+            return ["file {0}={1} ".format(query_by, query_source)]
 
     def __str__(self):
         if self.ib_block:
@@ -245,6 +245,42 @@ steps['RunJet2012D']={'INPUT':InputInfo(dataSet='/JetHT/Run2012D-v1/RAW',label='
 steps['ZMuSkim2012D']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012D-ZMu-PromptSkim-v1/RAW-RECO',label='zMu2012D',location='STD',run=Run2012Dsk)}
 steps['WElSkim2012D']={'INPUT':InputInfo(dataSet='/SingleElectron/Run2012D-WElectron-PromptSkim-v1/USER',label='wEl2012D',location='STD',run=Run2012Dsk)}
 steps['ZElSkim2012D']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012D-ZElectron-PromptSkim-v1/RAW-RECO',label='zEl2012D',location='STD',run=Run2012Dsk)}
+
+
+# two RAW-RECO skims
+Run2012Dbase=[208307,208339,208341,208351,208353]
+steps['DoubleElectronZel2012D']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012D-ZElectron-22Jan2013-v1/RAW-RECO',label='zEl2012D',run=Run2012Dbase, events=100000,location='STD')}
+Run2012Dwhole=[]
+steps['SingleMuZmu2012D']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012D-ZMu-22Jan2013-v1/RAW-RECO',label='zMu2012D',run=Run2012Dwhole, events=100000,location='STD')}
+
+
+# RECO from RAW
+Run2012Czb=[198588]
+steps['ZeroMinBias2012C']={'INPUT':InputInfo(dataSet='/ZeroBias/Run2012C-v1/RAW',label='zb2012C',run=Run2012Czb, events=100000,location='STD')}
+
+
+steps['JetHT2012D']={'INPUT':InputInfo(dataSet='/JetHT/Run2012D-v1/RAW',label='jht2012D',run=Run2012Dbase, events=100000,location='STD')}
+steps['DoubleMuParked2012D']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012D-v1/RAW',label='dm2012D',run=Run2012Dbase, events=100000,location='STD')}
+steps['MinimumBias2012D']={'INPUT':InputInfo(dataSet='/MinimumBias/Run2012D-v1/RAW',label='mb2012D',run=Run2012Dbase, events=100000,location='STD')}
+
+Run2012Dext=[208307,208339,208341,208351,208353,208357,208390,208391,208427,208429,208487,208541,208551,208686]
+steps['JetMon2012D']={'INPUT':InputInfo(dataSet='/JetMon/Run2012D-v1/RAW',label='jmo2012D',run=Run2012Dext, events=100000,location='STD')}
+steps['MuEG2012D']={'INPUT':InputInfo(dataSet='/MuEG/Run2012D-v1/RAW',label='meg2012D',run=Run2012Dext, events=100000,location='STD')}
+
+Run2012Dx=[208307,208339,208341,208351,208353,208357,208390]
+steps['SingleMu2012D']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012D-v1/RAW',label='sm2012D',run=Run2012Dx, events=100000,location='STD')}
+
+Run209148=[209148]
+steps['ZeroBias25ns12012D']={'INPUT':InputInfo(dataSet='/ZeroBias25ns1/Run2012D-v1/RAW',label='zb25ns2012D',run=Run209148, events=100000,location='STD')}
+
+Run2012D25nswhole=[]
+steps['MinimumBias25ns2012D']={'INPUT':InputInfo(dataSet='/MinimumBias25ns/Run2012D-v1/RAW',label='mb25ns2012D',run=Run2012D25nswhole, events=100000,location='STD')}
+steps['JetHT25ns2012D']={'INPUT':InputInfo(dataSet='/JetHT25ns/Run2012D-v1/RAW',label='jht25ns2012D',run=Run2012D25nswhole, events=100000,location='STD')}
+steps['JetMon25ns2012D']={'INPUT':InputInfo(dataSet='/JetMon25ns/Run2012D-v1/RAW',label='jm25ns2012D',run=Run2012D25nswhole, events=100000,location='STD')}
+
+
+
+
 
 #### Standard release validation samples ####
 
