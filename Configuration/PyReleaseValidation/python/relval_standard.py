@@ -94,6 +94,7 @@ workflows[4.75] = ['',['RunJet2012D','HLTD','RECODreHLT','HARVESTDreHLT','MINIAO
 workflows[4.755] = ['',['RunJet2012Dlarge','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.76] = ['',['ZMuSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.766] = ['',['ZMuSkim2012Dlarge','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.777] = ['',['ZMuMuSkim2012Dlarge','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.77] = ['',['ZElSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.78] = ['',['WElSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 

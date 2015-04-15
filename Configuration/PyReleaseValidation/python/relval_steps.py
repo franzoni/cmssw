@@ -235,6 +235,7 @@ steps['RunJet2012D']={'INPUT':InputInfo(dataSet='/JetHT/Run2012D-v1/RAW',label='
 steps['RunJet2012Dlarge']={'INPUT':InputInfo(dataSet='/JetHT/Run2012D-v1/RAW',label='jet2012D',location='STD',run=Run2012Dlarge)}
 steps['ZMuSkim2012D']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012D-ZMu-PromptSkim-v1/RAW-RECO',label='zMu2012D',location='STD',run=Run2012Dsk)}
 steps['ZMuSkim2012Dlarge']={'INPUT':InputInfo(dataSet='/DoubleMuParked/Run2012D-Zmmg-22Jan2013-v1/RAW-RECO',label='zMu2012D',location='STD',run=Run2012Dverylarge)}
+steps['ZMuMuSkim2012Dlarge']={'INPUT':InputInfo(dataSet='/SingleMu/Run2012D-ZMu-22Jan2013-v1/RAW-RECO',label='zMuMu2012D',location='STD',run=Run2012Dverylarge)}
 steps['WElSkim2012D']={'INPUT':InputInfo(dataSet='/SingleElectron/Run2012D-WElectron-PromptSkim-v1/USER',label='wEl2012D',location='STD',run=Run2012Dsk)}
 steps['ZElSkim2012D']={'INPUT':InputInfo(dataSet='/DoubleElectron/Run2012D-ZElectron-PromptSkim-v1/RAW-RECO',label='zEl2012D',location='STD',run=Run2012Dsk)}
 
