@@ -25,7 +25,7 @@ workflows[302]=['Pyquen_ZeemumuJets_pt10_2760GeV',['HydjetQ_MinBias_2760GeVINPUT
 workflows[400]=['TTbar',['TTbarFSPU','HARVESTFS']]
 # temporarily redefine test 401 to pass tests during pu cfg transitation of FastSim
 #workflows[401]=['TTbarNewMix',['TTbarFSPU2','HARVESTFS','MINIAODMCUP15FS']]
-workflows[401]=['TTbarNewMix',['TTbarFSPU','HARVESTFS','MINIAODMCUP15FS']]
+workflows[401]=['TTbarNewMix',['TTbarFSPU','HARVESTFS']]
 
 
 # 50 ns at 13 TeV and POSTLS1
@@ -48,13 +48,13 @@ workflows[25206]=['',['ZMM_13','DIGIUP15_PU25','RECOUP15_PU25','HARVESTUP15_PU25
 workflows[25207]=['',['NuGun_UP15','DIGIUP15_PU25','RECOUP15_PU25','HARVESTUP15_PU25']]
 
 #fastsim
-workflows[25400]=['',['FS_TTbar_13_PUAVE10','HARVESTUP15FS','MINIAODMCUP15FS']]
-workflows[25400.1]=['',['FS_TTbar_13_PUAVE10_DRMIX_ITO','HARVESTUP15FS','MINIAODMCUP15FS']] #NEW MIX
+workflows[25400]=['',['FS_TTbar_13_PUAVE10','HARVESTUP15FS']]
+workflows[25400.1]=['',['FS_TTbar_13_PUAVE10_DRMIX_ITO','HARVESTUP15FS']] #NEW MIX
 
-workflows[25400.2]=['',['FS_TTbar_13_PUAVE35','HARVESTUP15FS','MINIAODMCUP15FS']]
-workflows[25400.3]=['',['FS_TTbar_13_PUAVE35_DRMIX_ITO','HARVESTUP15FS','MINIAODMCUP15FS']] #NEW MIX
+workflows[25400.2]=['',['FS_TTbar_13_PUAVE35','HARVESTUP15FS']]
+workflows[25400.3]=['',['FS_TTbar_13_PUAVE35_DRMIX_ITO','HARVESTUP15FS']] #NEW MIX
 
-workflows[25401]=['',['FS_TTbar_13_PUAVE20','HARVESTUP15FS','MINIAODMCUP15FS']]
-workflows[25402]=['',['FS_TTbar_13_PU25','HARVESTUP15FS','MINIAODMCUP15FS']] #NEW MIX
-workflows[25407]=['',['FS_NuGun_UP15_PU25','HARVESTUP15FS','MINIAODMCUP15FS']] #NEW MIX
+workflows[25401]=['',['FS_TTbar_13_PUAVE20','HARVESTUP15FS']]
+workflows[25402]=['',['FS_TTbar_13_PU25','HARVESTUP15FS']] #NEW MIX
+workflows[25407]=['',['FS_NuGun_UP15_PU25','HARVESTUP15FS']] #NEW MIX
 

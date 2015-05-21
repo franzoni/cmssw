@@ -605,20 +605,23 @@ step1FastDefaults =merge([{'-s':'GEN,SIM,RECO,EI,HLT:@fake,VALIDATION',
                            '--datatier':'GEN-SIM-DIGI-RECO,DQMIO',
                            '--relval':'27000,3000'},
                           step1Defaults])
-step1FastUpg2015Defaults =merge([{'-s':'GEN,SIM,RECO,EI,HLT:@frozen25ns,VALIDATION',
-                           '--fast':'',
-                           '--conditions'  :'auto:run2_mc',
-                           '--beamspot'    : 'NominalCollision2015',
-                           '--magField'    :'38T_PostLS1',
-                           '--customise'   :'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1',
-                           '--eventcontent':'FEVTDEBUGHLT,DQM',
-                           '--datatier':'GEN-SIM-DIGI-RECO,DQMIO',
-                           '--relval':'27000,3000'},
-                           step1Defaults])
+step1FastUpg2015Defaults =merge([{
+            # '-s':'GEN,SIM,RECO,EI,HLT:@frozen25ns,VALIDATION',
+            '-s':'GEN,SIM,RECO,EI,PAT,HLT:@frozen25ns,VALIDATION:@standardValidation+@miniAODValidation',
+            '--runUnscheduled':'',
+            '--fast':'',
+            '--conditions'  :'auto:run2_mc',
+            '--beamspot'    : 'NominalCollision2015',
+            '--magField'    :'38T_PostLS1',
+            '--customise'   :'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1',
+            '--eventcontent':'FEVTDEBUGHLT,MINIAODSIM,DQM',
+            '--datatier':'GEN-SIM-DIGI-RECO,MINIAODSIM,DQMIO',
+            '--relval':'27000,3000'},
+                                 step1Defaults])
 step1FastPUNewMixing =merge([{'-s':'GEN,SIM,RECO',
-                           '--eventcontent':'FASTPU',
-                           '--datatier':'GEN-SIM-RECO'},
-                           step1FastUpg2015Defaults])
+                              '--eventcontent':'FASTPU',
+                              '--datatier':'GEN-SIM-RECO'},
+                             step1FastUpg2015Defaults])
 
 
 #step1FastDefaults
@@ -1297,6 +1300,7 @@ stepMiniAODMC = merge([{'--conditions'   : 'auto:run2_mc',
 #steps['MINIAODMCUP15']     =merge([stepMiniAODMC])
 #steps['MINIAODMCUP1550']   =merge([{'--conditions':'auto:run2_mc_50ns','--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1_50ns'},stepMiniAODMC])
 #steps['MINIAODMCUP15HI']   =merge([{'--conditions':'auto:run2_mc_HIon','--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1_HI'},stepMiniAODMC])
+# fast sim: GEN and SIM (fast) not yet runnable unscheduled , is that so ? 
 steps['MINIAODMCUP15FS']   =merge([{'--filein':'file:step1.root','--fast':''},stepMiniAODMC])
 steps['MINIAODMCUP15FS50'] =merge([{'--conditions':'auto:run2_mc_50ns','--customise':'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1_50ns'},steps['MINIAODMCUP15FS']])
 
