@@ -879,7 +879,7 @@ steps['DIGIPRMXUP15_PROD_PU50']=merge([premixProd50ns,digiPremixUp2015Defaults50
 
 dataReco={'--runUnscheduled':'',
           '--conditions':'auto:run1_data',
-          '-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,DQM:@standardDQM+@miniAODDQM',
+          '-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,DQM:@standardDQM+@miniAODDQM',
           '--datatier':'RECO,MINIAOD,DQMIO',
           '--eventcontent':'RECO,MINIAOD,DQM',
           '--data':'',
@@ -911,7 +911,7 @@ steps['REPACKHID']=merge([{'--scenario':'HeavyIons',
                          '--eventcontent':'REPACKRAW'},
                         steps['RECOD']])
 steps['RECOHID10']=merge([{'--scenario':'HeavyIons',
-                         '-s':'RAW2DIGI,L1Reco,RECO,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBiasHI+HcalCalMinBias,DQM',
+                         '-s':'RAW2DIGI,L1Reco,RECO,DQM',
                          '--datatier':'RECO,DQMIO',
                          '--eventcontent':'RECO,DQM','-n':30},
                         steps['RECOD']])
@@ -996,10 +996,10 @@ steps['RECODBG']=merge([{'--eventcontent':'RECODEBUG,DQM'},steps['RECO']])
 steps['RECOPROD1']=merge([{ '-s' : 'RAW2DIGI,L1Reco,RECO,EI', '--datatier' : 'GEN-SIM-RECO,AODSIM', '--eventcontent' : 'RECOSIM,AODSIM'},step3Defaults])
 #steps['RECOPRODUP15']=merge([{ '-s':'RAW2DIGI,L1Reco,RECO,EI,DQM:DQMOfflinePOGMC','--datatier':'AODSIM,DQMIO','--eventcontent':'AODSIM,DQM'},step3Up2015Defaults])
 steps['RECOPRODUP15']=merge([{ '-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,DQM:DQMOfflinePOGMC','--datatier':'AODSIM,MINIAODSIM,DQMIO','--eventcontent':'AODSIM,MINIAODSIM,DQM'},step3Up2015Defaults])
-steps['RECOCOS']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,DQM','--scenario':'cosmics'},stCond,step3Defaults])
-steps['RECOHAL']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,ALCA:MuAlCalIsolatedMu,DQM','--scenario':'cosmics'},step3Up2015Hal])
-steps['RECOMIN']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalPhiSym,VALIDATION,DQM'},stCond,step3Defaults])
-steps['RECOMINUP15']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalPhiSym,VALIDATION,DQM'},step3Up2015Defaults])
+steps['RECOCOS']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,DQM','--scenario':'cosmics'},stCond,step3Defaults])
+steps['RECOHAL']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,,DQM','--scenario':'cosmics'},step3Up2015Hal])
+steps['RECOMIN']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM'},stCond,step3Defaults])
+steps['RECOMINUP15']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,VALIDATION,DQM'},step3Up2015Defaults])
 
 steps['RECODDQM']=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,DQM:@common+@muon+@hcal+@jetmet+@ecal'},steps['RECOD']])
 
