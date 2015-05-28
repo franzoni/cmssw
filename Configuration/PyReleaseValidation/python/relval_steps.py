@@ -607,7 +607,9 @@ step1FastDefaults =merge([{'-s':'GEN,SIM,RECO,EI,HLT:@fake,VALIDATION',
                           step1Defaults])
 step1FastUpg2015Defaults =merge([{
             # '-s':'GEN,SIM,RECO,EI,HLT:@frozen25ns,VALIDATION',
-            '-s':'GEN,SIM,RECO,EI,PAT,HLT:@frozen25ns,VALIDATION:@standardValidation+@miniAODValidation',
+            #'-s':'GEN,SIM,RECO,EI,PAT,HLT:@frozen25ns,VALIDATION:@standardValidation+@miniAODValidation',
+            # remove temporarily miniAODValidation from fast sim (AttributeError: 'Process' object has no attribute 'prevalidationMiniAOD')
+            '-s':'GEN,SIM,RECO,EI,PAT,HLT:@frozen25ns,VALIDATION:@standardValidation',
             '--runUnscheduled':'',
             '--fast':'',
             '--conditions'  :'auto:run2_mc',
