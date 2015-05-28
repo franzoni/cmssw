@@ -248,6 +248,8 @@ class MatrixInjector(object):
                                 # get the run numbers or #events
                                 if len(nextHasDSInput.run):
                                     chainDict['nowmTasklist'][-1]['RunWhitelist']=nextHasDSInput.run
+                                if len(nextHasDSInput.ls):
+                                    chainDict['nowmTasklist'][-1]['lumis']=nextHasDSInput.ls
                                 #print "what is s",s[2][index]
                                 if '--data' in s[2][index] and nextHasDSInput.label:
                                     thisLabel+='_RelVal_%s'%nextHasDSInput.label
@@ -343,7 +345,7 @@ class MatrixInjector(object):
                 chainDict['AcquisitionEra'] = chainDict['AcquisitionEra'].values()[0]
                 
             ## clean things up now
-            itask=0
+            itask=0 
             if self.keep:
                 for i in self.keep:
                     if type(i)==int and i < len(chainDict['nowmTasklist']):
@@ -367,6 +369,7 @@ class MatrixInjector(object):
             chainDict['TaskChain']=itask#len(chainDict['nowmTasklist'])
             
             chainDict.pop('nowmTasklist')
+
             self.chainDicts[n]=chainDict
 
             

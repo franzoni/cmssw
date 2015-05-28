@@ -87,6 +87,9 @@ workflows[4.63] = ['',['RunPhoton2012C','HLTD','RECODreHLT','HARVESTDreHLT','MIN
 workflows[4.64] = ['',['RunEl2012C','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.65] = ['',['RunJet2012C','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 
+workflows[4.611] = ['',['RunMinBias2012CBoff','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+workflows[4.612] = ['',['RunMinBias2012CBoffLS','HLTD','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
+
 workflows[4.66] = ['',['ZMuSkim2012C','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.67] = ['',['ZElSkim2012C','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.68] = ['',['WElSkim2012C','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
