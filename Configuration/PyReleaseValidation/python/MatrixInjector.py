@@ -304,13 +304,13 @@ class MatrixInjector(object):
                                 chainDict['nowmTasklist'][-1]['AcquisitionEra']=chainDict['CMSSWVersion']
                                 chainDict['nowmTasklist'][-1]['ProcessingString']=processStrPrefix+chainDict['nowmTasklist'][-1]['GlobalTag'].replace('::All','')+thisLabel
                             if(chainDict['Multicore']>1):
-                                # the scaling factor of 1GB / thread is empirical and measured on a first round of tests
+                                # the scaling factor of 1.2GB / thread is empirical and measured on a SECOND round of tests with PU samples
                                 # the number of threads is assumed to be the same for all tasks
                                 # https://hypernews.cern.ch/HyperNews/CMS/get/edmFramework/3509/1/1/1.html
                                 print ("** chainDict['Multicore']: %s")%(chainDict['Multicore'])
-                                chainDict['nowmTasklist'][-1]['Memory']= 3000 + int(  chainDict['Multicore']  -1)*1000
+                                chainDict['nowmTasklist'][-1]['Memory']= 3000 + int(  chainDict['Multicore']  -1)*1200
                                 # set also the overall memory to the same value; the agreement (in the phasing in) is that 
-                                chainDict['Memory'] = 3000 + int(  chainDict['Multicore']  -1)*1000
+                                chainDict['Memory'] = 3000 + int(  chainDict['Multicore']  -1)*1200
                             
                             # set memory here, according to the number of threads
                             #print " chainDict['nowmTasklist'][-1]['Multicore']:    %d"%(chainDict['nowmTasklist'][-1]['Multicore'])
