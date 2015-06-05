@@ -86,7 +86,7 @@ class MatrixInjector(object):
         self.defaultChain={
             "RequestType" :    "TaskChain",                    #this is how we handle relvals
             "SubRequestType" : "RelVal",                       #this is how we handle relvals, now that TaskChain is also used for central MC production
-            "RequestPriority": 500000,
+            "RequestPriority": 900000,
             "Requestor": self.user,                           #Person responsible
             "Group": self.group,                              #group for the request
             "CMSSWVersion": os.getenv('CMSSW_VERSION'),       #CMSSW Version (used for all tasks in chain)
@@ -105,7 +105,7 @@ class MatrixInjector(object):
             "mergedLFNBase" : "/store/relval",
             "dashboardActivity" : "relval",
             "Multicore" : opt.nThreads,
-            "Memory" : 2400,
+            "Memory" : 3000,
             "SizePerEvent" : 1234,
             "TimePerEvent" : 1
             }
@@ -204,7 +204,10 @@ class MatrixInjector(object):
                     processStrPrefix=''
                     setPrimaryDs=None
                     for step in s[3]:
-                        
+                        print("** starting a step, step number %d")%(index)
+                        print("** cmsDR %s")%(s[2])
+                        print("** listOf tasks %s")%(s[3])
+                        #print ("** memory is %s")%(chainDict['nowmTasklist'][-1]['Memory'])
                         if 'INPUT' in step or (not isinstance(s[2][index],str)):
                             nextHasDSInput=s[2][index]
 
@@ -300,7 +303,23 @@ class MatrixInjector(object):
                                 #chainDict['nowmTasklist'][-1]['AcquisitionEra']=(chainDict['CMSSWVersion']+'-PU_'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
                                 chainDict['nowmTasklist'][-1]['AcquisitionEra']=chainDict['CMSSWVersion']
                                 chainDict['nowmTasklist'][-1]['ProcessingString']=processStrPrefix+chainDict['nowmTasklist'][-1]['GlobalTag'].replace('::All','')+thisLabel
-
+                            if(chainDict['Multicore']>1):
+                                # the scaling factor of 1GB / thread is empirical and measured on a first round of tests
+                                # the number of threads is assumed to be the same for all tasks
+                                # https://hypernews.cern.ch/HyperNews/CMS/get/edmFramework/3509/1/1/1.html
+                                print ("** chainDict['Multicore']: %s")%(chainDict['Multicore'])
+                                chainDict['nowmTasklist'][-1]['Memory']= 3000 + int(  chainDict['Multicore']  -1)*1000
+                                # set also the overall memory to the same value; the agreement (in the phasing in) is that 
+                                chainDict['Memory'] = 3000 + int(  chainDict['Multicore']  -1)*1000
+                            
+                            # set memory here, according to the number of threads
+                            #print " chainDict['nowmTasklist'][-1]['Multicore']:    %d"%(chainDict['nowmTasklist'][-1]['Multicore'])
+                            #chainDict['Memory'][step] = '10000'
+                            #print " chainDict['Memory'][step]:    %d"%(chainDict['Memory'][step])
+                            #chainDict['nowmTasklist'][-1]['Memory'] = int(chainDict['nowmTasklist'][-1]['Memory']) + 1
+                            #chainDict['nowmTasklist'][-1]['Memory']+= (  chainDict['nowmTasklist'][-1]['Multicore'] -1)*1000
+                            
+                        print("** FINISHING a step, step number %d")%(index)
                         index+=1
                     #end of loop through steps
                     chainDict['RequestString']='RV'+chainDict['CMSSWVersion']+s[1].split('+')[0]
@@ -444,6 +463,3 @@ class MatrixInjector(object):
                 approveRequest(self.wmagent,workFlow)
                 print "...........",n,"submitted"
                 random_sleep()
-            
-
-        
