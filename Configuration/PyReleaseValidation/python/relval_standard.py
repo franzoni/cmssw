@@ -100,6 +100,26 @@ workflows[4.76] = ['',['ZMuSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','M
 workflows[4.77] = ['',['ZElSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 workflows[4.78] = ['',['WElSkim2012D','HLTDSKIM','RECODreHLT','HARVESTDreHLT','MINIAODDreHLT']]
 
+#workflows[4.741] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleJetHT','HARVESTDreHLT','MINIAODDreHLT']]
+#workflows[4.742] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleDoubleEG','HARVESTDreHLT','MINIAODDreHLT']]
+#workflows[4.743] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleSingleMuon','HARVESTDreHLT','MINIAODDreHLT']]
+#workflows[4.744] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleMuonEG','HARVESTDreHLT','MINIAODDreHLT']]
+#workflows[4.745] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleCosmics','HARVESTDreHLT','MINIAODDreHLT']]
+#workflows[4.746] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleBTagCSV','HARVESTDreHLT','MINIAODDreHLT']]
+#workflows[4.747] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleSingle','HARVESTDreHLT','MINIAODDreHLT']]
+
+
+workflows[4.7741] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleJetHT','HARVESTDreHLT']]
+workflows[4.7742] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleDoubleEG','HARVESTDreHLT']]
+workflows[4.7743] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleSingleMuon','HARVESTDreHLT']]
+workflows[4.7744] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleMuonEG','HARVESTDreHLT']]
+workflows[4.7745] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleCosmics','HARVESTDreHLT']]
+workflows[4.7746] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleBTagCSV','HARVESTDreHLT']]
+workflows[4.7747] = ['',['RunEl2012D','HLTD','RECODreHLTAlCaEleSingle','HARVESTDreHLT']]
+
+
+
+
 workflows[140.51] = ['',['RunHI2010','REPACKHID','RECOHID11St3','HARVESTDHI']]
 workflows[140.52] = ['',['RunHI2010','RECOHID10','RECOHIR10D11','HARVESTDHI']]
 workflows[140.53] = ['',['RunHI2011','RECOHID11','HARVESTDHI']]
