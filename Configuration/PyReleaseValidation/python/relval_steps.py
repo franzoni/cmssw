@@ -947,7 +947,21 @@ dataReco={'--conditions':'auto:run1_data',
           '--scenario':'pp',
           }
 
-dataRecoAlCaEle=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron,DQM'}, dataReco])
+dataRecoAlCaEle=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@SingleMuon,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
+
+dataRecoAlCaEleJetHT=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@JetHT,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
+
+dataRecoAlCaEleDoubleEG=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@DoubleEG,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
+
+dataRecoAlCaEleSingleMuon=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@SingleMuon,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
+
+dataRecoAlCaEleMuonEG=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@MuonEG,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
+
+dataRecoAlCaEleCosmics=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@Cosmics,DQM'},{'--scenario':'cosmics'}, {'--runUnscheduled':'','--datatier':'RECO,DQMIO','--eventcontent':'RECO,DQM',},dataReco])
+
+dataRecoAlCaEleBTagCSV=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:@BTagCSV,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
+
+dataRecoAlCaEleSingle=merge([{'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+EcalCalZElectron+EcalCalWElectron+EcalUncalZElectron+EcalUncalWElectron+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps+TkAlMuonIsolated+TkAlMinBias+HcalCalIsoTrk+MuAlOverlaps,SKIM:ZElectron,DQM'}, {'--runUnscheduled':'','--datatier':'RECO,MINIAOD,DQMIO','--eventcontent':'RECO,MINIAOD,DQM',},dataReco])
 
 
 hltKey='fake'
@@ -963,6 +977,16 @@ steps['HLTDSKIM']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'},steps[
 
 steps['RECOD']=merge([{'--scenario':'pp',},dataReco])
 steps['RECODAlCaEle']=merge([{'--scenario':'pp',},dataRecoAlCaEle])
+
+steps['RECODAlCaEleJetHT']=merge([{'--scenario':'pp',},dataRecoAlCaEleJetHT])
+steps['RECODAlCaEleDoubleEG']=merge([{'--scenario':'pp',},dataRecoAlCaEleDoubleEG])
+steps['RECODAlCaEleSingleMuon']=merge([{'--scenario':'pp',},dataRecoAlCaEleSingleMuon])
+steps['RECODAlCaEleMuonEG']=merge([{'--scenario':'pp',},dataRecoAlCaEleMuonEG])
+steps['RECODAlCaEleCosmics']=merge([{'--scenario':'cosmics',},dataRecoAlCaEleCosmics])
+steps['RECODAlCaEleBTagCSV']=merge([{'--scenario':'pp',},dataRecoAlCaEleBTagCSV])
+steps['RECODAlCaEleSingle']=merge([{'--scenario':'pp',},dataRecoAlCaEleSingle])
+
+
 
 steps['RECODSplit']=steps['RECOD'] # finer job splitting  
 steps['RECOSKIMALCA']=merge([{'--inputCommands':'"keep *","drop *_*_*_RECO"'
@@ -1055,6 +1079,16 @@ steps['RECOUP15AlCaEle']=merge([step3Up2015DefaultsAlCaEle]) # todo: remove UP f
 
 steps['RECODreHLT']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECOD']])
 steps['RECODreHLTAlCaEle']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEle']])
+
+steps['RECODreHLTAlCaEleJetHT']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleJetHT']])
+steps['RECODreHLTAlCaEleDoubleEG']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleDoubleEG']])
+steps['RECODreHLTAlCaEleSingleMuon']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleSingleMuon']])
+steps['RECODreHLTAlCaEleMuonEG']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleMuonEG']])
+steps['RECODreHLTAlCaEleCosmics']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleCosmics']])
+steps['RECODreHLTAlCaEleBTagCSV']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleBTagCSV']])
+steps['RECODreHLTAlCaEleSingle']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEleSingle']])
+
+
 
 steps['RECO']=merge([step3Defaults])
 steps['RECOAlCaEle']=merge([step3DefaultsAlCaEle])
