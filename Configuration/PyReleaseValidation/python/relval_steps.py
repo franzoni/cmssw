@@ -1000,6 +1000,38 @@ steps['RECOUP15AlCaEle']=merge([step3Up2015DefaultsAlCaEle]) # todo: remove UP f
 #steps['RECOUP15PROD1']=merge([{ '-s' : 'RAW2DIGI,L1Reco,RECO,EI,DQM:DQMOfflinePOGMC', '--datatier' : 'AODSIM,DQMIO', '--eventcontent' : 'AODSIM,DQM'},step3Up2015Defaults])
 
 steps['RECODreHLT']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECOD']])
+
+# steps['RECODreHLT']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECOD']])
+steps['RECODreHLTRunMinBias2011A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@HLTPhysics,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+steps['RECODreHLTXX'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@XX,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTHighMet2011A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@JetHT,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunMinBias2012A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@JetHT,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunTau2012A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@SingleMuon,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunMET2012A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@JetHT,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunMu2012A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@SingleMuon,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunElectron2012A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@MuonEG,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunJet2012A'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@JetHT,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunJet2012C'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@JetHT,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunMinBias2012D'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@DisplacedJet,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunMu2012D'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@MuonEG,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunPhoton2012D'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@DoubleEG,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunEl2012D'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@DoubleEG,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+steps['RECODreHLTRunJet2012D'] = merge([ {'-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias,SKIM:@JetHT,DQM:@standardDQM+@miniAODDQM'},steps['RECODreHLT'] ]) 
+
+
 steps['RECODreHLTAlCaEle']=merge([{'--hltProcess':'reHLT','--conditions':'auto:run1_data_%s'%menu},steps['RECODAlCaEle']])
 
 steps['RECO']=merge([step3Defaults])
