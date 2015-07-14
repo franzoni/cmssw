@@ -10,7 +10,7 @@ import os
 import sys
 
 from Configuration.DataProcessing.Scenario import *
-from Configuration.DataProcessing.Utils import stepALCAPRODUCER,addMonitoring,dictIO,dqmIOSource,harvestingMode,dqmSeq,gtNameAndConnect
+from Configuration.DataProcessing.Utils import stepALCAPRODUCER,stepSKIMPRODUCER,addMonitoring,dictIO,dqmIOSource,harvestingMode,dqmSeq,gtNameAndConnect
 import FWCore.ParameterSet.Config as cms
 from Configuration.DataProcessing.RecoTLR import customisePrompt,customiseExpress
 
@@ -34,6 +34,7 @@ class Reco(Scenario):
 
         """
         step = stepALCAPRODUCER(args['skims'])
+        PhysicsSkimStep = stepSKIMPRODUCER(args['PhysicsSkims'])
         dqmStep= dqmSeq(args,'')
         options = Options()
         options.__dict__.update(defaultOptions.__dict__)
@@ -52,7 +53,7 @@ class Reco(Scenario):
         if 'customs' in args:
             options.customisation_file=args['customs']
 
-        options.step = 'RAW2DIGI,L1Reco,RECO'+self.recoSeq+step+miniAODStep+',DQM'+dqmStep+',ENDJOB'
+        options.step = 'RAW2DIGI,L1Reco,RECO'+self.recoSeq+step+PhysicsSkimStep+miniAODStep+',DQM'+dqmStep+',ENDJOB'
 
 
         dictIO(options,args)
