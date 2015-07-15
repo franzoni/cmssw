@@ -54,6 +54,7 @@ class MatrixReader(object):
                              }
 
         self.files = ['relval_standard' ,
+                      #'relval_standard2' ,
                       'relval_highstats',
                       'relval_pileup',
                       'relval_generator',
@@ -67,6 +68,7 @@ class MatrixReader(object):
                       'relval_premix'
                       ]
         self.filesDefault = {'relval_standard':True ,
+                             #'relval_standard2':True ,
                              'relval_highstats':True ,
                              'relval_pileup':True,
                              'relval_generator':True,
