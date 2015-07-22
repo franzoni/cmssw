@@ -766,7 +766,8 @@ PU={'-n':10,'--pileup':'default','--pileup_input':'das:/RelValMinBias/%s/GEN-SIM
 # pu2 can be removed
 PU2={'-n':10,'--pileup':'default','--pileup_input':'das:/RelValMinBias/%s/GEN-SIM'%(baseDataSetRelease[0],)}
 PU25={'-n':10,'--pileup':'AVE_35_BX_25ns','--pileup_input':'das:/RelValMinBias_13/%s/GEN-SIM'%(baseDataSetRelease[3],)}
-PU50={'-n':10,'--pileup':'AVE_35_BX_50ns','--pileup_input':'das:/RelValMinBias_13/%s/GEN-SIM'%(baseDataSetRelease[3],)}
+#PU50={'-n':10,'--pileup':'AVE_35_BX_50ns','--pileup_input':'das:/RelValMinBias_13/%s/GEN-SIM'%(baseDataSetRelease[3],)}
+PU50={'-n':10,'--pileup':'2015_50ns_Startup_PoissonOOTPU','--pileup_input':'das:/RelValMinBias_13/%s/GEN-SIM'%(baseDataSetRelease[3],)}
 
 
 
