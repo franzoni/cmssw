@@ -132,7 +132,8 @@ step1Up2015Defaults = {'-s' : 'GEN,SIM',
                              '--datatier'    : 'GEN-SIM',
                              '--eventcontent': 'FEVTDEBUG',
                              '--magField'    : '38T_PostLS1',
-                             '--customise'   : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,RecoTracker/Configuration/customiseNoCCC.customiseNoCCC'
+                       '--customise'   : 'SLHCUpgradeSimulations/Configuration/postLS1Customs.customisePostLS1,RecoTracker/Configuration/customiseNoCCC.customiseNoCCC',
+                       '--dump_python' : ''
                              }
 
 steps = Steps()
