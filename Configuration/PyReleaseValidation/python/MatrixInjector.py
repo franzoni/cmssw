@@ -126,8 +126,7 @@ class MatrixInjector(object):
             "Seeding" : "AutomaticSeeding",                          #Random seeding method
             "PrimaryDataset" : None,                          #Primary Dataset to be created
             "nowmIO": {},
-            #"taskNThread" : 2,                                 # single-thread is the default
-            "Multicore" : 2,                                 # single-thread is the default
+            "Multicore" : 1,                                 # single-thread is the default
             "KeepOutput" : False
             }
         self.defaultInput={
@@ -138,8 +137,7 @@ class MatrixInjector(object):
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
             "nowmIO": {},
-            #"taskNThread" : 5,                                 # single-thread is the default
-            "Multicore" : 2,                                 # single-thread is the default
+            "Multicore" : 1,                                 # single-thread is the default
             "KeepOutput" : False
             }
         self.defaultTask={
@@ -151,8 +149,7 @@ class MatrixInjector(object):
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,                                #Size of jobs in terms of splitting algorithm
             "nowmIO": {}, 
-            #"taskNThread" : 3,                                 # single-thread is the default
-            "Multicore" : 2,                                 # single-thread is the default
+            "Multicore" : 1,                                 # single-thread is the default
             "KeepOutput" : False
             }
 
@@ -188,8 +185,8 @@ class MatrixInjector(object):
             print 
             wmthread={}
             wmthread['RECODreHLT']=4
-            wmthread['RECOUP15']=6
-            wmthread['RECO']=16
+            wmthread['RECOUP15']=4
+            wmthread['RECO']=4
             
             ###### 
             # here one can handle making the jobs spliting LARGER (more lumi-sections) if wmthread > 1
