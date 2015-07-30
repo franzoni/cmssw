@@ -105,7 +105,7 @@ class MatrixInjector(object):
             "mergedLFNBase" : "/store/relval",
             "dashboardActivity" : "relval",
             "Multicore" : opt.nThreads,
-            "Memory" : 3000,
+            "Memory" : 3000,                                   # this is the per-taskchain Memory; it's the default assigned to a task if it has no value specified
             "SizePerEvent" : 1234,
             "TimePerEvent" : 1
             }
@@ -126,7 +126,7 @@ class MatrixInjector(object):
             "Seeding" : "AutomaticSeeding",                          #Random seeding method
             "PrimaryDataset" : None,                          #Primary Dataset to be created
             "nowmIO": {},
-            "Multicore" : 1,                                 # single-thread is the default
+            "Multicore" : 1,                                 # this is the per-taskchain Multicore; it's the default assigned to a task if it has no value specified
             "KeepOutput" : False
             }
         self.defaultInput={
@@ -137,7 +137,7 @@ class MatrixInjector(object):
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
             "nowmIO": {},
-            "Multicore" : 1,                                 # single-thread is the default
+            "Multicore" : 1,                                 # this is the per-taskchain Multicore; it's the default assigned to a task if it has no value specified
             "KeepOutput" : False
             }
         self.defaultTask={
@@ -149,7 +149,7 @@ class MatrixInjector(object):
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,                                #Size of jobs in terms of splitting algorithm
             "nowmIO": {}, 
-            "Multicore" : 1,                                 # single-thread is the default
+            "Multicore" : 1,                                 # this is the per-taskchain Multicore; it's the default assigned to a task if it has no value specified
             "KeepOutput" : False
             }
 
@@ -336,7 +336,15 @@ class MatrixInjector(object):
                                 chainDict['nowmTasklist'][-1]['Multicore'] = wmthread[ chainDict['nowmTasklist'][-1]['TaskName'] ]
                                 #print "this is the AFTER: %d"%(chainDict['nowmTasklist'][-1]['taskNThread'])
                                 print "this is the AFTER: %d"%(chainDict['nowmTasklist'][-1]['Multicore'])
-                            print "++"
+                            print "++ multirhead taken care of - be happy ++ \n\n"
+
+                            if( chainDict['nowmTasklist'][-1]['Multicore'] ):
+                                # the scaling factor of 1.2GB / thread is empirical and measured on a SECOND round of tests with PU samples
+                                # the number of threads is NO LONGER assumed to be the same for all tasks
+                                # https://hypernews.cern.ch/HyperNews/CMS/get/edmFramework/3509/1/1/1.html
+                                # print ("** chainDict['Multicore']: %s")%( chainDict['nowmTasklist'][-1]['Multicore'] )
+                                chainDict['nowmTasklist'][-1]['Memory'] = 3000 + int( chainDict['nowmTasklist'][-1]['Multicore']  -1 )*1200
+                            
                         index+=1
                     #end of loop through steps
                     chainDict['RequestString']='RV'+chainDict['CMSSWVersion']+s[1].split('+')[0]
