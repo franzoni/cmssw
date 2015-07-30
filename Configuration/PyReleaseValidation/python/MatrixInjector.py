@@ -126,6 +126,8 @@ class MatrixInjector(object):
             "Seeding" : "AutomaticSeeding",                          #Random seeding method
             "PrimaryDataset" : None,                          #Primary Dataset to be created
             "nowmIO": {},
+            #"taskNThread" : 2,                                 # single-thread is the default
+            "Multicore" : 2,                                 # single-thread is the default
             "KeepOutput" : False
             }
         self.defaultInput={
@@ -136,6 +138,8 @@ class MatrixInjector(object):
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
             "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
             "nowmIO": {},
+            #"taskNThread" : 5,                                 # single-thread is the default
+            "Multicore" : 2,                                 # single-thread is the default
             "KeepOutput" : False
             }
         self.defaultTask={
@@ -145,8 +149,10 @@ class MatrixInjector(object):
             "ConfigCacheID" : None,                            #Processing Config id
             "GlobalTag": None,
             "SplittingAlgo"  : "LumiBased",                        #Splitting Algorithm
-            "LumisPerJob" : 10,               #Size of jobs in terms of splitting algorithm
-            "nowmIO": {},
+            "LumisPerJob" : 10,                                #Size of jobs in terms of splitting algorithm
+            "nowmIO": {}, 
+            #"taskNThread" : 3,                                 # single-thread is the default
+            "Multicore" : 2,                                 # single-thread is the default
             "KeepOutput" : False
             }
 
@@ -176,7 +182,19 @@ class MatrixInjector(object):
             wmsplit['TTbar_13_ID']=1
             wmsplit['SingleMuPt10FS_ID']=1
             wmsplit['TTbarFS_ID']=1
-                                    
+            
+            print 
+            print wmsplit
+            print 
+            wmthread={}
+            wmthread['RECODreHLT']=4
+            wmthread['RECOUP15']=6
+            wmthread['RECO']=16
+            
+            ###### 
+            # here one can handle making the jobs spliting LARGER (more lumi-sections) if wmthread > 1
+            ###### 
+
             #import pprint
             #pprint.pprint(wmsplit)            
         except:
@@ -273,6 +291,15 @@ class MatrixInjector(object):
 
                             #print step
                             chainDict['nowmTasklist'][-1]['TaskName']=step
+                            print
+                            print
+                            print "+++ my step ++ "
+                            print step
+                            print "+++"
+                            # print
+                            # step[-1]["TaskName"]
+                            # print
+                            # GIO GAELLE
                             if setPrimaryDs:
                                 chainDict['nowmTasklist'][-1]['PrimaryDataset']=setPrimaryDs
                             chainDict['nowmTasklist'][-1]['ConfigCacheID']='%s/%s.py'%(dir,step)
@@ -300,7 +327,19 @@ class MatrixInjector(object):
                                 #chainDict['nowmTasklist'][-1]['AcquisitionEra']=(chainDict['CMSSWVersion']+'-PU_'+chainDict['nowmTasklist'][-1]['GlobalTag']).replace('::All','')+thisLabel
                                 chainDict['nowmTasklist'][-1]['AcquisitionEra']=chainDict['CMSSWVersion']
                                 chainDict['nowmTasklist'][-1]['ProcessingString']=processStrPrefix+chainDict['nowmTasklist'][-1]['GlobalTag'].replace('::All','')+thisLabel
-
+                            # ==> set the multithread here 
+                            print "++ chainDict['nowmTasklist'][step]['TaskName']  "
+                            #print chainDict['nowmTasklist']
+                            print chainDict['nowmTasklist'][-1]['TaskName']
+                            #print "this is the BEFORE: %d"%(chainDict['nowmTasklist'][-1]['taskNThread'])
+                            print "this is the BEFORE: %d"%(chainDict['nowmTasklist'][-1]['Multicore'])
+                            if chainDict['nowmTasklist'][-1]['TaskName'] in wmthread.keys() :
+                                print "we want to modify the numOfThreads of this one"
+                                #chainDict['nowmTasklist'][-1]['taskNThread'] = wmthread[ chainDict['nowmTasklist'][-1]['TaskName'] ]
+                                chainDict['nowmTasklist'][-1]['Multicore'] = wmthread[ chainDict['nowmTasklist'][-1]['TaskName'] ]
+                                #print "this is the AFTER: %d"%(chainDict['nowmTasklist'][-1]['taskNThread'])
+                                print "this is the AFTER: %d"%(chainDict['nowmTasklist'][-1]['Multicore'])
+                            print "++"
                         index+=1
                     #end of loop through steps
                     chainDict['RequestString']='RV'+chainDict['CMSSWVersion']+s[1].split('+')[0]
