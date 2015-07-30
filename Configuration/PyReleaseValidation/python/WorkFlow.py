@@ -29,6 +29,7 @@ class WorkFlow(object):
             cmd+=' -n '+str(nEvtDefault)+' '
 
         self.cmds.append(cmd)
+        # print "++ WF: NAME %s   ---  num: %d    ---- and commands:   %s "%(self.nameId,self.numId,cmd)
         return cmd
 
 

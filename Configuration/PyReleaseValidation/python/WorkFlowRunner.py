@@ -90,7 +90,10 @@ class WorkFlowRunner(Thread):
     def __init__(self, wf, noRun=False,dryRun=False,cafVeto=True,dasOptions="",jobReport=False, nThreads=1):
         Thread.__init__(self)
         self.wf = wf
-
+        # print "\n+++++++"
+        #print wf.cmds
+        #print wf.nameId
+        #print "\n+++++++"
         self.status=-1
         self.report=''
         self.nfail=0

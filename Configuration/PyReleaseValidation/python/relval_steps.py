@@ -19,6 +19,7 @@ class Steps(dict):
             sys.exit(-9)
         else:
             self.update({key:value})
+            # print "\n\n++ test: adding key %s and value %s"%(key,value)
             # make the python file named <step>.py
             #if not '--python' in value:                self[key].update({'--python':'%s.py'%(key,)})
 
@@ -40,7 +41,6 @@ class WF(list):
         for s in self:
             print 'steps',s,stepsDict[s]
             steps.append(stepsDict[s])
-
     
 InputInfoNDefault=2000000    
 class InputInfo(object):
