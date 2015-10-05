@@ -8,6 +8,11 @@
 <use   name="CalibTracker/Records"/>
 <use   name="MagneticField/VolumeBasedEngine"/>
 <use   name="boost"/>
+
+<use name="CondFormats/RunInfo"/>
+<use name="CondFormats/DataRecord"/>
+
+
 <export>
   <lib   name="1"/>
 </export>

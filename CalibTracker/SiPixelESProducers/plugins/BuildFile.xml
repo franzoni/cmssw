@@ -6,6 +6,9 @@
 <use   name="Geometry/Records"/>
 <use   name="Geometry/TrackerGeometryBuilder"/>
 <use   name="CalibTracker/SiPixelESProducers"/>
+<use name="CondFormats/RunInfo"/>
+<use name="CondFormats/DataRecord"/>
+
 <library   file="*.cc" name="CalibTrackerSiPixelESProducersPlugins">
   <flags   EDM_PLUGIN="1"/>
 </library>

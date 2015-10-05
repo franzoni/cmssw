@@ -12,6 +12,8 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Utilities/interface/do_nothing_deleter.h"
 
+#include <iostream>
+
 #include <boost/shared_ptr.hpp>
 #include "boost/mpl/vector.hpp"
 
@@ -21,7 +23,8 @@
 using namespace edm;
 
 SiPixelTemplateDBObjectESProducer::SiPixelTemplateDBObjectESProducer(const edm::ParameterSet& iConfig) {
-	setWhatProduced(this);
+  std::cout << "GF SiPixelTemplateDBObjectESProducer construct" << std::endl;
+  setWhatProduced(this);
 }
 
 
@@ -33,6 +36,8 @@ SiPixelTemplateDBObjectESProducer::~SiPixelTemplateDBObjectESProducer(){
 
 boost::shared_ptr<SiPixelTemplateDBObject> SiPixelTemplateDBObjectESProducer::produce(const SiPixelTemplateDBObjectESProducerRcd & iRecord) {
 	
+  std::cout << "GF SiPixelTemplateDBObjectESProducer produce" << std::endl;
+
 	ESHandle<MagneticField> magfield;
 	iRecord.getRecord<IdealMagneticFieldRecord>().get(magfield);
 
