@@ -988,7 +988,7 @@ steps['DIGIPRMXUP15_PROD_PU50']=merge([premixProd50ns,digiPremixUp2015Defaults50
 
 dataReco={ '--runUnscheduled':'',
           '--conditions':'auto:run1_data',
-          '-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias+EcalESAlign,DQM:@standardDQM+@miniAODDQM',
+          '-s':'RAW2DIGI,L1Reco,RECO,EI,PAT,ALCA:SiStripCalZeroBias+SiStripCalMinBias+TkAlMinBias+EcalESAlign+MuAlCalIsolatedMu+MuAlBeamHalo+MuAlBeamHaloOverlaps+MuAlGlobalCosmicsInCollisions+MuAlOverlaps,DQM:@standardDQM+@miniAODDQM',
           '--datatier':'RECO,MINIAOD,DQMIO',
           '--eventcontent':'RECO,MINIAOD,DQM',
           '--data':'',
