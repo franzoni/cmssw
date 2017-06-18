@@ -99,21 +99,23 @@ process.mywriter = cms.EDAnalyzer(
   toRead = cms.untracked.vstring("PFfa_BARREL",
                                  "PFfb_BARREL",
                                  "PFfc_BARREL",
+
+                                 "PFfaEta_BARREL",
+                                 "PFfbEta_BARREL",
+
+                                 "PFfaEta_BARRELH",
+                                 "PFfbEta_BARRELH",
+                                 "PFfaEta_BARRELEH",
+                                 "PFfbEta_BARRELEH",
+
                                  "PFfa_ENDCAP",
                                  "PFfb_ENDCAP",
                                  "PFfc_ENDCAP",
-                                 #### New Functions
-                                 "PFfaEta_BARRELEH",
-                                 "PFfbEta_BARRELEH",
-                                 "PFfaEta_ENDCAPEH",
-                                 "PFfbEta_ENDCAPEH",
-                                 "PFfaEta_BARRELH",
-                                 "PFfbEta_BARRELH",
                                  "PFfaEta_ENDCAPH",
+                                 "PFfaEta_ENDCAPEH",
                                  "PFfbEta_ENDCAPH",
-                                 #### Left older functions untouched for backward compatibility
-                                 "PFfaEta_BARREL",
-                                 "PFfbEta_BARREL",
+                                 "PFfbEta_ENDCAPEH"
+
                                  "PFfaEta_ENDCAP",
                                  "PFfbEta_ENDCAP",
 
@@ -139,12 +141,15 @@ process.PoolDBOutputService = cms.Service("PoolDBOutputService",
                                   )
 
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+#process.GlobalTag.globaltag = 'START311_V1A::All'
 process.GlobalTag.globaltag = '90X_upgrade2017_realistic_v20'
 #process.GlobalTag.connect   = 'sqlite_file:/afs/cern.ch/user/c/cerminar/public/Alca/GlobalTag/GR_R_311_V2.db'
+##ss##  
 
 process.GlobalTag.toGet = cms.VPSet(
     cms.PSet(record = cms.string("PFCalibrationRcd"),
              tag = cms.string("PFCalibration_v6_mc"),
+             #connect = cms.untracked.string("sqlite_file:PFCalibration.db")
              connect = cms.string("sqlite_file:PFCalibration.db")
              #connect = cms.untracked.string("sqlite_file:PFCalibration.db")
              )
