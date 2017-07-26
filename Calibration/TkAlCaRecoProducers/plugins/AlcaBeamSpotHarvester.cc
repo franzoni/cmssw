@@ -17,6 +17,7 @@
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/MessageLogger/interface/MessageLogger.h"
+#include "FWCore/MessageLogger/interface/JobReport.h"
 
 #include "DataFormats/BeamSpot/interface/BeamSpot.h"
 
@@ -142,13 +143,21 @@ void AlcaBeamSpotHarvester::endRun(const edm::Run& iRun, const edm::EventSetup&)
           edm::LogInfo("AlcaBeamSpotHarvester")
               << "new tag requested" << std::endl;
           //poolDbService->createNewIOV<BeamSpotObjects>(aBeamSpot, poolDbService->beginOfTime(),poolDbService->endOfTime(),"BeamSpotObjectsRcd");
-	  
 	  //poolDbService->createNewIOV<BeamSpotObjects>(aBeamSpot, poolDbService->currentTime(), poolDbService->endOfTime(),"BeamSpotObjectsRcd");
 	  poolDbService->writeOne<BeamSpotObjects>(aBeamSpot, thisIOV, outputrecordName_);
           if (dumpTxt_ && beamSpotOutputBase_ == "lumibased"){
               beamspot::dumpBeamSpotTxt(outTxt, false, currentBS);
-          }    
-      } 
+
+	      edm::Service<edm::JobReport> jr;
+	      if (jr.isAvailable()) {
+		std::map<std::string, std::string> jrInfo;
+		jrInfo["Source"] = std::string("AlcaHarvesting");
+		jrInfo["FileClass"] = std::string("ALCAHpBsTXT");
+		jr->reportAnalysisFile(outTxt, jrInfo);
+	      }
+
+          }
+      }
       else {
         edm::LogInfo("AlcaBeamSpotHarvester")
             << "no new tag requested, appending IOV" << std::endl;
@@ -158,7 +167,6 @@ void AlcaBeamSpotHarvester::endRun(const edm::Run& iRun, const edm::EventSetup&)
             beamspot::dumpBeamSpotTxt(outTxt, true, currentBS);
         }
       }
-
 
 
 
