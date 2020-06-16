@@ -235,6 +235,7 @@ def customise_aging_300(process):
     process=ageEcal(process,300,5.0e34)
     return process
 
+
 def getMeFiles( path ):
     """ list files in a directory """
     import os
@@ -242,17 +243,21 @@ def getMeFiles( path ):
     stream = os.popen(command)
     return stream.readlines()
 
+def prepend(x) :
+    """ local files need the file: prefix"""
+    return 'file:'+x
+
 def customise_aging_1000(process):
     process=ageHcal(process,1000,5.0e34,"nominal")
     process=turn_off_HE_aging(process) #avoid conflict between HGCal and Hcal in phase2 geom configuration
     process=ageEcal(process,1000,5.0e34)
-
+    # hard-coded hack here below; we need to get away from the instabilities of AAA
     if hasattr(process,'mix'):
         if hasattr(process.mix,'input'):
             path = '/eos/cms/store/cmst3/group/hgcal/CMG_studies/Production/minbias_D46_102x_20200607/GSD/*'
             fileList=getMeFiles( path )
             print('++ setting mix input files GF: %d files from directory %s'%(len(fileList), path ) )
-            process.mix.input.fileNames=fileList
+            process.mix.input.fileNames=map(prepend,fileList)
     return process
 
 def customise_aging_3000(process):
@@ -260,12 +265,13 @@ def customise_aging_3000(process):
     process=turn_off_HE_aging(process) #avoid conflict between HGCal and Hcal in phase2 geom configuration
     process=ageEcal(process,3000,5.0e34)
     process=agedHGCal(process)
+    # hard-coded hack here below; we need to get away from the instabilities of AAA
     if hasattr(process,'mix'):
         if hasattr(process.mix,'input'):
             path = '/eos/cms/store/cmst3/group/hgcal/CMG_studies/Production/minbias_D46_102x_20200607/GSD/*'
             fileList=getMeFiles( path )
             print('++ setting mix input files GF: %d files from directory %s'%(len(fileList), path ) )
-            process.mix.input.fileNames=fileList
+            process.mix.input.fileNames=map(prepend,fileList)
     return process
 
 def customise_aging_3000_ultimate(process):
