@@ -254,7 +254,7 @@ def customise_aging_1000(process):
     # hard-coded hack here below; we need to get away from the instabilities of AAA
     if hasattr(process,'mix'):
         if hasattr(process.mix,'input'):
-            path = '/eos/cms/store/cmst3/group/hgcal/CMG_studies/Production/minbias_D46_102x_20200607/GSD/*'
+            path = '/eos/cms/store/cmst3/group/hgcal/CMG_studies/Production/minbias_D49_1120pre1_20200616/GSD/*'
             fileList=getMeFiles( path )
             print('++ setting mix input files GF: %d files from directory %s'%(len(fileList), path ) )
             process.mix.input.fileNames=map(prepend,fileList)
@@ -268,7 +268,7 @@ def customise_aging_3000(process):
     # hard-coded hack here below; we need to get away from the instabilities of AAA
     if hasattr(process,'mix'):
         if hasattr(process.mix,'input'):
-            path = '/eos/cms/store/cmst3/group/hgcal/CMG_studies/Production/minbias_D46_102x_20200607/GSD/*'
+            path = '/eos/cms/store/cmst3/group/hgcal/CMG_studies/Production/minbias_D49_1120pre1_20200616/GSD/*'
             fileList=getMeFiles( path )
             print('++ setting mix input files GF: %d files from directory %s'%(len(fileList), path ) )
             process.mix.input.fileNames=map(prepend,fileList)
