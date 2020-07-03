@@ -34,8 +34,9 @@ hgcROCSettings = cms.PSet(
     tdcForToAOnset_fC = cms.vdouble(12., 12., 12.),
     # wether-or-not to flag a sample for passing the BX-1 threshold
     doBxMinusOneSamples    = cms.double(False),
-    # threshold (in unit of MIP; setting to 1 -> thr=ADC_MIP) to flag for BX-1
-    bxMinusOneThreshold    =  cms.double(1.),
+    # threshold for bx-1 sample, relative to in-time threshold;
+    # i.e. setting to 1 -> bxMinusOneThreshold = inTimeThreshold) to flag for BX-1
+    bxMinusOneThreshold    =  cms.double(4.5),
     # LSB for time of arrival estimate from TDC in ns
     toaLSB_ns         = cms.double(0.0244),
     #toa computation mode (0=by weighted energy, 1=simple threshold)
