@@ -16,6 +16,7 @@ public:
     kThreshMask = 0x1,
     kModeMask = 0x1,
     kToAValidMask = 0x1,
+    kThreshBxMinOneMask = 0x1,
     kGainMask = 0xf,
     kToAMask = 0x3ff,
     kDataMask = 0xfff
@@ -24,6 +25,7 @@ public:
     kThreshShift = 31,
     kModeShift = 30,
     kToAValidShift = 29,
+    kThreshBxMinOneShift = 28,
     kToGainShift = 22,
     kToAShift = 12,
     kDataShift = 0
@@ -40,22 +42,32 @@ public:
      @short setters
   */
   void setThreshold(bool thr) { setWord(thr, kThreshMask, kThreshShift); }
+  void setThresholdBxMinOne(bool thrBxMinOne) { setWord(thrBxMinOne, kThreshBxMinOneMask, kThreshBxMinOneShift); }
   void setMode(bool mode) { setWord(mode, kModeMask, kModeShift); }
   void setGain(uint16_t gain) { setWord(gain, kGainMask, kToGainShift); }
   void setToA(uint16_t toa) { setWord(toa, kToAMask, kToAShift); }
   void setData(uint16_t data) { setWord(data, kDataMask, kDataShift); }
   void setToAValid(bool toaFired) { setWord(toaFired, kToAValidMask, kToAValidShift); }
 
-  void set(bool thr, bool mode, uint16_t gain, uint16_t toa, uint16_t data) {
+  void set(bool thr, bool thrBxMinOne, bool mode, uint16_t gain, uint16_t toa, uint16_t data) {
     setThreshold(thr);
+    setThresholdBxMinOne(thrBxMinOne);
     setMode(mode);
     setGain(gain);
     setToA(toa);
     setData(data);
   }
 
+  // keep this interface for bkw-compatibility, forcing the thrBxMinOne to false
+  void set(bool thr, bool mode, uint16_t gain, uint16_t toa, uint16_t data) {
+    std::cout << "HGCSample::set : using old interface, update!" << std::endl;
+    set(thr, false, mode, gain, toa, data);
+  }
+
   void print(std::ostream& out = std::cout) {
-    out << "THR: " << threshold() << " Mode: " << mode() << " ToA: " << toa() << " Data: " << data() << " Raw=0x"
+    out << "THR: " << threshold() << "THRBxMinOne: " << thresholdBxMinOne()
+	<< " Mode: " << mode() << " ToA: " << toa() 
+	<< " Data: " << data() << " Raw=0x"
         << std::hex << raw() << std::dec << std::endl;
   }
 
@@ -64,6 +76,7 @@ public:
   */
   uint32_t raw() const { return value_; }
   bool threshold() const { return getWord(kThreshMask, kThreshShift); }
+  bool thresholdBxMinOne() const { return getWord(kThreshBxMinOneMask, kThreshBxMinOneShift); }
   bool mode() const { return getWord(kModeMask, kModeShift); }
   uint16_t gain() const { return getWord(kGainMask, kToGainShift); }
   uint16_t toa() const { return getWord(kToAMask, kToAShift); }
@@ -85,6 +98,8 @@ public:
     //       info about gain was not preswent in V9-or-earlier, and will be left to 0 in V10
     // root doc: https://root.cern.ch/root/html/io/DataModelEvolution.html
     // see PR 28349 for more info
+    //
+    // NOTE: there's a V11, not needing schema evolution; see below
 
     // V9 Format: tm--------tttttttttt-dddddddddddd
     uint32_t valueNewForm(valueOldForm);
@@ -120,6 +135,11 @@ private:
 
   // a 32-bit word
   // V10 Format: tmt---ggggttttttttttdddddddddddd
+
+  // V11 Format: tmtt--ggggttttttttttdddddddddddd
+  // add 1 bit for passing (1) or not (0) the BX-1 threshold 
+  // data from V10 will always be interpreted as 0, which is acceptable
+  // (signal shape was rough before 11_2_X and not usable for BX-1 studies)
   uint32_t value_;
 };
 
