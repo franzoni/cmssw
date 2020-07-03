@@ -262,6 +262,38 @@ def HGCal_disableNoise(process):
     )
     return process
 
+
+def HGCal_setBxMinOneThreshold(process,tr=999):
+    process.theDigitizers.hgceeDigitizer.digiCfg.feCfg.doBxMinusOneSamples      = cms.bool(True)
+    # threshold for bx-1 sample, relative to in-time threshold;
+    # i.e. setting to 1 -> bxMinusOneThreshold = inTimeThreshold) to flag for BX-1
+    process.theDigitizers.hgceeDigitizer.digiCfg.feCfg.bxMinusOneThreshold      = cms.double(tr)
+
+    process.theDigitizers.hgchefrontDigitizer.digiCfg.feCfg.doBxMinusOneSamples = cms.bool(True)
+    process.theDigitizers.hgchefrontDigitizer.digiCfg.feCfg.bxMinusOneThreshold = cms.double(tr)
+
+    process.theDigitizers.hgchebackDigitizer.digiCfg.feCfg.doBxMinusOneSamples  = cms.bool(True)
+    process.theDigitizers.hgchebackDigitizer.digiCfg.feCfg.bxMinusOneThreshold  = cms.double(tr)
+    return process
+
+def HGCal_setBxMinOneThreshold__2(process):
+    return HGCal_setBxMinOneThreshold(process,tr=2)
+
+
+def HGCal_setBxMinOneThreshold_2(process):
+    process.theDigitizers.hgceeDigitizer.digiCfg.feCfg.doBxMinusOneSamples      = cms.bool(True)
+    # threshold for bx-1 sample, relative to in-time threshold;
+    # i.e. setting to 1 -> bxMinusOneThreshold = inTimeThreshold) to flag for BX-1
+    process.theDigitizers.hgceeDigitizer.digiCfg.feCfg.bxMinusOneThreshold      = cms.double(2.)
+
+    process.theDigitizers.hgchefrontDigitizer.digiCfg.feCfg.doBxMinusOneSamples = cms.bool(True)
+    process.theDigitizers.hgchefrontDigitizer.digiCfg.feCfg.bxMinusOneThreshold = cms.double(2.)
+
+    process.theDigitizers.hgchebackDigitizer.digiCfg.feCfg.doBxMinusOneSamples  = cms.bool(True)
+    process.theDigitizers.hgchebackDigitizer.digiCfg.feCfg.bxMinusOneThreshold  = cms.double(2.)
+    return process
+
+
 from Configuration.Eras.Modifier_phase2_hgcalV9_cff import phase2_hgcalV9
 
 phase2_hgcalV9.toModify( hgceeDigitizer,
