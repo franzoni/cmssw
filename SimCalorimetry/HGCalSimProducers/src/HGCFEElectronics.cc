@@ -65,10 +65,14 @@ HGCFEElectronics<DFr>::HGCFEElectronics(const edm::ParameterSet& ps)
   }
   if (ps.exists("targetMIPvalue_ADC"))
     targetMIPvalue_ADC_ = ps.getParameter<uint32_t>("targetMIPvalue_ADC");
-  if (ps.exists("doBxMinusOneSamples"))
+  if (ps.exists("doBxMinusOneSamples")){
     doBxMinusOneSamples_ = ps.getParameter<bool>("doBxMinusOneSamples");
-  if (ps.exists("bxMinusOneThreshold"))
+    //    std::cout << "lading doBxMinusOneSamples_ : " << doBxMinusOneSamples_ << std::endl; //GFGF
+  }
+  if (ps.exists("bxMinusOneThreshold")) {
     bxMinusOneThreshold_ = ps.getParameter<double>("bxMinusOneThreshold");
+    //  std::cout << "lading bxMinusOneThreshold_ : " << bxMinusOneThreshold_ << std::endl; //GFGF
+      }
   if (ps.exists("adcThreshold_fC"))
     adcThreshold_fC_ = ps.getParameter<double>("adcThreshold_fC");
   if (ps.exists("tdcOnset_fC"))
@@ -134,8 +138,8 @@ void HGCFEElectronics<DFr>::runTrivialShaper(
     maxADC = adcSaturation_fC_ * (1 - 1e-6);
   // set the threshold to flag samples against the BX-1 threshold; if not, set threshold to max value of ADC+1
   uint32_t thrADCbxMinOne = doBxMinusOneSamples_ ?     bxMinusOneThreshold_*thrADC :  1025;
-  std::cout << "++ runTrivialShaper " << doBxMinusOneSamples_ << "\t" << bxMinusOneThreshold_  //GFGF
-	    << "\t" << ( bxMinusOneThreshold_*thrADC) << "\t" << thrADCbxMinOne << std::endl; //GFGF
+  //  std::cout << "++ runTrivialShaper " << doBxMinusOneSamples_ << "\t" << bxMinusOneThreshold_  //GFGF
+    //	    << "\t" << ( bxMinusOneThreshold_*thrADC) << "\t" << thrADC  << std::endl; //GFGF
  
   for (int it = 0; it < (int)(chargeColl.size()); it++) {
     //brute force saturation, maybe could to better with an exponential like saturation
@@ -197,8 +201,8 @@ void HGCFEElectronics<DFr>::runSimpleShaper(DFr& dataFrame,
 
   // set the threshold to flag samples against the BX-1 threshold; if not, set threshold to max value of ADC+1
   uint32_t thrADCbxMinOne = doBxMinusOneSamples_ ?     bxMinusOneThreshold_*thrADC :  1025;
-  std::cout << "++ runSimpleShaper " << doBxMinusOneSamples_ << "\t" << bxMinusOneThreshold_  //GFGF
-	    << "\t" << ( bxMinusOneThreshold_*thrADC) << "\t" << thrADCbxMinOne << std::endl; //GFGF
+  //  std::cout << "++ runSimpleShaper " << doBxMinusOneSamples_ << "\t" << bxMinusOneThreshold_  //GFGF
+  //	    << "\t" << ( bxMinusOneThreshold_*thrADC) << "\t" << thrADCbxMinOne << std::endl; //GFGF
 
   for (int it = 0; it < (int)(newCharge.size()); it++) {
     //brute force saturation, maybe could to better with an exponential like saturation
@@ -452,8 +456,8 @@ void HGCFEElectronics<DFr>::runShaperWithToT(DFr& dataFrame,
 
   // set the threshold to flag samples against the BX-1 threshold; if not, set threshold to max value of ADC+1
   uint32_t thrADCbxMinOne = doBxMinusOneSamples_ ?     bxMinusOneThreshold_*thrADC :  1025;
-  std::cout << "++ runShaperWithToT " << doBxMinusOneSamples_ << "\t" << bxMinusOneThreshold_  //GFGF
-	    << "\t" << ( bxMinusOneThreshold_*thrADC) << "\t" << thrADCbxMinOne << std::endl; //GFGF
+  //std::cout << "++ runShaperWithToT " << doBxMinusOneSamples_ << "\t" << bxMinusOneThreshold_  //GFGF
+  // << "\t" << ( bxMinusOneThreshold_*thrADC) << "\t" << thrADC << std::endl; //GFGF
 
   for (int it = 0; it < (int)(newCharge.size()); it++) {
     if (debug)

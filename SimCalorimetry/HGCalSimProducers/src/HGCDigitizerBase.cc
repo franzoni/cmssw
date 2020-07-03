@@ -203,31 +203,20 @@ void HGCDigitizerBase<DFr>::updateOutput(std::unique_ptr<HGCDigitizerBase::DColl
   // , then don't push back the dataframe
   if ( (! rawDataFrame[itIdx].threshold()           )   &&
        (! rawDataFrame[itIdx-1].thresholdBxMinOne() )   ) {
+    //    std::cout << "detid: " << int(rawDataFrame.id()) << " returning because digi not interesting" << std::endl; //GFGF
     return;
     }
+
+//  std::cout << "detid: " << int(rawDataFrame.id()) << " keep digi: "   //GFGF
+//	    << rawDataFrame[itIdx].threshold() << "\t" 
+//	    << rawDataFrame[itIdx-1].thresholdBxMinOne()
+//	    << std::endl;
 
   for (int it = 0; it < 5; it++) {
     dataFrame.setSample(it, rawDataFrame[itIdx - 2 + it]);
   }
 
   coll->push_back(dataFrame);
-
-// how it was
-//
-//  DFr dataFrame(rawDataFrame.id());
-//  dataFrame.resize(5);
-//  bool putInEvent(false);
-//  for (int it = 0; it < 5; it++) {
-//    dataFrame.setSample(it, rawDataFrame[itIdx - 2 + it]);
-//    if (it == 2)
-//      putInEvent = rawDataFrame[itIdx - 2 + it].threshold();
-//  }
-//
-//  if (putInEvent) {
-//    coll->push_back(dataFrame);
-//  }
-//
-
 
 }
 
