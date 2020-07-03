@@ -140,7 +140,7 @@ void HGCFEElectronics<DFr>::runTrivialShaper(
     //brute force saturation, maybe could to better with an exponential like saturation
     const uint32_t adc = std::floor(std::min(chargeColl[it], maxADC) / lsbADC);
     HGCSample newSample;
-    newSample.set(adc > thrADC, false, gainIdx, 0, adc);
+    newSample.set(adc > thrADC, adc > thrADCbxMinOne, false, gainIdx, 0, adc);
     dataFrame.setSample(it, newSample);
 
     if (debug)
@@ -202,7 +202,7 @@ void HGCFEElectronics<DFr>::runSimpleShaper(DFr& dataFrame,
     //brute force saturation, maybe could to better with an exponential like saturation
     const uint32_t adc = std::floor(std::min(newCharge[it], maxADC) / lsbADC);
     HGCSample newSample;
-    newSample.set(adc > thrADC, false, gainIdx, 0, adc);
+    newSample.set(adc > thrADC, adc > thrADCbxMinOne, false, gainIdx, 0, adc);
     dataFrame.setSample(it, newSample);
 
     if (debug)
@@ -462,18 +462,19 @@ void HGCFEElectronics<DFr>::runShaperWithToT(DFr& dataFrame,
         //brute force saturation, maybe could to better with an exponential like saturation
         const float saturatedCharge(std::min(newCharge[it], tdcSaturation_fC_));
         //working version for in-time PU and signal
-        newSample.set(
-            true, true, gainIdx, (uint16_t)(timeToA / toaLSB_ns_), (uint16_t)(std::floor(saturatedCharge / tdcLSB_fC_)));
+        newSample.set(true, true, true, gainIdx,
+		      (uint16_t)(timeToA / toaLSB_ns_), (uint16_t)(std::floor(saturatedCharge / tdcLSB_fC_)));
         if (toaFlags[it])
           newSample.setToAValid(true);
       } else {
-        newSample.set(false, true, gainIdx, 0, 0);
+	// behaviour of thr and thrBxMinOne bits are a reasonable guess, for the case of busy: false!
+        newSample.set(false, false, true, gainIdx, 0, 0);
       }
     } else {
       //brute force saturation, maybe could to better with an exponential like saturation
       const uint16_t adc = std::floor(std::min(newCharge[it], maxADC) / lsbADC);
       //working version for in-time PU and signal
-      newSample.set(adc > thrADC, false, gainIdx, (uint16_t)(timeToA / toaLSB_ns_), adc);
+      newSample.set(adc > thrADC, adc > thrADCbxMinOne, false, gainIdx, (uint16_t)(timeToA / toaLSB_ns_), adc);
       if (toaFlags[it])
         newSample.setToAValid(true);
     }
