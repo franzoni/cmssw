@@ -33,7 +33,7 @@ hgcROCSettings = cms.PSet(
     # raise usage of TDC for TOA only
     tdcForToAOnset_fC = cms.vdouble(12., 12., 12.),
     # wether-or-not to flag a sample for passing the BX-1 threshold
-    doBxMinusOneSamples    = cms.double(False),
+    doBxMinusOneSamples    = cms.bool(False),
     # threshold for bx-1 sample, relative to in-time threshold;
     # i.e. setting to 1 -> bxMinusOneThreshold = inTimeThreshold) to flag for BX-1
     bxMinusOneThreshold    =  cms.double(4.5),
