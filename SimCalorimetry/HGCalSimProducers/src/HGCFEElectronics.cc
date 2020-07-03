@@ -22,6 +22,8 @@ HGCFEElectronics<DFr>::HGCFEElectronics(const edm::ParameterSet& ps)
       toaLSB_ns_{},
       tdcResolutionInNs_{1e-9},  // set time resolution very small by default
       targetMIPvalue_ADC_{},
+      doBxMinusOneSamples_{false}, // by default, don't look at sample BX-1 to keep a digi
+      bxMinusOneThreshold_{},
       jitterNoise2_ns_{},
       jitterConstant2_ns_{},
       noise_fC_{},
@@ -63,6 +65,10 @@ HGCFEElectronics<DFr>::HGCFEElectronics(const edm::ParameterSet& ps)
   }
   if (ps.exists("targetMIPvalue_ADC"))
     targetMIPvalue_ADC_ = ps.getParameter<uint32_t>("targetMIPvalue_ADC");
+  if (ps.exists("doBxMinusOneSamples"))
+    doBxMinusOneSamples_ = ps.getParameter<bool>("");
+  if (ps.exists("bxMinusOneThreshold"))
+    bxMinusOneThreshold_ = ps.getParameter<double>("");
   if (ps.exists("adcThreshold_fC"))
     adcThreshold_fC_ = ps.getParameter<double>("adcThreshold_fC");
   if (ps.exists("tdcOnset_fC"))
@@ -126,6 +132,10 @@ void HGCFEElectronics<DFr>::runTrivialShaper(
     // to ensure largest charge converted in bits is 0xfff==4095, not 0x1000
     // no effect on charges loewer than; no impact on cpu time, only done once
     maxADC = adcSaturation_fC_ * (1 - 1e-6);
+  // set the threshold to flag samples against the BX-1 threshold; if not, set threshold to max value of ADC+1
+  uint32_t thrADCbxMinOne = doBxMinusOneSamples_ ?     bxMinusOneThreshold_*thrADC :  1025;
+  thrADCbxMinOne+=1; //GFGF
+
   for (int it = 0; it < (int)(chargeColl.size()); it++) {
     //brute force saturation, maybe could to better with an exponential like saturation
     const uint32_t adc = std::floor(std::min(chargeColl[it], maxADC) / lsbADC);
@@ -178,6 +188,10 @@ void HGCFEElectronics<DFr>::runSimpleShaper(
     if (debug)
       edm::LogVerbatim("HGCFE") << std::endl;
   }
+
+  // set the threshold to flag samples against the BX-1 threshold; if not, set threshold to max value of ADC+1
+  uint32_t thrADCbxMinOne = doBxMinusOneSamples_ ?     bxMinusOneThreshold_*thrADC :  1025;
+  thrADCbxMinOne+=1; //GFGF
 
   for (int it = 0; it < (int)(newCharge.size()); it++) {
     //brute force saturation, maybe could to better with an exponential like saturation
@@ -427,6 +441,11 @@ void HGCFEElectronics<DFr>::runShaperWithToT(DFr& dataFrame,
     lsbADC = adcLSB_fC_;
   if (maxADC < 0)
     maxADC = adcSaturation_fC_;
+
+  // set the threshold to flag samples against the BX-1 threshold; if not, set threshold to max value of ADC+1
+  uint32_t thrADCbxMinOne = doBxMinusOneSamples_ ?     bxMinusOneThreshold_*thrADC :  1025;
+  thrADCbxMinOne+=1; //GFGF
+
   for (int it = 0; it < (int)(newCharge.size()); it++) {
     if (debug)
       edm::LogVerbatim("HGCFE") << chargeColl[it] << " -> " << newCharge[it] << " ";
