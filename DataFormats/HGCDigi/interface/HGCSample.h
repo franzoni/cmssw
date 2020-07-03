@@ -96,10 +96,11 @@ public:
     // 2) insert the toaFired into _value
     // NOTE: nothing can be done for the gain bits:
     //       info about gain was not preswent in V9-or-earlier, and will be left to 0 in V10
-    // root doc: https://root.cern.ch/root/html/io/DataModelEvolution.html
+    // root doc: https://root.cern.ch/root/SchemaEvolution.pdf
+    // kepdro help: https://github.com/cms-sw/cmssw/pull/28349#discussion_r343383848
     // see PR 28349 for more info
     //
-    // NOTE: there's a V11, not needing schema evolution; see below
+    // NOTE: there's a V10b, not needing schema evolution (checksum doesn't change w.r.t. V10); see below
 
     // V9 Format: tm--------tttttttttt-dddddddddddd
     uint32_t valueNewForm(valueOldForm);
@@ -136,7 +137,7 @@ private:
   // a 32-bit word
   // V10 Format: tmt---ggggttttttttttdddddddddddd
 
-  // V11 Format: tmtt--ggggttttttttttdddddddddddd
+  // V10b Format: tmtt--ggggttttttttttdddddddddddd
   // add 1 bit for passing (1) or not (0) the BX-1 threshold 
   // data from V10 will always be interpreted as 0, which is acceptable
   // (signal shape was rough before 11_2_X and not usable for BX-1 studies)

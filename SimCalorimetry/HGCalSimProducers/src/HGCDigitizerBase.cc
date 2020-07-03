@@ -187,10 +187,11 @@ void HGCDigitizerBase<DFr>::updateOutput(std::unique_ptr<HGCDigitizerBase::DColl
   dataFrame.resize(5);
 
   // if neither:
-  //      in time amplitude is above threshold
-  //      bx-1  amplitude above threshold
+  //      in-time amplitude is above threshold
+  //      bx-1 amplitude above threshold
   // , then don't push back the dataframe
-  if ( (! rawDataFrame[itIdx].threshold() ) ) {
+  if ( (! rawDataFrame[itIdx].threshold()           )   &&
+       (! rawDataFrame[itIdx-1].thresholdBxMinOne() )   ) {
     return;
     }
 
